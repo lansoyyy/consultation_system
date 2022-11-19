@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
               controller: page,
               children: [
                 const DashboardTab(),
-                const MessagesTab(),
+                MessagesTab(),
                 const ReportTab(),
                 Container(
                   color: Colors.white,

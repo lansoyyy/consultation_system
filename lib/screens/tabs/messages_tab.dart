@@ -3,7 +3,7 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 class MessagesTab extends StatelessWidget {
-  const MessagesTab({super.key});
+  final _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +199,7 @@ class MessagesTab extends StatelessWidget {
                                     height: 100,
                                     width: 500,
                                     child: TextFormField(
+                                      controller: _messageController,
                                       textCapitalization:
                                           TextCapitalization.words,
                                       decoration: const InputDecoration(
