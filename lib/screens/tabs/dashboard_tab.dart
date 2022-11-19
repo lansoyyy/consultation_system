@@ -8,7 +8,7 @@ class DashboardTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String cdate3 = DateFormat("MMMM, EEEE, yyyy").format(DateTime.now());
+    String date = DateFormat("MMMM, EEEE, yyyy").format(DateTime.now());
 
     return Container(
       padding: const EdgeInsets.only(left: 20),
@@ -19,7 +19,7 @@ class DashboardTab extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          NormalText(label: cdate3.toString(), fontSize: 24, color: primary),
+          NormalText(label: date, fontSize: 24, color: primary),
           const SizedBox(
             height: 20,
           ),

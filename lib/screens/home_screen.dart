@@ -1,4 +1,6 @@
 import 'package:consultation_system/screens/tabs/dashboard_tab.dart';
+import 'package:consultation_system/screens/tabs/messages_tab.dart';
+import 'package:consultation_system/screens/tabs/reports_tab.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -72,6 +74,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              footer: Container(
+                height: 80,
+                decoration: const BoxDecoration(
+                    color: greyAccent,
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: greyAccent))),
+                child: Center(
+                  child: NormalText(
+                    label: 'All right reserved.',
+                    fontSize: 12,
+                    color: blueAccent,
+                  ),
+                ),
+              ),
               items: [
                 SideMenuItem(
                   priority: 0,
@@ -96,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     page.jumpToPage(2);
                   },
-                  icon: const Icon(Icons.report),
+                  icon: const Icon(Icons.report_problem_rounded),
                 ),
                 SideMenuItem(
                   priority: 3,
@@ -138,24 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
               controller: page,
               children: [
                 const DashboardTab(),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Users',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Files',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+                const MessagesTab(),
+                const ReportTab(),
                 Container(
                   color: Colors.white,
                   child: const Center(
