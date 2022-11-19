@@ -149,42 +149,68 @@ class MessagesTab extends StatelessWidget {
                           ),
                         )),
                     const Divider(),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Expanded(
                       child: SizedBox(
-                        child: ListView.builder(
-                          itemBuilder: ((context, index) {
-                            return ListTile(
-                              leading: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: CircleAvatar(
-                                  minRadius: 30,
-                                  maxRadius: 30,
-                                  backgroundColor: blueAccent,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                child: ListView.builder(
+                                  itemBuilder: ((context, index) {
+                                    return ListTile(
+                                      leading: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: CircleAvatar(
+                                          minRadius: 30,
+                                          maxRadius: 30,
+                                          backgroundColor: blueAccent,
+                                        ),
+                                      ),
+                                      title: Container(
+                                        decoration: BoxDecoration(
+                                          color: primary,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 10, 20, 10),
+                                          child: NormalText(
+                                              label: 'Lorem Ipsum',
+                                              fontSize: 14,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      trailing: NormalText(
+                                          label: '8:45',
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    );
+                                  }),
                                 ),
                               ),
-                              title: Container(
-                                decoration: BoxDecoration(
-                                  color: primary,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                                  child: NormalText(
-                                      label: 'Lorem Ipsum',
-                                      fontSize: 14,
-                                      color: Colors.white),
-                                ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              child: ListTile(
+                                tileColor: Colors.white,
+                                leading: SizedBox(
+                                    height: 100,
+                                    width: 500,
+                                    child: TextFormField(
+                                      textCapitalization:
+                                          TextCapitalization.words,
+                                      decoration: const InputDecoration(
+                                          fillColor: Colors.white),
+                                    )),
+                                trailing: IconButton(
+                                    onPressed: (() {}),
+                                    icon: const Icon(Icons.send,
+                                        color: secondary)),
                               ),
-                              trailing: NormalText(
-                                  label: '8:45',
-                                  fontSize: 14,
-                                  color: Colors.grey),
-                            );
-                          }),
+                            ),
+                          ],
                         ),
                       ),
                     ),
