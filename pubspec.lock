@@ -539,6 +539,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  sidebarx:
+    dependency: "direct main"
+    description:
+      name: sidebarx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.0"
   sign_in_with_apple:
     dependency: transitive
     description:
