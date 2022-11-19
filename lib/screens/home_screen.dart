@@ -1,3 +1,4 @@
+import 'package:consultation_system/screens/tabs/analytics_tab.dart';
 import 'package:consultation_system/screens/tabs/dashboard_tab.dart';
 import 'package:consultation_system/screens/tabs/messages_tab.dart';
 import 'package:consultation_system/screens/tabs/reports_tab.dart';
@@ -156,15 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const DashboardTab(),
                 MessagesTab(),
                 ReportTab(),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Download',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+                AnalyticsTab(),
                 Container(
                   color: Colors.white,
                   child: const Center(

@@ -47,9 +47,10 @@ dependencies:
   riverpod:
   flutterfire_ui:
   google_fonts:
-  sidebarx: ^0.14.0
+
   easy_sidemenu: ^0.4.1
   easy_table: ^2.2.0
+
 
 dev_dependencies:
   flutter_test:

@@ -53,7 +53,7 @@ class ReportTab extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
