@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.9.0"
+  axis_layout:
+    dependency: transitive
+    description:
+      name: axis_layout
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   badges:
     dependency: transitive
     description:
@@ -106,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  easy_table:
+    dependency: "direct main"
+    description:
+      name: easy_table
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   email_validator:
     dependency: transitive
     description:

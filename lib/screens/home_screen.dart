@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const DashboardTab(),
                 MessagesTab(),
-                const ReportTab(),
+                ReportTab(),
                 Container(
                   color: Colors.white,
                   child: const Center(
