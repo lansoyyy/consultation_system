@@ -1,6 +1,7 @@
 import 'package:consultation_system/screens/tabs/analytics_tab.dart';
 import 'package:consultation_system/screens/tabs/dashboard_tab.dart';
 import 'package:consultation_system/screens/tabs/messages_tab.dart';
+import 'package:consultation_system/screens/tabs/notif_tab.dart';
 import 'package:consultation_system/screens/tabs/reports_tab.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
@@ -162,20 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   child: const Center(
                     child: Text(
-                      'Settings',
+                      'Feedback',
                       style: TextStyle(fontSize: 35),
                     ),
                   ),
                 ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Exit',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+                const NotfiTab(),
                 Container(
                   color: Colors.white,
                   child: const Center(
