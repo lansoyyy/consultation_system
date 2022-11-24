@@ -62,7 +62,7 @@ class MessagesTab extends StatelessWidget {
                                     ),
                                   ),
                                   title: BoldText(
-                                      label: 'Lance Olana',
+                                      label: 'John Doe',
                                       fontSize: 18,
                                       color: Colors.black45),
                                   subtitle: Padding(
@@ -126,7 +126,7 @@ class MessagesTab extends StatelessWidget {
                               backgroundColor: Colors.grey,
                             ),
                             title: BoldText(
-                                label: 'Lance Olana',
+                                label: 'John Doe',
                                 fontSize: 18,
                                 color: Colors.grey),
                             subtitle: Padding(

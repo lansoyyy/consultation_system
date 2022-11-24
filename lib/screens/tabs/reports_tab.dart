@@ -35,7 +35,9 @@ class ReportTab extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                     child: NormalText(
-                        label: 'By year', fontSize: 15, color: Colors.white),
+                        label: 'By year lvl',
+                        fontSize: 15,
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(
@@ -157,7 +159,7 @@ class ReportTab extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 NormalText(
-                                    label: 'Lance Olana',
+                                    label: 'John Doe',
                                     fontSize: 12,
                                     color: Colors.grey),
                               ],
