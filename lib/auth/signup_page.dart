@@ -125,11 +125,14 @@ class SignupPage extends StatelessWidget {
                               color: primary,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100)),
-                              onPressed: (() {}),
+                              onPressed: (() {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const LoginPage()));
+                              }),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: NormalText(
-                                    label: 'Login',
+                                    label: 'Signup',
                                     fontSize: 24,
                                     color: Colors.white),
                               )),
