@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReportTab extends StatelessWidget {
   @override
@@ -132,100 +134,142 @@ class ReportTab extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: SizedBox(
-                child: ListView.builder(itemBuilder: ((context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 25),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.grey[200]!, width: 1)),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: index.toString(),
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: 'John Doe',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: '8:35pm',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: '12/25/2023',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: 'BSIT',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: '4th',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: 'Grades',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                NormalText(
-                                    label: 'SOLVED',
-                                    fontSize: 12,
-                                    color: Colors.grey),
-                              ],
-                            ),
-                          ],
-                        ),
+            StreamBuilder<QuerySnapshot?>(
+                stream: FirebaseFirestore.instance
+                    .collection('Concerns')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.docs.isEmpty) {
+                      return Center(
+                        child: NormalText(
+                            label: 'No Saved Data',
+                            color: Colors.white,
+                            fontSize: 20),
+                      );
+                    }
+
+                    return Expanded(
+                      child: SizedBox(
+                        child: ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: ((context, index) {
+                              Map data =
+                                  snapshot.data!.docs[index].data() as Map;
+                              DateTime created = data['dateTime'].toDate();
+
+                              String formattedTime =
+                                  DateFormat.yMMMd().add_jm().format(created);
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 25),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey[200]!, width: 1)),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: index.toString(),
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: data['name'],
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: data['time'],
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: formattedTime,
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: data['course'],
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: data['yearLevel'],
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: data['concern'],
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            NormalText(
+                                                label: 'SOLVED',
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })),
                       ),
-                    ),
-                  );
-                })),
-              ),
-            )
+                    );
+                  } else {
+                    return Center(
+                      child: NormalText(
+                          label: 'Loading...',
+                          color: Colors.white,
+                          fontSize: 20),
+                    );
+                  }
+                })
           ],
         ),
       ),
