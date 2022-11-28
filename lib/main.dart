@@ -1,5 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:consultation_system/auth/login_page.dart';
+import 'package:consultation_system/auth/signup_page.dart';
+import 'package:consultation_system/constant/routes.dart';
+import 'package:consultation_system/screens/home_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -20,7 +23,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: Routes.loginpage,
+      routes: {
+        Routes.loginpage: (context) => LoginPage(),
+        Routes.homescreen: (context) => const HomeScreen(),
+        Routes.signuppage: (context) => SignupPage(),
+      },
     );
   }
 }

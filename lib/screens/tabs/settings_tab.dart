@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
+import 'package:consultation_system/constant/uid.dart';
 import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:consultation_system/widgets/textform_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -15,191 +18,249 @@ class _SettingsTabState extends State<SettingsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+        .collection('CONSULTATION-USERS')
+        .doc(FirebaseAuthToken().uid)
+        .snapshots();
     return Scaffold(
         backgroundColor: Colors.grey[200],
         body: Padding(
-          padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BoldText(label: 'Profile', fontSize: 24, color: primary),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(
-                        minRadius: 50,
-                        maxRadius: 50,
-                        backgroundColor: primary,
-                        backgroundImage: NetworkImage(
-                            'https://cdn-icons-png.flaticon.com/512/3899/3899618.png'),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: primary,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                          child: NormalText(
-                              label: 'Upload',
-                              fontSize: 15,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                NormalText(
-                    label: 'EDIT YOUR PROFILE',
-                    fontSize: 18,
-                    color: Colors.grey),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
+            padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
+            child: StreamBuilder<DocumentSnapshot>(
+                stream: userData,
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          BoldText(
+                              label: 'Loading', fontSize: 24, color: primary),
+                          const SizedBox(
+                            height: 20,
+                          )
+                        ]));
+                  } else if (snapshot.hasError) {
+                    return SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          BoldText(
+                              label: 'Something went wrong',
+                              fontSize: 24,
+                              color: primary),
+                          const SizedBox(
+                            height: 20,
+                          )
+                        ]));
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  dynamic data = snapshot.data;
+
+                  return SingleChildScrollView(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        NormalText(
-                            label: 'First Name', fontSize: 14, color: primary),
+                        BoldText(
+                            label: 'Profile', fontSize: 24, color: primary),
                         const SizedBox(
-                          height: 5,
+                          height: 20,
                         ),
-                        SizedBox(
-                            width: 150,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: TextFormField(),
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NormalText(
-                            label: 'Middle Name', fontSize: 14, color: primary),
+                        Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const CircleAvatar(
+                                minRadius: 50,
+                                maxRadius: 50,
+                                backgroundColor: primary,
+                                backgroundImage: NetworkImage(
+                                    'https://cdn-icons-png.flaticon.com/512/3899/3899618.png'),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: primary,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  child: NormalText(
+                                      label: 'Upload',
+                                      fontSize: 15,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(
-                          height: 5,
+                          height: 20,
                         ),
-                        SizedBox(
-                            width: 150,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: TextFormField(),
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                        NormalText(
+                            label: 'EDIT YOUR PROFILE',
+                            fontSize: 18,
+                            color: Colors.grey),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                NormalText(
+                                    label: 'First Name',
+                                    fontSize: 14,
+                                    color: primary),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                    width: 150,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: TextformfieldWidget(
+                                          label: data['first_name']),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                NormalText(
+                                    label: 'Middle Name',
+                                    fontSize: 14,
+                                    color: primary),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                    width: 150,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: TextformfieldWidget(
+                                          label: data['middle_name']),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                NormalText(
+                                    label: 'Surname',
+                                    fontSize: 14,
+                                    color: primary),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                    width: 150,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: TextformfieldWidget(
+                                          label: data['sur_name']),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         NormalText(
                             label: 'Surname', fontSize: 14, color: primary),
                         const SizedBox(
                           height: 5,
                         ),
+                        Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                            child: DropdownButton(
+                              underline: Container(color: Colors.transparent),
+                              iconEnabledColor: Colors.black,
+                              isExpanded: true,
+                              value: _dropdownValue,
+                              items: [
+                                DropdownMenuItem(
+                                  onTap: () {},
+                                  value: 0,
+                                  child: DropDownItem(label: 'Instructor'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _dropdownValue = int.parse(value.toString());
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        NormalText(
+                            label: 'Email Address',
+                            fontSize: 14,
+                            color: primary),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         SizedBox(
-                            width: 150,
+                            width: 300,
                             child: Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5)),
-                              child: TextFormField(),
+                              child: TextformfieldWidget(label: data['email']),
                             )),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                NormalText(label: 'Surname', fontSize: 14, color: primary),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                    child: DropdownButton(
-                      underline: Container(color: Colors.transparent),
-                      iconEnabledColor: Colors.black,
-                      isExpanded: true,
-                      value: _dropdownValue,
-                      items: [
-                        DropdownMenuItem(
-                          onTap: () {},
-                          value: 0,
-                          child: DropDownItem(label: 'Instructor'),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        NormalText(
+                            label: 'Phone Number',
+                            fontSize: 14,
+                            color: primary),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                            width: 300,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: TextformfieldWidget(
+                                  label: data['contact_number']),
+                            )),
+                        const SizedBox(
+                          height: 50,
                         ),
                       ],
-                      onChanged: (value) {
-                        setState(() {
-                          _dropdownValue = int.parse(value.toString());
-                        });
-                      },
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                NormalText(
-                    label: 'Email Address', fontSize: 14, color: primary),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                    width: 300,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: TextFormField(),
-                    )),
-                const SizedBox(
-                  height: 20,
-                ),
-                NormalText(label: 'Phone Number', fontSize: 14, color: primary),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                    width: 300,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: TextFormField(),
-                    )),
-                const SizedBox(
-                  height: 50,
-                ),
-              ],
-            ),
-          ),
-        ));
+                  );
+                })));
   }
 }

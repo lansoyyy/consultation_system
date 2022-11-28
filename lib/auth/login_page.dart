@@ -1,17 +1,42 @@
-import 'package:consultation_system/auth/signup_page.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/repositories/auth_repository.dart';
-import 'package:consultation_system/screens/home_screen.dart';
+import 'package:consultation_system/services/navigation.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:consultation_system/widgets/textform_field_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+import '../widgets/error_dialogue_widget.dart';
 
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
+  final loginformKey = GlobalKey<FormState>();
+  bool secureText = true;
   @override
   Widget build(BuildContext context) {
+    validateLogin(dynamic e) {
+      showDialog(
+        context: context,
+        builder: ((context) {
+          return ErrorDialog(
+              caption: e.code,
+              onPressed: () {
+                Navigator.of(context).pop();
+              });
+        }),
+      );
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -34,96 +59,108 @@ class LoginPage extends StatelessWidget {
                     color: Colors.grey[100]),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      BoldText(label: 'Login', fontSize: 24, color: primary),
-                      NormalText(
-                          label: 'Welcome to our website',
-                          fontSize: 14,
-                          color: Colors.black),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.email),
-                              labelText: '    Email'),
+                  child: Form(
+                    key: loginformKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
-                              labelText: '    Password'),
+                        BoldText(label: 'Login', fontSize: 24, color: primary),
+                        NormalText(
+                            label: 'Welcome to our website',
+                            fontSize: 14,
+                            color: Colors.black),
+                        const SizedBox(
+                          height: 50,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Center(
-                        child: MaterialButton(
-                            minWidth: 300,
-                            color: primary,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100)),
-                            onPressed: (() {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()));
-                            }),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: NormalText(
-                                  label: 'Login',
-                                  fontSize: 24,
-                                  color: Colors.white),
-                            )),
-                      ),
-                      const Expanded(
-                        child: SizedBox(
-                          height: 80,
+                        TextformfieldWidget(
+                          label: '    Email',
+                          prefixIcon: const Icon(Icons.email),
+                          textFieldController: _emailController,
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          NormalText(
-                              label: 'Not a member yeat?',
-                              fontSize: 14,
-                              color: Colors.grey),
-                          TextButton(
-                            onPressed: (() {
-                              AuthRepository().loginOfuser(
-                                  _emailController.text, _emailController.text);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => SignupPage()));
-                            }),
-                            child: NormalText(
-                                label: 'Register now',
-                                fontSize: 16,
-                                color: Colors.black),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextformfieldWidget(
+                          isObscure: secureText,
+                          label: '    Password',
+                          prefixIcon: const Icon(Icons.lock),
+                          textFieldController: _passwordController,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              secureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                secureText = !secureText;
+                              });
+                            },
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Center(
+                          child: MaterialButton(
+                              minWidth: 300,
+                              color: primary,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                              onPressed: (() async {
+                                if (loginformKey.currentState!.validate()) {
+                                  try {
+                                    await AuthRepository().loginOfuser(
+                                        _emailController.text,
+                                        _passwordController.text);
+                                    // ignore: use_build_context_synchronously
+                                    Navigation(context).goToHomeScreen();
+                                  } on FirebaseAuthException catch (e) {
+                                    validateLogin(e);
+                                  }
+                                }
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: NormalText(
+                                    label: 'Login',
+                                    fontSize: 24,
+                                    color: Colors.white),
+                              )),
+                        ),
+                        const Expanded(
+                          child: SizedBox(
+                            height: 80,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            NormalText(
+                                label: 'Not a member yeat?',
+                                fontSize: 14,
+                                color: Colors.grey),
+                            TextButton(
+                              onPressed: (() {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) => SignupPage()));
+                                Navigation(context).goToSignUpPage();
+                              }),
+                              child: NormalText(
+                                  label: 'Register now',
+                                  fontSize: 16,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

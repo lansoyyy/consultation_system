@@ -1,7 +1,8 @@
-import 'package:consultation_system/auth/login_page.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/repositories/auth_repository.dart';
+import 'package:consultation_system/services/navigation.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:consultation_system/widgets/textform_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget {
@@ -14,6 +15,7 @@ class SignupPage extends StatelessWidget {
   final TextEditingController _surNameController = TextEditingController();
   final TextEditingController _contactNumberController =
       TextEditingController();
+  final signupformKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,150 +41,120 @@ class SignupPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        BoldText(label: 'Signup', fontSize: 24, color: primary),
-                        NormalText(
-                            label: 'Create your account',
-                            fontSize: 14,
-                            color: Colors.black),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _firstNameController,
-                            decoration: const InputDecoration(
-                                labelText: '    First name'),
+                    child: Form(
+                      key: signupformKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _middleNameController,
-                            decoration: const InputDecoration(
-                                labelText: '    Middle name'),
+                          BoldText(
+                              label: 'Signup', fontSize: 24, color: primary),
+                          NormalText(
+                              label: 'Create your account',
+                              fontSize: 14,
+                              color: Colors.black),
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _surNameController,
-                            decoration:
-                                const InputDecoration(labelText: '    Surname'),
+                          TextformfieldWidget(
+                            label: 'First name',
+                            textFieldController: _firstNameController,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _contactNumberController,
-                            decoration: const InputDecoration(
-                                labelText: '    Contact Number'),
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                labelText: '    Email'),
+                          TextformfieldWidget(
+                            label: 'Middle Name',
+                            textFieldController: _middleNameController,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: TextFormField(
-                            controller: _passwordController,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.lock),
-                                labelText: '    Password'),
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        Center(
-                          child: MaterialButton(
-                              minWidth: 300,
-                              color: primary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100)),
-                              onPressed: (() {
-                                AuthRepository().userSignUp(
-                                    _firstNameController.text,
-                                    _middleNameController.text,
-                                    _surNameController.text,
-                                    _contactNumberController.text,
-                                    _emailController.text,
-                                    _passwordController.text,
-                                    '');
+                          TextformfieldWidget(
+                            label: 'Surname',
+                            textFieldController: _surNameController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextformfieldWidget(
+                            label: 'Contact Number',
+                            textFieldController: _contactNumberController,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextformfieldWidget(
+                              prefixIcon: const Icon(Icons.email),
+                              label: 'Email',
+                              textFieldController: _emailController),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextformfieldWidget(
+                              prefixIcon: const Icon(Icons.lock),
+                              label: 'Password',
+                              textFieldController: _passwordController),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Center(
+                            child: MaterialButton(
+                                minWidth: 300,
+                                color: primary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100)),
+                                onPressed: (() {
+                                  if (signupformKey.currentState!.validate()) {
+                                    AuthRepository().userSignUp(
+                                        _firstNameController.text,
+                                        _middleNameController.text,
+                                        _surNameController.text,
+                                        _contactNumberController.text,
+                                        _emailController.text,
+                                        _passwordController.text,
+                                        '');
+                                    Navigation(context).goToLoginPage();
+                                  }
 
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
-                              }),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => LoginPage()));
+                                }),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: NormalText(
+                                      label: 'Signup',
+                                      fontSize: 24,
+                                      color: Colors.white),
+                                )),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              NormalText(
+                                  label: 'Already have an account?',
+                                  fontSize: 14,
+                                  color: Colors.grey),
+                              TextButton(
+                                onPressed: (() {
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => LoginPage()));
+                                  Navigation(context).goToLoginPage();
+                                }),
                                 child: NormalText(
-                                    label: 'Signup',
-                                    fontSize: 24,
-                                    color: Colors.white),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            NormalText(
-                                label: 'Already have an account?',
-                                fontSize: 14,
-                                color: Colors.grey),
-                            TextButton(
-                              onPressed: (() {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
-                              }),
-                              child: NormalText(
-                                  label: 'Login now',
-                                  fontSize: 16,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      ],
+                                    label: 'Login now',
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
