@@ -49,6 +49,8 @@ dependencies:
   google_fonts:
   easy_sidemenu: ^0.4.1
   easy_table: ^2.2.0
+  permission_handler: ^10.2.0
+  image_picker_web: ^3.0.0+1
 
 
 dev_dependencies:

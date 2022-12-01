@@ -4,6 +4,7 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:consultation_system/widgets/textform_field_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -87,17 +88,25 @@ class _SettingsTabState extends State<SettingsTab> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                                  child: NormalText(
-                                      label: 'Upload',
-                                      fontSize: 15,
-                                      color: Colors.white),
+                              GestureDetector(
+                                onTap: () async {
+                                  Image? fromPicker =
+                                      await ImagePickerWeb.getImageAsWidget();
+
+                                  print(fromPicker!.image);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: primary,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                    child: NormalText(
+                                        label: 'Upload',
+                                        fontSize: 15,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ],

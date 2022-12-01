@@ -25,6 +25,9 @@ class UserRepository implements UsertRepositoryInterface {
       'password': password,
       'id': FirebaseAuthToken().uid,
       'profilePicture': 'https://cdn-icons-png.flaticon.com/512/727/727399.png',
+      'from': 0,
+      'to': 0,
+      'status': 'Active'
     };
 
     await docUser.set(json);

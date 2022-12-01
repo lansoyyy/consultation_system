@@ -148,25 +148,11 @@ class _NotfiTabState extends State<NotfiTab> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                                child: DropdownButton(
-                                  underline:
-                                      Container(color: Colors.transparent),
-                                  iconEnabledColor: Colors.black,
-                                  isExpanded: true,
-                                  value: _dropdownValue,
-                                  items: [
-                                    DropdownMenuItem(
-                                      onTap: () {},
-                                      value: 0,
-                                      child: DropDownItem(label: '12:00 AM'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _dropdownValue =
-                                          int.parse(value.toString());
-                                    });
-                                  },
+                                child: Center(
+                                  child: NormalText(
+                                      label: 'TO',
+                                      fontSize: 14,
+                                      color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -235,7 +221,12 @@ class _NotfiTabState extends State<NotfiTab> {
                               DropdownMenuItem(
                                 onTap: () {},
                                 value: 0,
-                                child: DropDownItem(label: 'Midnight'),
+                                child: DropDownItem(label: 'Active'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {},
+                                value: 1,
+                                child: DropDownItem(label: 'Inactive'),
                               ),
                             ],
                             onChanged: (value) {
