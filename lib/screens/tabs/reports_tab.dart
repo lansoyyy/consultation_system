@@ -66,6 +66,9 @@ class ReportTab extends StatelessWidget {
                               label: 'No.', fontSize: 12, color: Colors.white),
                         ],
                       ),
+                      const SizedBox(
+                        width: 30,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -74,6 +77,9 @@ class ReportTab extends StatelessWidget {
                               fontSize: 12,
                               color: Colors.white),
                         ],
+                      ),
+                      const SizedBox(
+                        width: 15,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,6 +90,9 @@ class ReportTab extends StatelessWidget {
                               color: Colors.white),
                         ],
                       ),
+                      const SizedBox(
+                        width: 15,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -92,6 +101,9 @@ class ReportTab extends StatelessWidget {
                               fontSize: 12,
                               color: Colors.white),
                         ],
+                      ),
+                      const SizedBox(
+                        width: 15,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +114,9 @@ class ReportTab extends StatelessWidget {
                               color: Colors.white),
                         ],
                       ),
+                      const SizedBox(
+                        width: 15,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -111,6 +126,9 @@ class ReportTab extends StatelessWidget {
                               color: Colors.white),
                         ],
                       ),
+                      const SizedBox(
+                        width: 15,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -119,6 +137,9 @@ class ReportTab extends StatelessWidget {
                               fontSize: 12,
                               color: Colors.white),
                         ],
+                      ),
+                      const SizedBox(
+                        width: 15,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

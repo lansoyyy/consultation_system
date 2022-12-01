@@ -1,10 +1,97 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DashboardTab extends StatelessWidget {
+class DashboardTab extends StatefulWidget {
   const DashboardTab({super.key});
+
+  @override
+  State<DashboardTab> createState() => _DashboardTabState();
+}
+
+class _DashboardTabState extends State<DashboardTab> {
+  int total1 = 0;
+  getData1() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Grades');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total1 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total2 = 0;
+  getData2() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Requirements');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total2 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total3 = 0;
+  getData3() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Attendance');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total3 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total4 = 0;
+  getData4() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Others');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total4 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData1();
+    getData2();
+    getData3();
+    getData4();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,19 +201,10 @@ class DashboardTab extends StatelessWidget {
                     ListTile(
                       leading: NormalText(
                           label: 'Grades', fontSize: 12, color: primary),
-                      trailing:
-                          BoldText(label: '2', fontSize: 12, color: primary),
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    ListTile(
-                      leading: NormalText(
-                          label: 'Instructional Materials',
+                      trailing: BoldText(
+                          label: total1.toString(),
                           fontSize: 12,
                           color: primary),
-                      trailing:
-                          BoldText(label: '2', fontSize: 12, color: primary),
                     ),
                     const Divider(
                       color: Colors.white,
@@ -136,8 +214,10 @@ class DashboardTab extends StatelessWidget {
                           label: 'Requirements/Projects',
                           fontSize: 12,
                           color: primary),
-                      trailing:
-                          BoldText(label: '2', fontSize: 12, color: primary),
+                      trailing: BoldText(
+                          label: total2.toString(),
+                          fontSize: 12,
+                          color: primary),
                     ),
                     const Divider(
                       color: Colors.white,
@@ -145,8 +225,10 @@ class DashboardTab extends StatelessWidget {
                     ListTile(
                       leading: NormalText(
                           label: 'Attendance', fontSize: 12, color: primary),
-                      trailing:
-                          BoldText(label: '2', fontSize: 12, color: primary),
+                      trailing: BoldText(
+                          label: total3.toString(),
+                          fontSize: 12,
+                          color: primary),
                     ),
                     const Divider(
                       color: Colors.white,
@@ -156,8 +238,10 @@ class DashboardTab extends StatelessWidget {
                           label: 'Other concerns',
                           fontSize: 12,
                           color: primary),
-                      trailing:
-                          BoldText(label: '2', fontSize: 12, color: primary),
+                      trailing: BoldText(
+                          label: total4.toString(),
+                          fontSize: 12,
+                          color: primary),
                     ),
                     const Divider(
                       color: Colors.white,

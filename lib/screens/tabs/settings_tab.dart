@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
-import 'package:consultation_system/constant/uid.dart';
-import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:consultation_system/widgets/textform_field_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingsTab extends StatefulWidget {
@@ -14,13 +13,19 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  int _dropdownValue = 0;
+  final int _dropdownValue = 0;
+
+  final firstName = TextEditingController();
+  final middleName = TextEditingController();
+  final lastName = TextEditingController();
+  final email = TextEditingController();
+  final contactNumber = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
         .collection('CONSULTATION-USERS')
-        .doc(FirebaseAuthToken().uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
     return Scaffold(
         backgroundColor: Colors.grey[200],
@@ -72,12 +77,12 @@ class _SettingsTabState extends State<SettingsTab> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const CircleAvatar(
+                              CircleAvatar(
                                 minRadius: 50,
                                 maxRadius: 50,
                                 backgroundColor: primary,
-                                backgroundImage: NetworkImage(
-                                    'https://cdn-icons-png.flaticon.com/512/3899/3899618.png'),
+                                backgroundImage:
+                                    NetworkImage(data['profilePicture']),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -126,6 +131,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                       child: TextformfieldWidget(
+                                          textFieldController: firstName,
                                           label: data['first_name']),
                                     )),
                               ],
@@ -151,6 +157,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                       child: TextformfieldWidget(
+                                          textFieldController: middleName,
                                           label: data['middle_name']),
                                     )),
                               ],
@@ -176,6 +183,7 @@ class _SettingsTabState extends State<SettingsTab> {
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                       child: TextformfieldWidget(
+                                          textFieldController: lastName,
                                           label: data['sur_name']),
                                     )),
                               ],
@@ -185,39 +193,39 @@ class _SettingsTabState extends State<SettingsTab> {
                         const SizedBox(
                           height: 20,
                         ),
-                        NormalText(
-                            label: 'Surname', fontSize: 14, color: primary),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                            child: DropdownButton(
-                              underline: Container(color: Colors.transparent),
-                              iconEnabledColor: Colors.black,
-                              isExpanded: true,
-                              value: _dropdownValue,
-                              items: [
-                                DropdownMenuItem(
-                                  onTap: () {},
-                                  value: 0,
-                                  child: DropDownItem(label: 'Instructor'),
-                                ),
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _dropdownValue = int.parse(value.toString());
-                                });
-                              },
-                            ),
-                          ),
-                        ),
+                        // NormalText(
+                        //     label: 'Surname', fontSize: 14, color: primary),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
+                        // Container(
+                        //   width: 150,
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     borderRadius: BorderRadius.circular(5),
+                        //   ),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                        //     child: DropdownButton(
+                        //       underline: Container(color: Colors.transparent),
+                        //       iconEnabledColor: Colors.black,
+                        //       isExpanded: true,
+                        //       value: _dropdownValue,
+                        //       items: [
+                        //         DropdownMenuItem(
+                        //           onTap: () {},
+                        //           value: 0,
+                        //           child: DropDownItem(label: 'Instructor'),
+                        //         ),
+                        //       ],
+                        //       onChanged: (value) {
+                        //         setState(() {
+                        //           _dropdownValue = int.parse(value.toString());
+                        //         });
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -234,7 +242,9 @@ class _SettingsTabState extends State<SettingsTab> {
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5)),
-                              child: TextformfieldWidget(label: data['email']),
+                              child: TextformfieldWidget(
+                                  textFieldController: email,
+                                  label: data['email']),
                             )),
                         const SizedBox(
                           height: 20,
@@ -253,8 +263,57 @@ class _SettingsTabState extends State<SettingsTab> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5)),
                               child: TextformfieldWidget(
+                                  textFieldController: contactNumber,
                                   label: data['contact_number']),
                             )),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Center(
+                          child: GestureDetector(
+                            onTap: (() {
+                              FirebaseFirestore.instance
+                                  .collection('CONSULTATION-USERS')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .update({
+                                'first_name': firstName.text == ''
+                                    ? data['first_name']
+                                    : firstName.text,
+                                'middle_name': middleName.text == ''
+                                    ? data['middle_name']
+                                    : middleName.text,
+                                'sur_name': lastName.text == ''
+                                    ? data['sur_name']
+                                    : lastName.text,
+                                'email': email.text == ''
+                                    ? data['email']
+                                    : email.text,
+                                'contact_number': contactNumber.text == ''
+                                    ? data['contact_number']
+                                    : contactNumber.text,
+                              });
+
+                              firstName.clear();
+                              middleName.clear();
+                              lastName.clear();
+                              email.clear();
+                              contactNumber.clear();
+                            }),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(50, 5, 50, 5),
+                                child: NormalText(
+                                    label: 'Update',
+                                    fontSize: 15,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(
                           height: 50,
                         ),

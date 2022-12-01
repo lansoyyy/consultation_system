@@ -68,6 +68,87 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
     }
   }
 
+  int total1 = 0;
+  getData1() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Grades');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total1 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total2 = 0;
+  getData2() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Requirements');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total2 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total3 = 0;
+  getData3() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Attendance');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total3 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int total4 = 0;
+  getData4() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('concern', isEqualTo: 'Others');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total4 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData1();
+    getData2();
+    getData3();
+    getData4();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,20 +186,17 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
                         isVisible: true,
                       ),
                       tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <ChartSeries<Concern, String>>[
-                        LineSeries<Concern, String>(
-                          dataSource: _concern,
-                          xValueMapper: (Concern concern, _) =>
-                              concern.concern.isNotEmpty
-                                  ? concern.concern
-                                  : 'Empty Set',
-                          yValueMapper: (Concern concern, _) =>
-                              getYData()[i++].toString().isNotEmpty
-                                  ? getYData()[i++]
-                                  : 0,
-                          dataLabelSettings:
-                              const DataLabelSettings(isVisible: true),
-                        ),
+                      series: <ChartSeries>[
+                        LineSeries<ChartData, String>(
+                            dataSource: [
+                              // Bind data source
+                              ChartData('Grades', total1.toDouble()),
+                              ChartData('Requirements', total2.toDouble()),
+                              ChartData('Attendance', total3.toDouble()),
+                              ChartData('Others', total4.toDouble()),
+                            ],
+                            xValueMapper: (ChartData data, _) => data.x,
+                            yValueMapper: (ChartData data, _) => data.y)
                       ],
                     ),
                   );
@@ -173,4 +251,10 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
       ),
     ));
   }
+}
+
+class ChartData {
+  ChartData(this.x, this.y);
+  final String x;
+  final double? y;
 }

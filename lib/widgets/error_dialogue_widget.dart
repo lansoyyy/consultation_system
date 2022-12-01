@@ -44,14 +44,15 @@ class ErrorDialog extends StatelessWidget {
             ),
             MaterialButton(
               minWidth: 300,
-              color: primary,
+              height: 50,
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100)),
               onPressed: onPressed,
               child: NormalText(
-                color: Colors.white,
+                color: primary,
                 fontSize: 18,
-                label: 'close',
+                label: 'Close',
               ),
             ),
           ],
