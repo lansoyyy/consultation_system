@@ -26,55 +26,8 @@ class _NotfiTabState extends State<NotfiTab> {
               height: 50,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  height: 300,
-                  width: 300,
-                  color: greyAccent,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BoldText(
-                            label: 'Pause Notifications',
-                            fontSize: 16,
-                            color: Colors.grey),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-                            onPressed: (() {}),
-                            child: NormalText(
-                                label: 'For 30 minutes',
-                                fontSize: 12,
-                                color: primary)),
-                        TextButton(
-                            onPressed: (() {}),
-                            child: NormalText(
-                                label: 'For 1 hour',
-                                fontSize: 12,
-                                color: primary)),
-                        TextButton(
-                            onPressed: (() {}),
-                            child: NormalText(
-                                label: 'For 2 hour',
-                                fontSize: 12,
-                                color: primary)),
-                        TextButton(
-                            onPressed: (() {}),
-                            child: NormalText(
-                                label: 'Until tommorow',
-                                fontSize: 12,
-                                color: primary)),
-                        const Divider(
-                          color: Colors.white,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
                 const VerticalDivider(
                   color: Colors.grey,
                   width: 5,
@@ -124,7 +77,27 @@ class _NotfiTabState extends State<NotfiTab> {
                                     DropdownMenuItem(
                                       onTap: () {},
                                       value: 0,
-                                      child: DropDownItem(label: 'Everyday'),
+                                      child: DropDownItem(label: '8:00AM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 1,
+                                      child: DropDownItem(label: '9:00AM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 2,
+                                      child: DropDownItem(label: '10:00AM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 3,
+                                      child: DropDownItem(label: '11:00AM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 4,
+                                      child: DropDownItem(label: '12:00AM'),
                                     ),
                                   ],
                                   onChanged: (value) {
@@ -178,7 +151,42 @@ class _NotfiTabState extends State<NotfiTab> {
                                     DropdownMenuItem(
                                       onTap: () {},
                                       value: 0,
-                                      child: DropDownItem(label: 'Midnight'),
+                                      child: DropDownItem(label: '1:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 1,
+                                      child: DropDownItem(label: '2:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 2,
+                                      child: DropDownItem(label: '3:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 3,
+                                      child: DropDownItem(label: '4:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 4,
+                                      child: DropDownItem(label: '5:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 5,
+                                      child: DropDownItem(label: '6:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 6,
+                                      child: DropDownItem(label: '7:00PM'),
+                                    ),
+                                    DropdownMenuItem(
+                                      onTap: () {},
+                                      value: 7,
+                                      child: DropDownItem(label: '8:00PM'),
                                     ),
                                   ],
                                   onChanged: (value) {
@@ -197,8 +205,7 @@ class _NotfiTabState extends State<NotfiTab> {
                         height: 20,
                       ),
                       NormalText(
-                          label:
-                              "Set a default time for reminder notifications:",
+                          label: "Set your activity status",
                           fontSize: 12,
                           color: Colors.grey),
                       const SizedBox(
@@ -242,7 +249,7 @@ class _NotfiTabState extends State<NotfiTab> {
                       ),
                       NormalText(
                           label:
-                              "Reminders you set for a specific day (ex. tommorow) will be sent at the time you select.",
+                              "You can make your notification status active/inactive",
                           fontSize: 12,
                           color: Colors.grey),
                       const SizedBox(
