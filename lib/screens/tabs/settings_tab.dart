@@ -1,10 +1,12 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:consultation_system/widgets/textform_field_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
@@ -21,6 +23,28 @@ class _SettingsTabState extends State<SettingsTab> {
   final lastName = TextEditingController();
   final email = TextEditingController();
   final contactNumber = TextEditingController();
+
+  late String? imgUrl;
+
+  uploadToStorage() {
+    InputElement input = FileUploadInputElement() as InputElement
+      ..accept = 'image/*';
+    FirebaseStorage fs = FirebaseStorage.instance;
+    input.click();
+    input.onChange.listen((event) {
+      final file = input.files!.first;
+      final reader = FileReader();
+      reader.readAsDataUrl(file);
+      reader.onLoadEnd.listen((event) async {
+        var snapshot = await fs.ref().child('newfile').putBlob(file);
+        String downloadUrl = await snapshot.ref.getDownloadURL();
+        print(downloadUrl);
+        setState(() {
+          imgUrl = downloadUrl;
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,21 +103,19 @@ class _SettingsTabState extends State<SettingsTab> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               CircleAvatar(
-                                minRadius: 50,
-                                maxRadius: 50,
-                                backgroundColor: primary,
-                                backgroundImage:
-                                    NetworkImage(data['profilePicture']),
-                              ),
+                                  minRadius: 50,
+                                  maxRadius: 50,
+                                  backgroundColor: primary,
+                                  backgroundImage:
+                                      NetworkImage(data['profilePicture'])),
                               const SizedBox(
                                 height: 10,
                               ),
                               GestureDetector(
-                                onTap: () async {
-                                  Image? fromPicker =
-                                      await ImagePickerWeb.getImageAsWidget();
-
-                                  print(fromPicker!.image);
+                                onTap: () {
+                                  //Image? fromPicker =
+                                  //     await ImagePickerWeb.getImageAsWidget();
+                                  uploadToStorage();
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -281,6 +303,7 @@ class _SettingsTabState extends State<SettingsTab> {
                         Center(
                           child: GestureDetector(
                             onTap: (() {
+                              print(imgUrl);
                               FirebaseFirestore.instance
                                   .collection('CONSULTATION-USERS')
                                   .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -300,6 +323,8 @@ class _SettingsTabState extends State<SettingsTab> {
                                 'contact_number': contactNumber.text == ''
                                     ? data['contact_number']
                                     : contactNumber.text,
+                                'profilePicture': imgUrl ??
+                                    'https://cdn-icons-png.flaticon.com/512/727/727399.png'
                               });
 
                               firstName.clear();
