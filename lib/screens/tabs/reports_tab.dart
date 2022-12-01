@@ -1,10 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
+import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ReportTab extends StatelessWidget {
+class ReportTab extends StatefulWidget {
+  @override
+  State<ReportTab> createState() => _ReportTabState();
+}
+
+class _ReportTabState extends State<ReportTab> {
+  int _dropdownValue = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,22 +32,114 @@ class ReportTab extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                     child: NormalText(
-                        label: 'Export', fontSize: 15, color: Colors.white),
+                        label: 'Export in PDF',
+                        fontSize: 15,
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(
                   width: 30,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: blueAccent,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                    child: NormalText(
-                        label: 'By year lvl',
-                        fontSize: 15,
-                        color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                      child: DropdownButton(
+                        underline: Container(color: Colors.transparent),
+                        iconEnabledColor: Colors.black,
+                        isExpanded: true,
+                        value: _dropdownValue,
+                        items: [
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 0,
+                            child: DropDownItem(label: '1st Year'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 1,
+                            child: DropDownItem(label: '2nd Year'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 2,
+                            child: DropDownItem(label: '3rd Year'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 3,
+                            child: DropDownItem(label: '4th Year'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _dropdownValue = int.parse(value.toString());
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                      child: DropdownButton(
+                        underline: Container(color: Colors.transparent),
+                        iconEnabledColor: Colors.black,
+                        isExpanded: true,
+                        value: _dropdownValue,
+                        items: [
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 0,
+                            child: DropDownItem(label: 'IT Department'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 1,
+                            child:
+                                DropDownItem(label: 'Engineering Department'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 2,
+                            child: DropDownItem(label: 'EDUC Department'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 3,
+                            child:
+                                DropDownItem(label: 'Business Administration'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {},
+                            value: 4,
+                            child: DropDownItem(label: 'Nursing'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _dropdownValue = int.parse(value.toString());
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
