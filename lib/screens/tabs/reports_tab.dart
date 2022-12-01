@@ -13,6 +13,8 @@ class ReportTab extends StatefulWidget {
 class _ReportTabState extends State<ReportTab> {
   int _dropdownValue = 0;
 
+  final int _dropdownValue1 = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +105,7 @@ class _ReportTabState extends State<ReportTab> {
                         underline: Container(color: Colors.transparent),
                         iconEnabledColor: Colors.black,
                         isExpanded: true,
-                        value: _dropdownValue,
+                        value: _dropdownValue1,
                         items: [
                           DropdownMenuItem(
                             onTap: () {},
