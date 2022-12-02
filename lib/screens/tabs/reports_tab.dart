@@ -397,6 +397,11 @@ class _ReportTabState extends State<ReportTab> {
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: ((context, index) {
                             name.add(data.docs[index]['name']);
+                            email.add(data.docs[index]['email']);
+                            courseStud.add(data.docs[index]['course']);
+                            yearLevel.add(data.docs[index]['yearLevel']);
+                            concern.add(data.docs[index]['concern']);
+                            status.add(data.docs[index]['type']);
                             DateTime created =
                                 data.docs[index]['dateTime'].toDate();
 
