@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessagesTab extends StatelessWidget {
@@ -21,12 +23,36 @@ class MessagesTab extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  StreamBuilder<Object>(
-                      stream: null,
-                      builder: (context, snapshot) {
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection(FirebaseAuth.instance.currentUser!.uid)
+                          .doc()
+                          .collection('Messages')
+                          .orderBy('dateTime')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          print('error');
+                          return const Center(child: Text('Error'));
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          print('waiting');
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.black,
+                            )),
+                          );
+                        }
+
+                        final data = snapshot.requireData;
                         return Expanded(
                           child: SizedBox(
                             child: ListView.builder(
+                              itemCount: snapshot.data?.size ?? 0,
                               itemBuilder: ((context, index) {
                                 return ListTile(
                                   leading: const Padding(

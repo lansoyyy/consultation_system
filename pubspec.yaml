@@ -52,6 +52,10 @@ dependencies:
   permission_handler: ^10.2.0
   image_picker_web:
   file_picker: ^5.2.3
+  syncfusion_flutter_pdf: ^20.3.59
+  widgets_to_image: ^0.0.2
+  printing: ^5.9.3
+  path_provider: ^2.0.9
 
 
 dev_dependencies:

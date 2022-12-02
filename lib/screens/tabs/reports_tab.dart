@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class ReportTab extends StatefulWidget {
   @override
@@ -19,6 +25,154 @@ class _ReportTabState extends State<ReportTab> {
 
   late String course = 'IT';
 
+  final doc = pw.Document();
+
+  var name = [];
+  var email = [];
+  var courseStud = [];
+  var yearLevel = [];
+  var concern = [];
+  var status = [];
+
+  void _loggedin() async {
+    /// for using an image from assets
+    // final image = await imageFromAssetBundle('assets/image.png');
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Container(
+            margin: const pw.EdgeInsets.all(20),
+            child: pw.Column(children: [
+              pw.Table(children: [
+                pw.TableRow(children: [
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Name', style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Email',
+                            style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Course',
+                            style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Year Level',
+                            style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Concern',
+                            style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text('Status',
+                            style: const pw.TextStyle(fontSize: 6)),
+                        pw.Divider(thickness: 1)
+                      ]),
+                ])
+              ]),
+              pw.SizedBox(
+                height: 20,
+              ),
+              for (int i = 0; i < 5; i++)
+                pw.Table(children: [
+                  pw.TableRow(children: [
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(name[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(email[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(courseStud[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(yearLevel[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(concern[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(status[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                          pw.Divider(thickness: 1)
+                        ]),
+                  ])
+                ])
+            ]),
+          );
+        },
+      ),
+    ); // Page
+
+    /// print the document using the iOS or Android print service:
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+
+    /// share the document to other applications:
+    await Printing.sharePdf(
+        bytes: await doc.save(), filename: 'my-document.pdf');
+
+    /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
+    /// save PDF with Flutter library "path_provider":
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/reports.pdf');
+    await file.writeAsBytes(await doc.save());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,16 +185,21 @@ class _ReportTabState extends State<ReportTab> {
               children: [
                 NormalText(label: 'Reports', fontSize: 24, color: primary),
                 const Expanded(child: SizedBox()),
-                Container(
-                  decoration: BoxDecoration(
-                      color: blueAccent,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                    child: NormalText(
-                        label: 'Export in PDF',
-                        fontSize: 15,
-                        color: Colors.white),
+                GestureDetector(
+                  onTap: () async {
+                    _loggedin();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: blueAccent,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                      child: NormalText(
+                          label: 'Export in PDF',
+                          fontSize: 15,
+                          color: Colors.white),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -237,6 +396,7 @@ class _ReportTabState extends State<ReportTab> {
                       child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: ((context, index) {
+                            name.add(data.docs[index]['name']);
                             DateTime created =
                                 data.docs[index]['dateTime'].toDate();
 

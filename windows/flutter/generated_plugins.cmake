@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_auth
   permission_handler_windows
+  printing
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
