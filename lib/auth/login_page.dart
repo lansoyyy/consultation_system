@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50,
                         ),
                         TextformfieldWidget(
-                          label: '    Email',
+                          label: 'Email',
                           prefixIcon: const Icon(Icons.email),
                           textFieldController: _emailController,
                         ),
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         TextformfieldWidget(
                           isObscure: secureText,
-                          label: '    Password',
+                          label: 'Password',
                           prefixIcon: const Icon(Icons.lock),
                           textFieldController: _passwordController,
                           suffixIcon: IconButton(

@@ -13,7 +13,11 @@ class ReportTab extends StatefulWidget {
 class _ReportTabState extends State<ReportTab> {
   int _dropdownValue = 0;
 
-  final int _dropdownValue1 = 0;
+  late String year = 'First Year';
+
+  int _dropdownValue1 = 0;
+
+  late String course = 'IT';
 
   @override
   Widget build(BuildContext context) {
@@ -59,22 +63,30 @@ class _ReportTabState extends State<ReportTab> {
                         value: _dropdownValue,
                         items: [
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              year = 'First Year';
+                            },
                             value: 0,
                             child: DropDownItem(label: '1st Year'),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              year = 'Second Year';
+                            },
                             value: 1,
                             child: DropDownItem(label: '2nd Year'),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              year = 'Third Year';
+                            },
                             value: 2,
                             child: DropDownItem(label: '3rd Year'),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              year = 'Fourth Year';
+                            },
                             value: 3,
                             child: DropDownItem(label: '4th Year'),
                           ),
@@ -108,36 +120,79 @@ class _ReportTabState extends State<ReportTab> {
                         value: _dropdownValue1,
                         items: [
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              course = "IT";
+                            },
                             value: 0,
-                            child: DropDownItem(label: 'IT Department'),
+                            child: Center(
+                                child: Row(children: const [
+                              Text("IT",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              course = "Nursing";
+                            },
                             value: 1,
-                            child:
-                                DropDownItem(label: 'Engineering Department'),
+                            child: Center(
+                                child: Row(children: const [
+                              Text("Nursing",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              course = "Educ";
+                            },
                             value: 2,
-                            child: DropDownItem(label: 'EDUC Department'),
+                            child: Center(
+                                child: Row(children: const [
+                              Text("Educ",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              course = "Public Ad";
+                            },
                             value: 3,
-                            child:
-                                DropDownItem(label: 'Business Administration'),
+                            child: Center(
+                                child: Row(children: const [
+                              Text("Public Ad",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
                           ),
                           DropdownMenuItem(
-                            onTap: () {},
+                            onTap: () {
+                              course = "Hotel Management";
+                            },
                             value: 4,
-                            child: DropDownItem(label: 'Nursing'),
+                            child: Center(
+                                child: Row(children: const [
+                              Text("Hotel Management",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
                           ),
                         ],
                         onChanged: (value) {
                           setState(() {
-                            _dropdownValue = int.parse(value.toString());
+                            _dropdownValue1 = int.parse(value.toString());
                           });
                         },
                       ),
@@ -152,246 +207,166 @@ class _ReportTabState extends State<ReportTab> {
             const SizedBox(
               height: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 25),
-              child: Container(
-                color: greenAccent,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'No.', fontSize: 12, color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Student Name',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Time of\nConsultation',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Date of\nConsultation',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Course',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Year Level',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Purpose of\nConsultation',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NormalText(
-                              label: 'Ticket Status',
-                              fontSize: 12,
-                              color: Colors.white),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            StreamBuilder<QuerySnapshot?>(
+            StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Concerns')
+                    .where('yearLevel', isEqualTo: year)
+                    .where('course', isEqualTo: course)
                     .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.docs.isEmpty) {
-                      return Center(
-                        child: NormalText(
-                            label: 'No Saved Data',
-                            color: Colors.white,
-                            fontSize: 20),
-                      );
-                    }
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print('waiting');
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
 
-                    return Expanded(
-                      child: SizedBox(
-                        child: ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: ((context, index) {
-                              Map data =
-                                  snapshot.data!.docs[index].data() as Map;
-                              DateTime created = data['dateTime'].toDate();
+                  final data = snapshot.requireData;
 
-                              String formattedTime =
-                                  DateFormat.yMMMd().add_jm().format(created);
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 25),
+                  return Expanded(
+                    child: SizedBox(
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: ((context, index) {
+                            DateTime created =
+                                data.docs[index]['dateTime'].toDate();
+
+                            String formattedTime =
+                                DateFormat.yMMMd().add_jm().format(created);
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 25),
+                              child: Center(
                                 child: Container(
+                                  height: 500,
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey[200]!, width: 1)),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: index.toString(),
+                                      border:
+                                          Border.all(color: primary, width: 2),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white),
+                                  child: SingleChildScrollView(
+                                    child: DataTable(
+                                      // datatable widget
+                                      columns: [
+                                        // column to set the name
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'No.',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: data['name'],
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Student Name',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: data['time'],
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Time of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: formattedTime,
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Date of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: data['course'],
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Course',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: data['yearLevel'],
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Year Level',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: data['concern'],
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label:
+                                                    'Purpose of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            NormalText(
-                                                label: 'SOLVED',
+                                                color: Colors.black)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Ticket Status',
                                                 fontSize: 12,
-                                                color: Colors.grey),
-                                          ],
-                                        ),
+                                                color: Colors.black)),
+                                      ],
+
+                                      rows: [
+                                        // row to set the values
+                                        for (int i = 0;
+                                            i < snapshot.data!.size;
+                                            i++)
+                                          DataRow(cells: [
+                                            DataCell(
+                                              NormalText(
+                                                  label: i.toString(),
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]['name'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]['time'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label:
+                                                      formattedTime.toString(),
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]['course'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]
+                                                      ['yearLevel'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]
+                                                      ['concern'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]['type'],
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
+                                            ),
+                                          ]),
                                       ],
                                     ),
                                   ),
                                 ),
-                              );
-                            })),
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: NormalText(
-                          label: 'Loading...',
-                          color: Colors.white,
-                          fontSize: 20),
-                    );
-                  }
+                              ),
+                            );
+                          })),
+                    ),
+                  );
                 })
           ],
         ),

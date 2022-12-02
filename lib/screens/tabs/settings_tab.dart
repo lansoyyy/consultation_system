@@ -24,7 +24,7 @@ class _SettingsTabState extends State<SettingsTab> {
   final email = TextEditingController();
   final contactNumber = TextEditingController();
 
-  late String? imgUrl;
+  late String? imgUrl = '';
 
   uploadToStorage() {
     InputElement input = FileUploadInputElement() as InputElement
@@ -38,6 +38,11 @@ class _SettingsTabState extends State<SettingsTab> {
       reader.onLoadEnd.listen((event) async {
         var snapshot = await fs.ref().child('newfile').putBlob(file);
         String downloadUrl = await snapshot.ref.getDownloadURL();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: NormalText(
+                label: 'Uploaded Succesfully! Click update to see changes',
+                fontSize: 14,
+                color: Colors.white)));
         print(downloadUrl);
         setState(() {
           imgUrl = downloadUrl;
