@@ -19,31 +19,7 @@ class MessagesTab extends StatelessWidget {
                 children: [
                   NormalText(label: 'Messages', fontSize: 28, color: primary),
                   const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      width: 300,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: greyAccent,
-                      ),
-                      child: Center(
-                        child: ListTile(
-                          leading: NormalText(
-                              label: 'Search message',
-                              fontSize: 14,
-                              color: Colors.grey),
-                          trailing: IconButton(
-                            onPressed: (() {}),
-                            icon: const Icon(
-                              Icons.search,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   StreamBuilder<Object>(
                       stream: null,
@@ -93,8 +69,8 @@ class MessagesTab extends StatelessWidget {
                                     ),
                                   ),
                                   trailing: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Colors.grey,
+                                    Icons.delete,
+                                    color: Colors.red,
                                   ),
                                 );
                               }),
