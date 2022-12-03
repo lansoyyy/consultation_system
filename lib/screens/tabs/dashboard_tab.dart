@@ -122,7 +122,24 @@ class _DashboardTabState extends State<DashboardTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NormalText(
-                        label: 'MESSAGES TODAY',
+                        label: 'MESSAGES', fontSize: 12, color: Colors.grey),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    BoldText(label: '23', fontSize: 32, color: primary),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, top: 10),
+                height: 100,
+                width: 250,
+                color: greyAccent,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NormalText(
+                        label: 'UNREAD MESSAGES',
                         fontSize: 12,
                         color: Colors.grey),
                     const SizedBox(
@@ -141,26 +158,7 @@ class _DashboardTabState extends State<DashboardTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NormalText(
-                        label: 'UNREAD MESSAGES TODAY',
-                        fontSize: 12,
-                        color: Colors.grey),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    BoldText(label: '23', fontSize: 32, color: primary),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 20, top: 10),
-                height: 100,
-                width: 250,
-                color: greyAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NormalText(
-                        label: 'REPLIED MESSAGES TODAY',
+                        label: 'REPLIED MESSAGES',
                         fontSize: 12,
                         color: Colors.grey),
                     const SizedBox(
@@ -187,9 +185,7 @@ class _DashboardTabState extends State<DashboardTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NormalText(
-                        label: 'TICKETS FOR TODAY',
-                        fontSize: 12,
-                        color: Colors.grey),
+                        label: 'TICKETS', fontSize: 12, color: Colors.grey),
                     const SizedBox(
                       height: 10,
                     ),

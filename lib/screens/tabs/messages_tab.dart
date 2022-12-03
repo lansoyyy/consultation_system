@@ -4,8 +4,37 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MessagesTab extends StatelessWidget {
+class MessagesTab extends StatefulWidget {
+  @override
+  State<MessagesTab> createState() => _MessagesTabState();
+}
+
+class _MessagesTabState extends State<MessagesTab> {
   final _messageController = TextEditingController();
+
+  late String id = '';
+
+  data() {
+    if (id != '') {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          .doc()
+          .collection('Messages')
+          .orderBy('dateTime')
+          .snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          .doc(id)
+          .collection('Messages')
+          .orderBy('dateTime')
+          .snapshots();
+    }
+  }
+
+  late String profilePicture = '';
+  late String name = '';
+  late String concern = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +55,6 @@ class MessagesTab extends StatelessWidget {
                   StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection(FirebaseAuth.instance.currentUser!.uid)
-                          .doc()
-                          .collection('Messages')
-                          .orderBy('dateTime')
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -55,16 +81,42 @@ class MessagesTab extends StatelessWidget {
                               itemCount: snapshot.data?.size ?? 0,
                               itemBuilder: ((context, index) {
                                 return ListTile(
-                                  leading: const Padding(
-                                    padding: EdgeInsets.only(top: 5, bottom: 5),
+                                  onTap: (() {
+                                    setState(() {
+                                      id = data.docs[index].id;
+                                      name = data.docs[index]['name'];
+                                      concern = data.docs[index]['concern'];
+                                    });
+
+                                    FirebaseFirestore.instance
+                                        .collection(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .doc(data.docs[index].id)
+                                        .update({
+                                      'status': 'Read',
+                                    });
+
+                                    FirebaseFirestore.instance
+                                        .collection(data.docs[index].id)
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .update({
+                                      'status': 'Read',
+                                    });
+                                  }),
+                                  leading: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, bottom: 5),
                                     child: CircleAvatar(
                                       minRadius: 40,
                                       maxRadius: 40,
+                                      backgroundImage: NetworkImage(
+                                          data.docs[index]['profilePicture']),
                                       backgroundColor: blueAccent,
                                     ),
                                   ),
                                   title: BoldText(
-                                      label: 'John Doe',
+                                      label: data.docs[index]['name'],
                                       fontSize: 18,
                                       color: Colors.black45),
                                   subtitle: Padding(
@@ -81,22 +133,32 @@ class MessagesTab extends StatelessWidget {
                                               padding:
                                                   const EdgeInsets.all(2.0),
                                               child: NormalText(
-                                                  label: 'Grade',
+                                                  label: data.docs[index]
+                                                      ['concern'],
                                                   fontSize: 12,
                                                   color: Colors.white),
                                             ),
                                           ),
                                         ),
                                         NormalText(
-                                            label: '8:45',
+                                            label: data.docs[index]['time'],
                                             fontSize: 12,
                                             color: Colors.grey),
                                       ],
                                     ),
                                   ),
-                                  trailing: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
+                                  trailing: IconButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .doc(data.docs[index].id)
+                                          .delete();
+                                    }),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 );
                               }),
@@ -122,15 +184,14 @@ class MessagesTab extends StatelessWidget {
                         decoration: const BoxDecoration(),
                         child: Center(
                           child: ListTile(
-                            leading: const CircleAvatar(
+                            leading: CircleAvatar(
                               minRadius: 50,
                               maxRadius: 50,
+                              backgroundImage: NetworkImage(profilePicture),
                               backgroundColor: Colors.grey,
                             ),
                             title: BoldText(
-                                label: 'John Doe',
-                                fontSize: 18,
-                                color: Colors.grey),
+                                label: name, fontSize: 18, color: Colors.grey),
                             subtitle: Padding(
                               padding: const EdgeInsets.only(right: 300),
                               child: Container(
@@ -141,7 +202,7 @@ class MessagesTab extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(2.0),
                                     child: NormalText(
-                                        label: 'Grade',
+                                        label: concern,
                                         fontSize: 12,
                                         color: Colors.white),
                                   ),
@@ -155,43 +216,92 @@ class MessagesTab extends StatelessWidget {
                       child: SizedBox(
                         child: Column(
                           children: [
-                            Expanded(
-                              child: SizedBox(
-                                child: ListView.builder(
-                                  itemBuilder: ((context, index) {
-                                    return ListTile(
-                                      leading: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: CircleAvatar(
-                                          minRadius: 30,
-                                          maxRadius: 30,
-                                          backgroundColor: blueAccent,
-                                        ),
-                                      ),
-                                      title: Container(
-                                        decoration: BoxDecoration(
-                                          color: primary,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 10, 20, 10),
-                                          child: NormalText(
-                                              label: 'Lorem Ipsum',
-                                              fontSize: 14,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      trailing: NormalText(
-                                          label: '8:45',
-                                          fontSize: 14,
-                                          color: Colors.grey),
+                            StreamBuilder<QuerySnapshot>(
+                                stream: id == ''
+                                    ? FirebaseFirestore.instance
+                                        .collection(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .doc()
+                                        .collection('Messages')
+                                        .orderBy('dateTime')
+                                        .snapshots()
+                                    : FirebaseFirestore.instance
+                                        .collection(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .doc(id)
+                                        .collection('Messages')
+                                        .orderBy('dateTime')
+                                        .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    print('error');
+                                    return const Center(child: Text('Error'));
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    print('waiting');
+                                    return const Padding(
+                                      padding: EdgeInsets.only(top: 50),
+                                      child: Center(
+                                          child: CircularProgressIndicator(
+                                        color: Colors.black,
+                                      )),
                                     );
-                                  }),
-                                ),
-                              ),
-                            ),
+                                  }
+
+                                  final data = snapshot.requireData;
+                                  return Expanded(
+                                    child: SizedBox(
+                                      child: ListView.builder(
+                                        itemCount: snapshot.data?.size ?? 0,
+                                        itemBuilder: ((context, index) {
+                                          return ListTile(
+                                            leading: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: CircleAvatar(
+                                                minRadius: 30,
+                                                maxRadius: 30,
+                                                backgroundImage: NetworkImage(
+                                                    data.docs[index]
+                                                        ['profilePicture']),
+                                                backgroundColor: blueAccent,
+                                              ),
+                                            ),
+                                            title: Container(
+                                              decoration: BoxDecoration(
+                                                color: primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20, 10, 20, 10),
+                                                child: NormalText(
+                                                    label: data.docs[index]
+                                                        ['message'],
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            subtitle: NormalText(
+                                                label: data.docs[index]
+                                                        ['name'] +
+                                                    "    (${data.docs[index]['course']} - ${data.docs[index]['yearLevel']})",
+                                                fontSize: 12,
+                                                color: Colors.grey),
+                                            trailing: NormalText(
+                                                label: data.docs[index]['time'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          );
+                                        }),
+                                      ),
+                                    ),
+                                  );
+                                }),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, bottom: 10),
