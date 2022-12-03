@@ -56,12 +56,12 @@ class FeedbackTab extends StatelessWidget {
                               children: [
                                 NormalText(
                                     label: 'Feedback',
-                                    fontSize: 18,
-                                    color: Colors.black),
-                                NormalText(
-                                    label: data['feedback'],
                                     fontSize: 14,
                                     color: Colors.grey),
+                                NormalText(
+                                    label: data['feedback'],
+                                    fontSize: 18,
+                                    color: Colors.black),
                                 const SizedBox(
                                   height: 20,
                                 ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -91,6 +92,62 @@ class _DashboardTabState extends State<DashboardTab> {
     getData2();
     getData3();
     getData4();
+    getUnreadMessage();
+    getMessage();
+    getReadMessage();
+  }
+
+  int unreadmessage = 0;
+  getUnreadMessage() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection(FirebaseAuth.instance.currentUser!.uid)
+        .where('status', isEqualTo: 'Unread');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          unreadmessage = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int readmessage = 0;
+  getReadMessage() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection(FirebaseAuth.instance.currentUser!.uid)
+        .where('status', isEqualTo: 'Read');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          readmessage = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int message = 0;
+  getMessage() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection(FirebaseAuth.instance.currentUser!.uid);
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          message = querySnapshot.size;
+        }
+      });
+    }
   }
 
   @override
@@ -122,11 +179,16 @@ class _DashboardTabState extends State<DashboardTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NormalText(
-                        label: 'MESSAGES', fontSize: 12, color: Colors.grey),
+                        label: 'TOTAL MESSAGES',
+                        fontSize: 12,
+                        color: Colors.grey),
                     const SizedBox(
                       height: 20,
                     ),
-                    BoldText(label: '23', fontSize: 32, color: primary),
+                    BoldText(
+                        label: message.toString(),
+                        fontSize: 32,
+                        color: primary),
                   ],
                 ),
               ),
@@ -145,7 +207,10 @@ class _DashboardTabState extends State<DashboardTab> {
                     const SizedBox(
                       height: 20,
                     ),
-                    BoldText(label: '23', fontSize: 32, color: primary),
+                    BoldText(
+                        label: unreadmessage.toString(),
+                        fontSize: 32,
+                        color: primary),
                   ],
                 ),
               ),
@@ -158,13 +223,16 @@ class _DashboardTabState extends State<DashboardTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     NormalText(
-                        label: 'REPLIED MESSAGES',
+                        label: 'READ MESSAGES',
                         fontSize: 12,
                         color: Colors.grey),
                     const SizedBox(
                       height: 20,
                     ),
-                    BoldText(label: '23', fontSize: 32, color: primary),
+                    BoldText(
+                        label: readmessage.toString(),
+                        fontSize: 32,
+                        color: primary),
                   ],
                 ),
               ),

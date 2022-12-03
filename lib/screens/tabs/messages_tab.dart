@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
+import 'package:consultation_system/services/add_message.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,11 @@ class _MessagesTabState extends State<MessagesTab> {
   late String profilePicture = '';
   late String name = '';
   late String concern = '';
+
+  final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+      .collection('CONSULTATION-USERS')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +295,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                             subtitle: NormalText(
                                                 label: data.docs[index]
                                                         ['name'] +
-                                                    "    (${data.docs[index]['course']} - ${data.docs[index]['yearLevel']})",
+                                                    "    ${data.docs[index]['course']}  ${data.docs[index]['yearLevel']}",
                                                 fontSize: 12,
                                                 color: Colors.grey),
                                             trailing: NormalText(
@@ -302,27 +308,74 @@ class _MessagesTabState extends State<MessagesTab> {
                                     ),
                                   );
                                 }),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              child: ListTile(
-                                tileColor: Colors.white,
-                                leading: SizedBox(
-                                    height: 100,
-                                    width: 500,
-                                    child: TextFormField(
-                                      controller: _messageController,
-                                      textCapitalization:
-                                          TextCapitalization.words,
-                                      decoration: const InputDecoration(
-                                          fillColor: Colors.white),
-                                    )),
-                                trailing: IconButton(
-                                    onPressed: (() {}),
-                                    icon: const Icon(Icons.send,
-                                        color: secondary)),
-                              ),
-                            ),
+                            StreamBuilder<DocumentSnapshot>(
+                                stream: userData,
+                                builder: (context,
+                                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return const Center(child: Text('Loading'));
+                                  } else if (snapshot.hasError) {
+                                    return const Center(
+                                        child: Text('Something went wrong'));
+                                  } else if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  }
+
+                                  dynamic data = snapshot.data;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 10),
+                                    child: ListTile(
+                                      tileColor: Colors.white,
+                                      leading: SizedBox(
+                                          height: 100,
+                                          width: 500,
+                                          child: TextFormField(
+                                            controller: _messageController,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            decoration: const InputDecoration(
+                                                fillColor: Colors.white),
+                                          )),
+                                      trailing: IconButton(
+                                          onPressed: (() {
+                                            addMessage(
+                                                '',
+                                                data['profilePicture'],
+                                                data['first_name'] +
+                                                    ' ' +
+                                                    data['sur_name'],
+                                                data['email'],
+                                                '',
+                                                _messageController.text,
+                                                name,
+                                                '',
+                                                id,
+                                                concern,
+                                                data['to'],
+                                                data['from']);
+                                            addMessage2(
+                                                '',
+                                                data['profilePicture'],
+                                                data['first_name'] +
+                                                    ' ' +
+                                                    data['sur_name'],
+                                                data['email'],
+                                                '',
+                                                _messageController.text,
+                                                name,
+                                                '',
+                                                id,
+                                                concern);
+                                            _messageController.clear();
+                                          }),
+                                          icon: const Icon(Icons.send,
+                                              color: secondary)),
+                                    ),
+                                  );
+                                }),
                           ],
                         ),
                       ),
