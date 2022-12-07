@@ -6,6 +6,7 @@ import 'package:consultation_system/screens/tabs/notif_tab.dart';
 import 'package:consultation_system/screens/tabs/reports_tab.dart';
 import 'package:consultation_system/screens/tabs/settings_tab.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -149,6 +150,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   priority: 6,
                   title: 'Settings',
                   icon: const Icon(Icons.settings),
+                ),
+                SideMenuItem(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacementNamed(context, '/loginpage');
+                  },
+                  priority: 6,
+                  title: 'Logout',
+                  icon: const Icon(Icons.logout),
                 ),
               ],
             ),

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class FeedbackTab extends StatelessWidget {
   const FeedbackTab({super.key});
@@ -10,78 +9,156 @@ class FeedbackTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 30, left: 20, bottom: 20),
-          child: BoldText(label: 'Feedbacks', fontSize: 32, color: primary),
-        ),
-        StreamBuilder<QuerySnapshot?>(
-            stream:
-                FirebaseFirestore.instance.collection('Feedbacks').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: NormalText(
-                        label: 'No Saved Data',
-                        color: Colors.white,
-                        fontSize: 20),
-                  );
-                }
-                return Expanded(
-                  child: SizedBox(
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: ((context, index) {
-                          Map data = snapshot.data!.docs[index].data() as Map;
-                          DateTime created = data['dateTime'].toDate();
-                          String formattedTime =
-                              DateFormat.yMMMd().add_jm().format(created);
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                            child: ExpansionTile(
-                              backgroundColor: Colors.white,
-                              title: NormalText(
-                                  label: data['name'],
-                                  fontSize: 24,
-                                  color: primary),
-                              leading: const CircleAvatar(
-                                minRadius: 30,
-                                maxRadius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/profile.png'),
-                              ),
-                              children: [
-                                NormalText(
-                                    label: 'Feedback',
-                                    fontSize: 14,
-                                    color: Colors.grey),
-                                NormalText(
-                                    label: data['feedback'],
-                                    fontSize: 18,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+        body: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30, left: 20, bottom: 20),
+            child: BoldText(label: 'Feedbacks', fontSize: 32, color: primary),
+          ),
+          SingleChildScrollView(
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Feedbacks')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print('waiting');
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final data = snapshot.requireData;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          height: 500,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: primary, width: 2),
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white),
+                          child: SingleChildScrollView(
+                            child: DataTable(
+                              // datatable widget
+                              columns: [
+                                // column to set the name
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'No.',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Student Profile',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Student Name',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Email',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Course',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Year Level',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                DataColumn(
+                                    label: NormalText(
+                                        label: 'Feedback',
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                              ],
+
+                              rows: [
+                                // row to set the values
+                                for (int i = 0; i < snapshot.data!.size; i++)
+                                  DataRow(cells: [
+                                    DataCell(
+                                      NormalText(
+                                          label: i.toString(),
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    DataCell(Container(
+                                      color: Colors.black,
+                                      height: 40,
+                                      width: 50,
+                                      child: Image.network(
+                                        data.docs[i]['profilePicture'],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )),
+                                    DataCell(
+                                      NormalText(
+                                          label: data.docs[i]['name'],
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    DataCell(
+                                      NormalText(
+                                          label: data.docs[i]['email'],
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    DataCell(
+                                      NormalText(
+                                          label: data.docs[i]['course'],
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    DataCell(
+                                      NormalText(
+                                          label: data.docs[i]['yearLevel'],
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    DataCell(
+                                      NormalText(
+                                          label: data.docs[i]['feedback'],
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                  ]),
                               ],
                             ),
-                          );
-                        })),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: NormalText(
-                      label: 'Loading...', color: Colors.white, fontSize: 20),
-                );
-              }
-            }),
-        const SizedBox(
-          height: 50,
-        ),
-      ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  );
+                }),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+        ],
+      ),
     ));
   }
 }
