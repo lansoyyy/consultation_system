@@ -64,12 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      const CircleAvatar(
-                        backgroundColor: blueAccent,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
                       BoldText(
                         label: 'STUDCON',
                         fontSize: 24,
