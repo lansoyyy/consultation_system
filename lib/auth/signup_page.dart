@@ -5,17 +5,33 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:consultation_system/widgets/textform_field_widget.dart';
 import 'package:flutter/material.dart';
 
-class SignupPage extends StatelessWidget {
-  SignupPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _firstNameController = TextEditingController();
+
   final TextEditingController _middleNameController = TextEditingController();
+
   final TextEditingController _surNameController = TextEditingController();
+
   final TextEditingController _contactNumberController =
       TextEditingController();
+
   final signupformKey = GlobalKey<FormState>();
+
+  int _dropdownValue1 = 0;
+
+  late String course = 'IT';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +40,7 @@ class SignupPage extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/background.jpg'),
+                  image: AssetImage('assets/images/background1.jpeg'),
                   fit: BoxFit.cover),
             ),
           ),
@@ -83,6 +99,116 @@ class SignupPage extends StatelessWidget {
                             label: 'Contact Number',
                             textFieldController: _contactNumberController,
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Department'),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  width: 400,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                                    child: DropdownButton(
+                                      underline:
+                                          Container(color: Colors.transparent),
+                                      iconEnabledColor: Colors.black,
+                                      isExpanded: true,
+                                      value: _dropdownValue1,
+                                      items: [
+                                        DropdownMenuItem(
+                                          onTap: () {
+                                            course = "Automotive";
+                                          },
+                                          value: 0,
+                                          child: Center(
+                                              child: Row(children: const [
+                                            Text("Automotive",
+                                                style: TextStyle(
+                                                  fontFamily: 'QRegular',
+                                                  color: Colors.black,
+                                                ))
+                                          ])),
+                                        ),
+                                        DropdownMenuItem(
+                                          onTap: () {
+                                            course = "Food Technology";
+                                          },
+                                          value: 1,
+                                          child: Center(
+                                              child: Row(children: const [
+                                            Text("Food Technology",
+                                                style: TextStyle(
+                                                  fontFamily: 'QRegular',
+                                                  color: Colors.black,
+                                                ))
+                                          ])),
+                                        ),
+                                        DropdownMenuItem(
+                                          onTap: () {
+                                            course = "Electronic Technology";
+                                          },
+                                          value: 2,
+                                          child: Center(
+                                              child: Row(children: const [
+                                            Text("Electronic Technology",
+                                                style: TextStyle(
+                                                  fontFamily: 'QRegular',
+                                                  color: Colors.black,
+                                                ))
+                                          ])),
+                                        ),
+                                        DropdownMenuItem(
+                                          onTap: () {
+                                            course =
+                                                "Entertainment and\nMultimedia Computing";
+                                          },
+                                          value: 3,
+                                          child: Center(
+                                              child: Row(children: const [
+                                            Text(
+                                                "Entertainment and\nMultimedia Computing",
+                                                style: TextStyle(
+                                                  fontFamily: 'QRegular',
+                                                  color: Colors.black,
+                                                ))
+                                          ])),
+                                        ),
+                                        DropdownMenuItem(
+                                          onTap: () {
+                                            course = "Information Technology";
+                                          },
+                                          value: 4,
+                                          child: Center(
+                                              child: Row(children: const [
+                                            Text("Information Technology",
+                                                style: TextStyle(
+                                                  fontFamily: 'QRegular',
+                                                  color: Colors.black,
+                                                ))
+                                          ])),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _dropdownValue1 =
+                                              int.parse(value.toString());
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -115,7 +241,8 @@ class SignupPage extends StatelessWidget {
                                         _contactNumberController.text,
                                         _emailController.text,
                                         _passwordController.text,
-                                        '');
+                                        '',
+                                        course);
                                     Navigation(context).goToLoginPage();
                                   }
 

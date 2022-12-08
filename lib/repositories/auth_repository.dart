@@ -13,14 +13,21 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  userSignUp(String firstName, String middleName, String surName,
-      String contactNumber, String email, String password, String uid) async {
+  userSignUp(
+      String firstName,
+      String middleName,
+      String surName,
+      String contactNumber,
+      String email,
+      String password,
+      String uid,
+      String course) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
 
     final user = FirebaseAuth.instance.currentUser!;
 
     UserRepository().addUser(firstName, middleName, surName, contactNumber,
-        email, password, user.uid);
+        email, password, user.uid, course);
   }
 }

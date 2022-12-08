@@ -12,6 +12,7 @@ class UserRepository implements UsertRepositoryInterface {
     String email,
     String password,
     String uid,
+    String course,
   ) async {
     final docUser =
         FirebaseFirestore.instance.collection('CONSULTATION-USERS').doc(uid);
@@ -27,7 +28,8 @@ class UserRepository implements UsertRepositoryInterface {
       'profilePicture': 'https://cdn-icons-png.flaticon.com/512/727/727399.png',
       'from': 0,
       'to': 0,
-      'status': 'Active'
+      'status': 'Active',
+      'department': course
     };
 
     await docUser.set(json);
