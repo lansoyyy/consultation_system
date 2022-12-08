@@ -280,12 +280,12 @@ class _ReportTabState extends State<ReportTab> {
                         items: [
                           DropdownMenuItem(
                             onTap: () {
-                              course = "IT";
+                              course = "Automotive";
                             },
                             value: 0,
                             child: Center(
                                 child: Row(children: const [
-                              Text("IT",
+                              Text("Automotive",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
                                     color: Colors.black,
@@ -294,12 +294,12 @@ class _ReportTabState extends State<ReportTab> {
                           ),
                           DropdownMenuItem(
                             onTap: () {
-                              course = "Nursing";
+                              course = "Food Technology";
                             },
                             value: 1,
                             child: Center(
                                 child: Row(children: const [
-                              Text("Nursing",
+                              Text("Food Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
                                     color: Colors.black,
@@ -308,12 +308,12 @@ class _ReportTabState extends State<ReportTab> {
                           ),
                           DropdownMenuItem(
                             onTap: () {
-                              course = "Educ";
+                              course = "Electronic Technology";
                             },
                             value: 2,
                             child: Center(
                                 child: Row(children: const [
-                              Text("Educ",
+                              Text("Electronic Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
                                     color: Colors.black,
@@ -322,12 +322,13 @@ class _ReportTabState extends State<ReportTab> {
                           ),
                           DropdownMenuItem(
                             onTap: () {
-                              course = "Public Ad";
+                              course =
+                                  "Entertainment and\nMultimedia Computing";
                             },
                             value: 3,
                             child: Center(
                                 child: Row(children: const [
-                              Text("Public Ad",
+                              Text("Entertainment and\nMultimedia Computing",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
                                     color: Colors.black,
@@ -336,12 +337,12 @@ class _ReportTabState extends State<ReportTab> {
                           ),
                           DropdownMenuItem(
                             onTap: () {
-                              course = "Hotel Management";
+                              course = "Information Technology";
                             },
                             value: 4,
                             child: Center(
                                 child: Row(children: const [
-                              Text("Hotel Management",
+                              Text("Information Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
                                     color: Colors.black,
