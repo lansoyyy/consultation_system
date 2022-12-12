@@ -233,7 +233,8 @@ class _SignupPageState extends State<SignupPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(100)),
                                 onPressed: (() {
-                                  if (signupformKey.currentState!.validate()) {
+                                  if (signupformKey.currentState!.validate() &&
+                                      _emailController.text.contains('bsu')) {
                                     AuthRepository().userSignUp(
                                         _firstNameController.text,
                                         _middleNameController.text,

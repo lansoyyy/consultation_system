@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../widgets/appabr_widget.dart';
+
 class AnalyticsTab extends StatefulWidget {
+  PageController page = PageController();
+
+  AnalyticsTab({required this.page});
   @override
   State<AnalyticsTab> createState() => _AnalyticsTabState();
 }
@@ -152,104 +157,108 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: appbarWidget(widget.page),
         body: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            NormalText(
-                label: 'CONSULTATION ANALYSIS', fontSize: 24, color: primary),
-            StreamBuilder<Object>(
-                stream: dataStream,
-                builder: (
-                  context,
-                  snapshot,
-                ) {
-                  if (snapshot.hasError) {
-                    return const Center(child: Text('something went wrong'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final data = snapshot.requireData;
-                  getFromSnapShot(data);
+          padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NormalText(
+                    label: 'CONSULTATION ANALYSIS',
+                    fontSize: 24,
+                    color: primary),
+                StreamBuilder<Object>(
+                    stream: dataStream,
+                    builder: (
+                      context,
+                      snapshot,
+                    ) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                            child: Text('something went wrong'));
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final data = snapshot.requireData;
+                      getFromSnapShot(data);
 
-                  int i = 0;
+                      int i = 0;
 
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 20),
-                    child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
-                      legend: Legend(
-                        isVisible: true,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 20),
+                        child: SfCartesianChart(
+                          primaryXAxis: CategoryAxis(),
+                          legend: Legend(
+                            isVisible: true,
+                          ),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                          series: <ChartSeries>[
+                            LineSeries<ChartData, String>(
+                                dataSource: [
+                                  // Bind data source
+                                  ChartData('Grades', total1.toDouble()),
+                                  ChartData('Requirements', total2.toDouble()),
+                                  ChartData('Attendance', total3.toDouble()),
+                                  ChartData('Others', total4.toDouble()),
+                                ],
+                                xValueMapper: (ChartData data, _) => data.x,
+                                yValueMapper: (ChartData data, _) => data.y)
+                          ],
+                        ),
+                      );
+                    }),
+                const SizedBox(
+                  height: 40,
+                ),
+                StreamBuilder<Object>(
+                  stream: dataStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(child: Text('something went wrong'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final data = snapshot.requireData;
+                    getFromSnapShot(data);
+                    return PieChart(
+                      dataMap: getCategoryData().isEmpty
+                          ? nulldatamap
+                          : getCategoryData(),
+                      animationDuration: const Duration(milliseconds: 800),
+                      chartLegendSpacing: 32,
+                      chartRadius: MediaQuery.of(context).size.width / 6.2,
+                      colorList: const [Colors.blue, Colors.red, Colors.green],
+                      initialAngleInDegree: 0,
+                      chartType: ChartType.ring,
+                      ringStrokeWidth: 32,
+                      legendOptions: const LegendOptions(
+                        showLegendsInRow: false,
+                        showLegends: true,
+                        legendTextStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <ChartSeries>[
-                        LineSeries<ChartData, String>(
-                            dataSource: [
-                              // Bind data source
-                              ChartData('Grades', total1.toDouble()),
-                              ChartData('Requirements', total2.toDouble()),
-                              ChartData('Attendance', total3.toDouble()),
-                              ChartData('Others', total4.toDouble()),
-                            ],
-                            xValueMapper: (ChartData data, _) => data.x,
-                            yValueMapper: (ChartData data, _) => data.y)
-                      ],
-                    ),
-                  );
-                }),
-            const SizedBox(
-              height: 40,
+                      chartValuesOptions: const ChartValuesOptions(
+                        showChartValueBackground: true,
+                        showChartValues: true,
+                        showChartValuesInPercentage: true,
+                        showChartValuesOutside: false,
+                        decimalPlaces: 1,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+              ],
             ),
-            StreamBuilder<Object>(
-              stream: dataStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('something went wrong'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final data = snapshot.requireData;
-                getFromSnapShot(data);
-                return PieChart(
-                  dataMap: getCategoryData().isEmpty
-                      ? nulldatamap
-                      : getCategoryData(),
-                  animationDuration: const Duration(milliseconds: 800),
-                  chartLegendSpacing: 32,
-                  chartRadius: MediaQuery.of(context).size.width / 6.2,
-                  colorList: const [Colors.blue, Colors.red, Colors.green],
-                  initialAngleInDegree: 0,
-                  chartType: ChartType.ring,
-                  ringStrokeWidth: 32,
-                  legendOptions: const LegendOptions(
-                    showLegendsInRow: false,
-                    showLegends: true,
-                    legendTextStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  chartValuesOptions: const ChartValuesOptions(
-                    showChartValueBackground: true,
-                    showChartValues: true,
-                    showChartValuesInPercentage: true,
-                    showChartValuesOutside: false,
-                    decimalPlaces: 1,
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }
 

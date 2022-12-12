@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/services/add_message.dart';
+import 'package:consultation_system/widgets/appabr_widget.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessagesTab extends StatefulWidget {
+  PageController page = PageController();
+
+  MessagesTab({required this.page});
   @override
   State<MessagesTab> createState() => _MessagesTabState();
 }
@@ -45,6 +49,7 @@ class _MessagesTabState extends State<MessagesTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appbarWidget(widget.page),
       body: Row(
         children: [
           SizedBox(

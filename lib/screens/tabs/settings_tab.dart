@@ -7,8 +7,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/appabr_widget.dart';
+
 class SettingsTab extends StatefulWidget {
-  const SettingsTab({super.key});
+  PageController page = PageController();
+
+  SettingsTab({required this.page});
 
   @override
   State<SettingsTab> createState() => _SettingsTabState();
@@ -57,6 +61,7 @@ class _SettingsTabState extends State<SettingsTab> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
     return Scaffold(
+        appBar: appbarWidget(widget.page),
         backgroundColor: Colors.grey[200],
         body: Padding(
             padding: const EdgeInsets.only(left: 20, top: 30, right: 20),

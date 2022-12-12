@@ -28,10 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
+            height: 632,
             color: primary,
             child: SideMenu(
               controller: page,
@@ -145,15 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: 'Settings',
                   icon: const Icon(Icons.settings),
                 ),
-                SideMenuItem(
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacementNamed(context, '/loginpage');
-                  },
-                  priority: 6,
-                  title: 'Logout',
-                  icon: const Icon(Icons.logout),
-                ),
               ],
             ),
           ),
@@ -161,13 +154,27 @@ class _HomeScreenState extends State<HomeScreen> {
             child: PageView(
               controller: page,
               children: [
-                const DashboardTab(),
-                MessagesTab(),
-                ReportTab(),
-                AnalyticsTab(),
-                const FeedbackTab(),
-                const NotfiTab(),
-                const SettingsTab(),
+                DashboardTab(
+                  page: page,
+                ),
+                MessagesTab(
+                  page: page,
+                ),
+                ReportTab(
+                  page: page,
+                ),
+                AnalyticsTab(
+                  page: page,
+                ),
+                FeedbackTab(
+                  page: page,
+                ),
+                NotfiTab(
+                  page: page,
+                ),
+                SettingsTab(
+                  page: page,
+                ),
               ],
             ),
           ),

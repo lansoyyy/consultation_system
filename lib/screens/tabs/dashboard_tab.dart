@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
+import 'package:consultation_system/widgets/appabr_widget.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DashboardTab extends StatefulWidget {
-  const DashboardTab({super.key});
+  PageController page = PageController();
+
+  DashboardTab({required this.page});
 
   @override
   State<DashboardTab> createState() => _DashboardTabState();
@@ -154,168 +157,178 @@ class _DashboardTabState extends State<DashboardTab> {
   Widget build(BuildContext context) {
     String date = DateFormat("MMMM, EEEE, yyyy").format(DateTime.now());
 
-    return Container(
-      padding: const EdgeInsets.only(left: 20),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          NormalText(label: date, fontSize: 24, color: primary),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Scaffold(
+      appBar: appbarWidget(widget.page),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(left: 20),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 20, top: 10),
-                height: 100,
-                width: 250,
-                color: greyAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NormalText(
-                        label: 'TOTAL MESSAGES',
-                        fontSize: 12,
-                        color: Colors.grey),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    BoldText(
-                        label: message.toString(),
-                        fontSize: 32,
-                        color: primary),
-                  ],
-                ),
+              const SizedBox(
+                height: 20,
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 20, top: 10),
-                height: 100,
-                width: 250,
-                color: greyAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NormalText(
-                        label: 'UNREAD MESSAGES',
-                        fontSize: 12,
-                        color: Colors.grey),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    BoldText(
-                        label: unreadmessage.toString(),
-                        fontSize: 32,
-                        color: primary),
-                  ],
-                ),
+              NormalText(label: date, fontSize: 24, color: primary),
+              const SizedBox(
+                height: 20,
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 20, top: 10),
-                height: 100,
-                width: 250,
-                color: greyAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NormalText(
-                        label: 'READ MESSAGES',
-                        fontSize: 12,
-                        color: Colors.grey),
-                    const SizedBox(
-                      height: 20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 20, top: 10),
+                    height: 100,
+                    width: 250,
+                    color: greyAccent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NormalText(
+                            label: 'TOTAL MESSAGES',
+                            fontSize: 12,
+                            color: Colors.grey),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        BoldText(
+                            label: message.toString(),
+                            fontSize: 32,
+                            color: primary),
+                      ],
                     ),
-                    BoldText(
-                        label: readmessage.toString(),
-                        fontSize: 32,
-                        color: primary),
-                  ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20, top: 10),
+                    height: 100,
+                    width: 250,
+                    color: greyAccent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NormalText(
+                            label: 'UNREAD MESSAGES',
+                            fontSize: 12,
+                            color: Colors.grey),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        BoldText(
+                            label: unreadmessage.toString(),
+                            fontSize: 32,
+                            color: primary),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20, top: 10),
+                    height: 100,
+                    width: 250,
+                    color: greyAccent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NormalText(
+                            label: 'READ MESSAGES',
+                            fontSize: 12,
+                            color: Colors.grey),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        BoldText(
+                            label: readmessage.toString(),
+                            fontSize: 32,
+                            color: primary),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 10, right: 20),
+                    height: 400,
+                    width: 600,
+                    color: greyAccent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NormalText(
+                            label: 'TICKETS', fontSize: 12, color: Colors.grey),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        BoldText(
+                            label: 'CONCERNS',
+                            fontSize: 12,
+                            color: Colors.grey),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ListTile(
+                          leading: NormalText(
+                              label: 'Grades', fontSize: 12, color: primary),
+                          trailing: BoldText(
+                              label: total1.toString(),
+                              fontSize: 12,
+                              color: primary),
+                        ),
+                        const Divider(
+                          color: Colors.white,
+                        ),
+                        ListTile(
+                          leading: NormalText(
+                              label: 'Requirements/Projects',
+                              fontSize: 12,
+                              color: primary),
+                          trailing: BoldText(
+                              label: total2.toString(),
+                              fontSize: 12,
+                              color: primary),
+                        ),
+                        const Divider(
+                          color: Colors.white,
+                        ),
+                        ListTile(
+                          leading: NormalText(
+                              label: 'Attendance',
+                              fontSize: 12,
+                              color: primary),
+                          trailing: BoldText(
+                              label: total3.toString(),
+                              fontSize: 12,
+                              color: primary),
+                        ),
+                        const Divider(
+                          color: Colors.white,
+                        ),
+                        ListTile(
+                          leading: NormalText(
+                              label: 'Other concerns',
+                              fontSize: 12,
+                              color: primary),
+                          trailing: BoldText(
+                              label: total4.toString(),
+                              fontSize: 12,
+                              color: primary),
+                        ),
+                        const Divider(
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 18),
-              child: Container(
-                padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
-                height: 400,
-                width: 600,
-                color: greyAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    NormalText(
-                        label: 'TICKETS', fontSize: 12, color: Colors.grey),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    BoldText(
-                        label: 'CONCERNS', fontSize: 12, color: Colors.grey),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ListTile(
-                      leading: NormalText(
-                          label: 'Grades', fontSize: 12, color: primary),
-                      trailing: BoldText(
-                          label: total1.toString(),
-                          fontSize: 12,
-                          color: primary),
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    ListTile(
-                      leading: NormalText(
-                          label: 'Requirements/Projects',
-                          fontSize: 12,
-                          color: primary),
-                      trailing: BoldText(
-                          label: total2.toString(),
-                          fontSize: 12,
-                          color: primary),
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    ListTile(
-                      leading: NormalText(
-                          label: 'Attendance', fontSize: 12, color: primary),
-                      trailing: BoldText(
-                          label: total3.toString(),
-                          fontSize: 12,
-                          color: primary),
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    ListTile(
-                      leading: NormalText(
-                          label: 'Other concerns',
-                          fontSize: 12,
-                          color: primary),
-                      trailing: BoldText(
-                          label: total4.toString(),
-                          fontSize: 12,
-                          color: primary),
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

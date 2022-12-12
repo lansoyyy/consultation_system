@@ -11,7 +11,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
+import '../../widgets/appabr_widget.dart';
+
 class ReportTab extends StatefulWidget {
+  PageController page = PageController();
+
+  ReportTab({required this.page});
+
   @override
   State<ReportTab> createState() => _ReportTabState();
 }
@@ -176,6 +182,7 @@ class _ReportTabState extends State<ReportTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appbarWidget(widget.page),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
         child: Column(

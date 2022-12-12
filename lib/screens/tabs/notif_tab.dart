@@ -5,8 +5,12 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/appabr_widget.dart';
+
 class NotfiTab extends StatefulWidget {
-  const NotfiTab({super.key});
+  PageController page = PageController();
+
+  NotfiTab({required this.page});
 
   @override
   State<NotfiTab> createState() => _NotfiTabState();
@@ -29,6 +33,7 @@ class _NotfiTabState extends State<NotfiTab> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .snapshots();
     return Scaffold(
+      appBar: appbarWidget(widget.page),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: StreamBuilder<DocumentSnapshot>(
