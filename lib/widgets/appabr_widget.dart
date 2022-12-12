@@ -1,20 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultation_system/constant/uid.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 PreferredSizeWidget appbarWidget(PageController page) {
+  final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
+      .collection('CONSULTATION-USERS')
+      .doc(FirebaseAuthToken().uid)
+      .snapshots();
+
   return AppBar(
     actions: [
-      CircleAvatar(
-        minRadius: 20,
-        maxRadius: 20,
-      ),
+      StreamBuilder<DocumentSnapshot>(
+          stream: userData,
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: Text('Loading'));
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong'));
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            dynamic data = snapshot.data;
+            return CircleAvatar(
+              minRadius: 20,
+              maxRadius: 20,
+              backgroundImage: NetworkImage(data['profilePicture']),
+            );
+          }),
       SizedBox(
         width: 10,
       ),
-      Center(
-          child: BoldText(
-              label: 'Olana, Lance', fontSize: 18, color: Colors.black)),
+      StreamBuilder<DocumentSnapshot>(
+          stream: userData,
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: Text('Loading'));
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong'));
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            dynamic data = snapshot.data;
+            return Center(
+                child: BoldText(
+                    label: '${data['sur_name']}, ${data['first_name']}',
+                    fontSize: 18,
+                    color: Colors.black));
+          }),
       SizedBox(
         width: 10,
       ),
