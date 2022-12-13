@@ -235,7 +235,8 @@ class _SignupPageState extends State<SignupPage> {
                                   onPressed: (() {
                                     if (signupformKey.currentState!
                                             .validate() &&
-                                        _emailController.text.contains('bsu')) {
+                                        _emailController.text
+                                            .contains('buksu')) {
                                       AuthRepository().userSignUp(
                                           _firstNameController.text,
                                           _middleNameController.text,
