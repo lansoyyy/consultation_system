@@ -473,43 +473,43 @@ class _ReportTabState extends State<ReportTab> {
                                             label: NormalText(
                                                 label: 'No.',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Student Name',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Time of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Date of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Course',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Year Level',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label:
                                                     'Purpose of\nConsultation',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Ticket Status',
                                                 fontSize: 12,
-                                                color: Colors.black)),
+                                                color: primary)),
                                       ],
 
                                       rows: [
@@ -522,52 +522,52 @@ class _ReportTabState extends State<ReportTab> {
                                               NormalText(
                                                   label: i.toString(),
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]['name'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]['time'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label:
                                                       formattedTime.toString(),
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]['course'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]
                                                       ['yearLevel'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]
                                                       ['concern'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                             DataCell(
                                               NormalText(
                                                   label: data.docs[i]['type'],
                                                   fontSize: 12,
-                                                  color: Colors.grey),
+                                                  color: Colors.black),
                                             ),
                                           ]),
                                       ],
