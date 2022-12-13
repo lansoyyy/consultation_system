@@ -6,6 +6,7 @@ import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 class MessagesTab extends StatefulWidget {
   PageController page = PageController();
@@ -47,27 +48,42 @@ class _MessagesTabState extends State<MessagesTab> {
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
 
-  final nameController = TextEditingController();
+  late String nameSearched = '';
+  late String one = '';
 
   int value3 = 0;
   late String status = 'Active';
 
   late String filterMsg = 'All';
 
+  final nameController = TextEditingController();
+
   filterMessage() {
     if (filterMsg == 'All') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
+          .where('name',
+              isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          .where('name',
+              isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .snapshots();
     } else if (filterMsg == 'Read') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Read')
+          .where('name',
+              isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          .where('name',
+              isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .snapshots();
     } else if (filterMsg == 'Unread') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Unread')
+          .where('name',
+              isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          .where('name',
+              isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .snapshots();
     }
   }
@@ -103,10 +119,31 @@ class _MessagesTabState extends State<MessagesTab> {
                         ),
                         child: TextFormField(
                           controller: nameController,
+                          onSaved: (newValue) {
+                            setState(() {
+                              nameSearched = one;
+                            });
+                          },
+                          onChanged: ((value) {
+                            one = value;
+                          }),
                           decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                onPressed: (() {}),
+                                onPressed: (() {
+                                  setState(() {
+                                    nameSearched = one;
+                                  });
+                                }),
                                 icon: Icon(Icons.search),
+                              ),
+                              prefixIcon: IconButton(
+                                onPressed: (() {
+                                  setState(() {
+                                    nameSearched = '';
+                                  });
+                                  nameController.clear();
+                                }),
+                                icon: Icon(Icons.close),
                               ),
                               hintText: 'Search'),
                         ),
@@ -168,7 +205,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
-                          print('error');
+                          print(snapshot.error);
                           return const Center(child: Text('Error'));
                         }
                         if (snapshot.connectionState ==
