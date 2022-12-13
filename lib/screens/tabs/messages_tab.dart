@@ -58,6 +58,9 @@ class _MessagesTabState extends State<MessagesTab> {
 
   final nameController = TextEditingController();
 
+  int value4 = 0;
+  late String concernFilter = 'Grades';
+
   filterMessage() {
     if (filterMsg == 'All') {
       return FirebaseFirestore.instance
@@ -66,6 +69,7 @@ class _MessagesTabState extends State<MessagesTab> {
               isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
           .where('name',
               isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          .where('concern', isEqualTo: concernFilter)
           .snapshots();
     } else if (filterMsg == 'Read') {
       return FirebaseFirestore.instance
@@ -75,6 +79,7 @@ class _MessagesTabState extends State<MessagesTab> {
               isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
           .where('name',
               isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          .where('concern', isEqualTo: concernFilter)
           .snapshots();
     } else if (filterMsg == 'Unread') {
       return FirebaseFirestore.instance
@@ -84,6 +89,7 @@ class _MessagesTabState extends State<MessagesTab> {
               isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
           .where('name',
               isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          .where('concern', isEqualTo: concernFilter)
           .snapshots();
     }
   }
@@ -105,54 +111,54 @@ class _MessagesTabState extends State<MessagesTab> {
                   const SizedBox(
                     height: 10,
                   ),
+                  Container(
+                    width: 350,
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5),
+                        topRight: Radius.circular(5),
+                      ),
+                    ),
+                    child: TextFormField(
+                      controller: nameController,
+                      onSaved: (newValue) {
+                        setState(() {
+                          nameSearched = one;
+                        });
+                      },
+                      onChanged: ((value) {
+                        one = value;
+                      }),
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: (() {
+                              setState(() {
+                                nameSearched = one;
+                              });
+                            }),
+                            icon: Icon(Icons.search),
+                          ),
+                          prefixIcon: IconButton(
+                            onPressed: (() {
+                              setState(() {
+                                nameSearched = '';
+                              });
+                              nameController.clear();
+                            }),
+                            icon: Icon(Icons.close),
+                          ),
+                          hintText: 'Search'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       Container(
-                        width: 260,
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(5),
-                            topRight: Radius.circular(5),
-                          ),
-                        ),
-                        child: TextFormField(
-                          controller: nameController,
-                          onSaved: (newValue) {
-                            setState(() {
-                              nameSearched = one;
-                            });
-                          },
-                          onChanged: ((value) {
-                            one = value;
-                          }),
-                          decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: (() {
-                                  setState(() {
-                                    nameSearched = one;
-                                  });
-                                }),
-                                icon: Icon(Icons.search),
-                              ),
-                              prefixIcon: IconButton(
-                                onPressed: (() {
-                                  setState(() {
-                                    nameSearched = '';
-                                  });
-                                  nameController.clear();
-                                }),
-                                icon: Icon(Icons.close),
-                              ),
-                              hintText: 'Search'),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 100,
+                        width: 150,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
@@ -190,6 +196,60 @@ class _MessagesTabState extends State<MessagesTab> {
                             onChanged: (value) {
                               setState(() {
                                 value3 = int.parse(value.toString());
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 190,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                          child: DropdownButton(
+                            underline: Container(color: Colors.transparent),
+                            iconEnabledColor: Colors.black,
+                            isExpanded: true,
+                            value: value4,
+                            items: [
+                              DropdownMenuItem(
+                                onTap: () {
+                                  concernFilter = 'Grades';
+                                },
+                                value: 0,
+                                child: DropDownItem(label: 'Grades'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {
+                                  concernFilter = 'Requirements';
+                                },
+                                value: 1,
+                                child: DropDownItem(label: 'Requirements'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {
+                                  concernFilter = 'Attendance';
+                                },
+                                value: 2,
+                                child: DropDownItem(label: 'Attendance'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {
+                                  concernFilter = 'Others';
+                                },
+                                value: 3,
+                                child: DropDownItem(label: 'Others'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                value4 = int.parse(value.toString());
                               });
                             },
                           ),
