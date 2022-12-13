@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/services/add_message.dart';
 import 'package:consultation_system/widgets/appabr_widget.dart';
+import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,11 @@ class _MessagesTabState extends State<MessagesTab> {
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
 
+  final nameController = TextEditingController();
+
+  int value3 = 0;
+  late String status = 'Active';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +66,80 @@ class _MessagesTabState extends State<MessagesTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   NormalText(label: 'Messages', fontSize: 28, color: primary),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 260,
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          ),
+                        ),
+                        child: TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: (() {}),
+                                icon: Icon(Icons.search),
+                              ),
+                              hintText: 'Search'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                          child: DropdownButton(
+                            underline: Container(color: Colors.transparent),
+                            iconEnabledColor: Colors.black,
+                            isExpanded: true,
+                            value: value3,
+                            items: [
+                              DropdownMenuItem(
+                                onTap: () {
+                                  status = 'All';
+                                },
+                                value: 0,
+                                child: DropDownItem(label: 'All'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {
+                                  status = 'Read';
+                                },
+                                value: 1,
+                                child: DropDownItem(label: 'Read'),
+                              ),
+                              DropdownMenuItem(
+                                onTap: () {
+                                  status = 'Unread';
+                                },
+                                value: 2,
+                                child: DropDownItem(label: 'Unread'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                value3 = int.parse(value.toString());
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
