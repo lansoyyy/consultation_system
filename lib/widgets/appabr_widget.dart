@@ -70,8 +70,10 @@ PreferredSizeWidget appbarWidget(PageController page) {
               ),
             ),
             PopupMenuItem(
-              onTap: (() {
-                FirebaseAuth.instance.signOut();
+              onTap: (() async {
+                await FirebaseAuth.instance.signOut();
+
+                Navigator.pushReplacementNamed(context, '/loginpage');
                 Navigator.pushReplacementNamed(context, '/loginpage');
               }),
               child: ListTile(

@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             NormalText(
-                                label: 'Not a member yeat?',
+                                label: 'Not a member yet?',
                                 fontSize: 14,
                                 color: Colors.grey),
                             TextButton(
