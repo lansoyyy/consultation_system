@@ -67,12 +67,12 @@ class FeedbackTab extends StatelessWidget {
                                             color: Colors.black)),
                                     DataColumn(
                                         label: NormalText(
-                                            label: 'Student Profile',
+                                            label: 'Student\nProfile',
                                             fontSize: 16,
                                             color: Colors.black)),
                                     DataColumn(
                                         label: NormalText(
-                                            label: 'Student Name',
+                                            label: 'Student\nName',
                                             fontSize: 16,
                                             color: Colors.black)),
                                     DataColumn(
@@ -87,7 +87,7 @@ class FeedbackTab extends StatelessWidget {
                                             color: Colors.black)),
                                     DataColumn(
                                         label: NormalText(
-                                            label: 'Year Level',
+                                            label: 'Year\nLevel',
                                             fontSize: 16,
                                             color: Colors.black)),
                                     DataColumn(

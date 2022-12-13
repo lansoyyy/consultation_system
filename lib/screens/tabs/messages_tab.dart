@@ -61,6 +61,8 @@ class _MessagesTabState extends State<MessagesTab> {
   int value4 = 0;
   late String concernFilter = 'Grades';
 
+  late String email = '';
+
   filterMessage() {
     if (filterMsg == 'All') {
       return FirebaseFirestore.instance
@@ -292,6 +294,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                       id = data.docs[index].id;
                                       name = data.docs[index]['name'];
                                       concern = data.docs[index]['concern'];
+                                      email = data.docs[index]['email'];
                                     });
 
                                     FirebaseFirestore.instance
@@ -316,8 +319,10 @@ class _MessagesTabState extends State<MessagesTab> {
                                     child: CircleAvatar(
                                       minRadius: 40,
                                       maxRadius: 40,
-                                      backgroundImage: NetworkImage(
-                                          data.docs[index]['profilePicture']),
+                                      child: BoldText(
+                                          label: data.docs[index]['name'][0],
+                                          fontSize: 22,
+                                          color: Colors.white),
                                       backgroundColor: blueAccent,
                                     ),
                                   ),
@@ -337,7 +342,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                           child: Center(
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.all(2.0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      5, 2, 5, 2),
                                               child: NormalText(
                                                   label: data.docs[index]
                                                       ['concern'],
@@ -384,39 +390,145 @@ class _MessagesTabState extends State<MessagesTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: const BoxDecoration(),
-                        child: Center(
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              minRadius: 50,
-                              maxRadius: 50,
-                              backgroundImage: NetworkImage(profilePicture),
-                              backgroundColor: Colors.grey,
-                            ),
-                            title: BoldText(
-                                label: name, fontSize: 18, color: Colors.grey),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(right: 300),
-                              child: Container(
-                                height: 20,
-                                width: 50,
-                                color: greenAccent,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(2.0),
-                                    child: NormalText(
-                                        label: concern,
-                                        fontSize: 12,
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Concerns')
+                            .where('email', isEqualTo: email)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return const Center(child: Text('Error'));
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            print('waiting');
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.black,
+                              )),
+                            );
+                          }
+
+                          final data3 = snapshot.requireData;
+
+                          print(email);
+
+                          return Container(
+                              width: double.infinity,
+                              height: 50,
+                              decoration: const BoxDecoration(),
+                              child: Center(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    minRadius: 50,
+                                    maxRadius: 50,
+                                    child: BoldText(
+                                        label: name[0],
+                                        fontSize: 22,
                                         color: Colors.white),
+                                    backgroundColor: blueAccent,
+                                  ),
+                                  title: BoldText(
+                                      label: name,
+                                      fontSize: 18,
+                                      color: Colors.grey),
+                                  subtitle: Row(
+                                    children: [
+                                      Container(
+                                        height: 20,
+                                        width: 100,
+                                        color: greenAccent,
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: NormalText(
+                                                label:
+                                                    data3.docs[0]['type'] ?? '',
+                                                fontSize: 12,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(child: SizedBox()),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            height: 20,
+                                            width: 100,
+                                            color: greenAccent,
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
+                                                child: NormalText(
+                                                    label: concern,
+                                                    fontSize: 12,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                          PopupMenuButton(
+                                              itemBuilder: ((context) => [
+                                                    PopupMenuItem(
+                                                      onTap: (() async {
+                                                        var collection =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'Users')
+                                                                .where('email',
+                                                                    isEqualTo:
+                                                                        email);
+
+                                                        var querySnapshot =
+                                                            await collection
+                                                                .get();
+                                                        if (mounted) {
+                                                          setState(() {
+                                                            for (var queryDocumentSnapshot
+                                                                in querySnapshot
+                                                                    .docs) {
+                                                              Map<String,
+                                                                      dynamic>
+                                                                  data12 =
+                                                                  queryDocumentSnapshot
+                                                                      .data();
+
+                                                              FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'Concerns')
+                                                                  .doc(data12[
+                                                                      'id'])
+                                                                  .update({
+                                                                'type':
+                                                                    'Solved',
+                                                              });
+                                                            }
+                                                          });
+                                                        }
+                                                      }),
+                                                      child: NormalText(
+                                                          label:
+                                                              'Mark as Solved',
+                                                          fontSize: 12,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ])),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        )),
+                              ));
+                        }),
+                    SizedBox(
+                      height: 20,
+                    ),
                     const Divider(),
                     Expanded(
                       child: SizedBox(
@@ -469,9 +581,11 @@ class _MessagesTabState extends State<MessagesTab> {
                                               child: CircleAvatar(
                                                 minRadius: 30,
                                                 maxRadius: 30,
-                                                backgroundImage: NetworkImage(
-                                                    data.docs[index]
-                                                        ['profilePicture']),
+                                                child: BoldText(
+                                                    label: data.docs[index]
+                                                        ['name'][0],
+                                                    fontSize: 22,
+                                                    color: Colors.white),
                                                 backgroundColor: blueAccent,
                                               ),
                                             ),
