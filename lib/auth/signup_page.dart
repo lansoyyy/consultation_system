@@ -45,9 +45,8 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 80, bottom: 50),
-            child: Align(
-              alignment: Alignment.bottomRight,
+            padding: const EdgeInsets.only(right: 0, bottom: 0),
+            child: Center(
               child: Container(
                 height: 550,
                 width: 400,
@@ -59,229 +58,232 @@ class _SignupPageState extends State<SignupPage> {
                   child: SingleChildScrollView(
                     child: Form(
                       key: signupformKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          BoldText(
-                              label: 'Signup', fontSize: 24, color: primary),
-                          NormalText(
-                              label: 'Create your account',
-                              fontSize: 14,
-                              color: Colors.black),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                            label: 'First name',
-                            textFieldController: _firstNameController,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                            label: 'Middle Name',
-                            textFieldController: _middleNameController,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                            label: 'Surname',
-                            textFieldController: _surNameController,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                            label: 'Contact Number',
-                            textFieldController: _contactNumberController,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('Department'),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  width: 400,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            BoldText(
+                                label: 'Signup', fontSize: 24, color: primary),
+                            NormalText(
+                                label: 'Create your account',
+                                fontSize: 14,
+                                color: Colors.black),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                              label: 'First name',
+                              textFieldController: _firstNameController,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                              label: 'Middle Name',
+                              textFieldController: _middleNameController,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                              label: 'Surname',
+                              textFieldController: _surNameController,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                              label: 'Contact Number',
+                              textFieldController: _contactNumberController,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Department'),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                                    child: DropdownButton(
-                                      underline:
-                                          Container(color: Colors.transparent),
-                                      iconEnabledColor: Colors.black,
-                                      isExpanded: true,
-                                      value: _dropdownValue1,
-                                      items: [
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            course = "Automotive";
-                                          },
-                                          value: 0,
-                                          child: Center(
-                                              child: Row(children: const [
-                                            Text("Automotive",
-                                                style: TextStyle(
-                                                  fontFamily: 'QRegular',
-                                                  color: Colors.black,
-                                                ))
-                                          ])),
-                                        ),
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            course = "Food Technology";
-                                          },
-                                          value: 1,
-                                          child: Center(
-                                              child: Row(children: const [
-                                            Text("Food Technology",
-                                                style: TextStyle(
-                                                  fontFamily: 'QRegular',
-                                                  color: Colors.black,
-                                                ))
-                                          ])),
-                                        ),
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            course = "Electronic Technology";
-                                          },
-                                          value: 2,
-                                          child: Center(
-                                              child: Row(children: const [
-                                            Text("Electronic Technology",
-                                                style: TextStyle(
-                                                  fontFamily: 'QRegular',
-                                                  color: Colors.black,
-                                                ))
-                                          ])),
-                                        ),
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            course =
-                                                "Entertainment and\nMultimedia Computing";
-                                          },
-                                          value: 3,
-                                          child: Center(
-                                              child: Row(children: const [
-                                            Text(
-                                                "Entertainment and\nMultimedia Computing",
-                                                style: TextStyle(
-                                                  fontFamily: 'QRegular',
-                                                  color: Colors.black,
-                                                ))
-                                          ])),
-                                        ),
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            course = "Information Technology";
-                                          },
-                                          value: 4,
-                                          child: Center(
-                                              child: Row(children: const [
-                                            Text("Information Technology",
-                                                style: TextStyle(
-                                                  fontFamily: 'QRegular',
-                                                  color: Colors.black,
-                                                ))
-                                          ])),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _dropdownValue1 =
-                                              int.parse(value.toString());
-                                        });
-                                      },
+                                  Container(
+                                    width: 400,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 2, 20, 2),
+                                      child: DropdownButton(
+                                        underline: Container(
+                                            color: Colors.transparent),
+                                        iconEnabledColor: Colors.black,
+                                        isExpanded: true,
+                                        value: _dropdownValue1,
+                                        items: [
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              course = "Automotive";
+                                            },
+                                            value: 0,
+                                            child: Center(
+                                                child: Row(children: const [
+                                              Text("Automotive",
+                                                  style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    color: Colors.black,
+                                                  ))
+                                            ])),
+                                          ),
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              course = "Food Technology";
+                                            },
+                                            value: 1,
+                                            child: Center(
+                                                child: Row(children: const [
+                                              Text("Food Technology",
+                                                  style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    color: Colors.black,
+                                                  ))
+                                            ])),
+                                          ),
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              course = "Electronic Technology";
+                                            },
+                                            value: 2,
+                                            child: Center(
+                                                child: Row(children: const [
+                                              Text("Electronic Technology",
+                                                  style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    color: Colors.black,
+                                                  ))
+                                            ])),
+                                          ),
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              course =
+                                                  "Entertainment and\nMultimedia Computing";
+                                            },
+                                            value: 3,
+                                            child: Center(
+                                                child: Row(children: const [
+                                              Text(
+                                                  "Entertainment and\nMultimedia Computing",
+                                                  style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    color: Colors.black,
+                                                  ))
+                                            ])),
+                                          ),
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              course = "Information Technology";
+                                            },
+                                            value: 4,
+                                            child: Center(
+                                                child: Row(children: const [
+                                              Text("Information Technology",
+                                                  style: TextStyle(
+                                                    fontFamily: 'QRegular',
+                                                    color: Colors.black,
+                                                  ))
+                                            ])),
+                                          ),
+                                        ],
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _dropdownValue1 =
+                                                int.parse(value.toString());
+                                          });
+                                        },
+                                      ),
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                                prefixIcon: const Icon(Icons.email),
+                                label: 'Email',
+                                textFieldController: _emailController),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextformfieldWidget(
+                                prefixIcon: const Icon(Icons.lock),
+                                label: 'Password',
+                                textFieldController: _passwordController),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Center(
+                              child: MaterialButton(
+                                  minWidth: 300,
+                                  color: primary,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100)),
+                                  onPressed: (() {
+                                    if (signupformKey.currentState!
+                                            .validate() &&
+                                        _emailController.text.contains('bsu')) {
+                                      AuthRepository().userSignUp(
+                                          _firstNameController.text,
+                                          _middleNameController.text,
+                                          _surNameController.text,
+                                          _contactNumberController.text,
+                                          _emailController.text,
+                                          _passwordController.text,
+                                          '',
+                                          course);
+                                      Navigation(context).goToLoginPage();
+                                    }
+
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => LoginPage()));
+                                  }),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: NormalText(
+                                        label: 'Signup',
+                                        fontSize: 24,
+                                        color: Colors.white),
+                                  )),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                NormalText(
+                                    label: 'Already have an account?',
+                                    fontSize: 14,
+                                    color: Colors.grey),
+                                TextButton(
+                                  onPressed: (() {
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => LoginPage()));
+                                    Navigation(context).goToLoginPage();
+                                  }),
+                                  child: NormalText(
+                                      label: 'Login now',
+                                      fontSize: 16,
+                                      color: Colors.black),
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                              prefixIcon: const Icon(Icons.email),
-                              label: 'Email',
-                              textFieldController: _emailController),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          TextformfieldWidget(
-                              prefixIcon: const Icon(Icons.lock),
-                              label: 'Password',
-                              textFieldController: _passwordController),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          Center(
-                            child: MaterialButton(
-                                minWidth: 300,
-                                color: primary,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                onPressed: (() {
-                                  if (signupformKey.currentState!.validate() &&
-                                      _emailController.text.contains('bsu')) {
-                                    AuthRepository().userSignUp(
-                                        _firstNameController.text,
-                                        _middleNameController.text,
-                                        _surNameController.text,
-                                        _contactNumberController.text,
-                                        _emailController.text,
-                                        _passwordController.text,
-                                        '',
-                                        course);
-                                    Navigation(context).goToLoginPage();
-                                  }
-
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => LoginPage()));
-                                }),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: NormalText(
-                                      label: 'Signup',
-                                      fontSize: 24,
-                                      color: Colors.white),
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              NormalText(
-                                  label: 'Already have an account?',
-                                  fontSize: 14,
-                                  color: Colors.grey),
-                              TextButton(
-                                onPressed: (() {
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => LoginPage()));
-                                  Navigation(context).goToLoginPage();
-                                }),
-                                child: NormalText(
-                                    label: 'Login now',
-                                    fontSize: 16,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
