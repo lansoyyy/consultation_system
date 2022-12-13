@@ -25,11 +25,11 @@ class ReportTab extends StatefulWidget {
 class _ReportTabState extends State<ReportTab> {
   int _dropdownValue = 0;
 
-  late String year = 'First Year';
+  late String year = 'All';
 
   int _dropdownValue1 = 0;
 
-  late String course = 'IT';
+  late String course = 'All';
 
   final doc = pw.Document();
 
@@ -179,6 +179,28 @@ class _ReportTabState extends State<ReportTab> {
     await file.writeAsBytes(await doc.save());
   }
 
+  getFilter() {
+    if (course == 'All' && year == 'All') {
+      return FirebaseFirestore.instance.collection('Concerns').snapshots();
+    } else if (course == 'All') {
+      return FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('yearLevel', isEqualTo: year)
+          .snapshots();
+    } else if (year == 'All') {
+      return FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('course', isEqualTo: course)
+          .snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('yearLevel', isEqualTo: year)
+          .where('course', isEqualTo: course)
+          .snapshots();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,30 +252,37 @@ class _ReportTabState extends State<ReportTab> {
                         items: [
                           DropdownMenuItem(
                             onTap: () {
-                              year = 'First Year';
+                              year = 'All';
                             },
                             value: 0,
+                            child: DropDownItem(label: 'All'),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {
+                              year = 'First Year';
+                            },
+                            value: 1,
                             child: DropDownItem(label: '1st Year'),
                           ),
                           DropdownMenuItem(
                             onTap: () {
                               year = 'Second Year';
                             },
-                            value: 1,
+                            value: 2,
                             child: DropDownItem(label: '2nd Year'),
                           ),
                           DropdownMenuItem(
                             onTap: () {
                               year = 'Third Year';
                             },
-                            value: 2,
+                            value: 3,
                             child: DropDownItem(label: '3rd Year'),
                           ),
                           DropdownMenuItem(
                             onTap: () {
                               year = 'Fourth Year';
                             },
-                            value: 3,
+                            value: 4,
                             child: DropDownItem(label: '4th Year'),
                           ),
                         ],
@@ -287,9 +316,23 @@ class _ReportTabState extends State<ReportTab> {
                         items: [
                           DropdownMenuItem(
                             onTap: () {
-                              course = "Automotive";
+                              course = "All";
                             },
                             value: 0,
+                            child: Center(
+                                child: Row(children: const [
+                              Text("All",
+                                  style: TextStyle(
+                                    fontFamily: 'QRegular',
+                                    color: Colors.black,
+                                  ))
+                            ])),
+                          ),
+                          DropdownMenuItem(
+                            onTap: () {
+                              course = "Automotive";
+                            },
+                            value: 1,
                             child: Center(
                                 child: Row(children: const [
                               Text("Automotive",
@@ -303,7 +346,7 @@ class _ReportTabState extends State<ReportTab> {
                             onTap: () {
                               course = "Food Technology";
                             },
-                            value: 1,
+                            value: 2,
                             child: Center(
                                 child: Row(children: const [
                               Text("Food Technology",
@@ -317,7 +360,7 @@ class _ReportTabState extends State<ReportTab> {
                             onTap: () {
                               course = "Electronic Technology";
                             },
-                            value: 2,
+                            value: 3,
                             child: Center(
                                 child: Row(children: const [
                               Text("Electronic Technology",
@@ -332,7 +375,7 @@ class _ReportTabState extends State<ReportTab> {
                               course =
                                   "Entertainment and\nMultimedia Computing";
                             },
-                            value: 3,
+                            value: 4,
                             child: Center(
                                 child: Row(children: const [
                               Text("Entertainment and\nMultimedia Computing",
@@ -346,7 +389,7 @@ class _ReportTabState extends State<ReportTab> {
                             onTap: () {
                               course = "Information Technology";
                             },
-                            value: 4,
+                            value: 5,
                             child: Center(
                                 child: Row(children: const [
                               Text("Information Technology",
@@ -375,11 +418,7 @@ class _ReportTabState extends State<ReportTab> {
               height: 30,
             ),
             StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('Concerns')
-                    .where('yearLevel', isEqualTo: year)
-                    .where('course', isEqualTo: course)
-                    .snapshots(),
+                stream: getFilter(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
