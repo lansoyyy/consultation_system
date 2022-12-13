@@ -52,6 +52,26 @@ class _MessagesTabState extends State<MessagesTab> {
   int value3 = 0;
   late String status = 'Active';
 
+  late String filterMsg = 'All';
+
+  filterMessage() {
+    if (filterMsg == 'All') {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          .snapshots();
+    } else if (filterMsg == 'Read') {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          .where('status', isEqualTo: 'Read')
+          .snapshots();
+    } else if (filterMsg == 'Unread') {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          .where('status', isEqualTo: 'Unread')
+          .snapshots();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,21 +130,21 @@ class _MessagesTabState extends State<MessagesTab> {
                             items: [
                               DropdownMenuItem(
                                 onTap: () {
-                                  status = 'All';
+                                  filterMsg = 'All';
                                 },
                                 value: 0,
                                 child: DropDownItem(label: 'All'),
                               ),
                               DropdownMenuItem(
                                 onTap: () {
-                                  status = 'Read';
+                                  filterMsg = 'Read';
                                 },
                                 value: 1,
                                 child: DropDownItem(label: 'Read'),
                               ),
                               DropdownMenuItem(
                                 onTap: () {
-                                  status = 'Unread';
+                                  filterMsg = 'Unread';
                                 },
                                 value: 2,
                                 child: DropDownItem(label: 'Unread'),
@@ -144,9 +164,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     height: 20,
                   ),
                   StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection(FirebaseAuth.instance.currentUser!.uid)
-                          .snapshots(),
+                      stream: filterMessage(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
