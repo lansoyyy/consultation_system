@@ -169,7 +169,8 @@ class _DashboardTabState extends State<DashboardTab> {
               const SizedBox(
                 height: 20,
               ),
-              NormalText(label: date, fontSize: 24, color: primary),
+              NormalText(label: "Dashboard", fontSize: 24, color: primary),
+              NormalText(label: "(${date})", fontSize: 18, color: brownAccent),
               const SizedBox(
                 height: 20,
               ),
@@ -187,7 +188,7 @@ class _DashboardTabState extends State<DashboardTab> {
                         NormalText(
                             label: 'TOTAL MESSAGES',
                             fontSize: 12,
-                            color: Colors.grey),
+                            color: primary),
                         const SizedBox(
                           height: 20,
                         ),
@@ -209,7 +210,7 @@ class _DashboardTabState extends State<DashboardTab> {
                         NormalText(
                             label: 'UNREAD MESSAGES',
                             fontSize: 12,
-                            color: Colors.grey),
+                            color: primary),
                         const SizedBox(
                           height: 20,
                         ),
@@ -231,7 +232,7 @@ class _DashboardTabState extends State<DashboardTab> {
                         NormalText(
                             label: 'READ MESSAGES',
                             fontSize: 12,
-                            color: Colors.grey),
+                            color: primary),
                         const SizedBox(
                           height: 20,
                         ),
@@ -260,14 +261,12 @@ class _DashboardTabState extends State<DashboardTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         NormalText(
-                            label: 'TICKETS', fontSize: 12, color: Colors.grey),
+                            label: 'TICKETS', fontSize: 12, color: primary),
                         const SizedBox(
                           height: 10,
                         ),
-                        BoldText(
-                            label: 'CONCERNS',
-                            fontSize: 12,
-                            color: Colors.grey),
+                        NormalText(
+                            label: 'CONCERNS', fontSize: 12, color: primary),
                         const SizedBox(
                           height: 20,
                         ),

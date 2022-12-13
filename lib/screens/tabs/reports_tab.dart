@@ -220,8 +220,7 @@ class _ReportTabState extends State<ReportTab> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: blueAccent,
-                        borderRadius: BorderRadius.circular(5)),
+                        color: primary, borderRadius: BorderRadius.circular(5)),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                       child: NormalText(
@@ -239,7 +238,7 @@ class _ReportTabState extends State<ReportTab> {
                   child: Container(
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: greyAccent,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Padding(
@@ -248,6 +247,7 @@ class _ReportTabState extends State<ReportTab> {
                         underline: Container(color: Colors.transparent),
                         iconEnabledColor: Colors.black,
                         isExpanded: true,
+                        style: TextStyle(color: Colors.white),
                         value: _dropdownValue,
                         items: [
                           DropdownMenuItem(
@@ -303,7 +303,7 @@ class _ReportTabState extends State<ReportTab> {
                   child: Container(
                     width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: greyAccent,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Padding(
@@ -324,7 +324,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("All",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),
@@ -338,7 +338,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("Automotive",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),
@@ -352,7 +352,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("Food Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),
@@ -366,7 +366,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("Electronic Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),
@@ -381,7 +381,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("Entertainment and\nMultimedia Computing",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),
@@ -395,7 +395,7 @@ class _ReportTabState extends State<ReportTab> {
                               Text("Information Technology",
                                   style: TextStyle(
                                     fontFamily: 'QRegular',
-                                    color: Colors.black,
+                                    color: primary,
                                   ))
                             ])),
                           ),

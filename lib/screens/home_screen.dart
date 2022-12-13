@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[100],
       body: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -55,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   // backgroundColor: Colors.blueGrey[700]
                   ),
               title: Container(
-                decoration: const BoxDecoration(
-                    color: greyAccent,
+                decoration: BoxDecoration(
+                    color: Colors.grey[100],
                     border: Border(
                         bottom: BorderSide(width: 1, color: greyAccent))),
                 child: Padding(
@@ -79,20 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: blueAccent,
                       ),
                     ],
-                  ),
-                ),
-              ),
-              footer: Container(
-                height: 80,
-                decoration: const BoxDecoration(
-                    color: greyAccent,
-                    border: Border(
-                        bottom: BorderSide(width: 1, color: greyAccent))),
-                child: Center(
-                  child: NormalText(
-                    label: 'All right reserved.',
-                    fontSize: 12,
-                    color: blueAccent,
                   ),
                 ),
               ),

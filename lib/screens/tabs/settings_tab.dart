@@ -102,7 +102,7 @@ class _SettingsTabState extends State<SettingsTab> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BoldText(
+                        NormalText(
                             label: 'Profile', fontSize: 24, color: primary),
                         const SizedBox(
                           height: 20,

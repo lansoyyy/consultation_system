@@ -117,7 +117,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     width: 350,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: greyColor,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5),
                         topRight: Radius.circular(5),
@@ -162,7 +162,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Container(
                         width: 150,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: greyColor,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -209,7 +209,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Container(
                         width: 190,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: greyColor,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -338,7 +338,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          color: greenAccent,
+                                          color: brownAccent,
                                           child: Center(
                                             child: Padding(
                                               padding:
@@ -435,13 +435,13 @@ class _MessagesTabState extends State<MessagesTab> {
                                   title: BoldText(
                                       label: name,
                                       fontSize: 18,
-                                      color: Colors.grey),
+                                      color: primary),
                                   subtitle: Row(
                                     children: [
                                       Container(
                                         height: 20,
                                         width: 100,
-                                        color: greenAccent,
+                                        color: primary,
                                         child: Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(2.0),
@@ -459,7 +459,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                           Container(
                                             height: 20,
                                             width: 100,
-                                            color: greenAccent,
+                                            color: brownAccent,
                                             child: Center(
                                               child: Padding(
                                                 padding:
@@ -591,7 +591,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                             ),
                                             title: Container(
                                               decoration: BoxDecoration(
-                                                color: primary,
+                                                color: greyAccent,
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
@@ -603,19 +603,19 @@ class _MessagesTabState extends State<MessagesTab> {
                                                     label: data.docs[index]
                                                         ['message'],
                                                     fontSize: 14,
-                                                    color: Colors.white),
+                                                    color: primary),
                                               ),
                                             ),
                                             subtitle: NormalText(
                                                 label: data.docs[index]
                                                         ['name'] +
-                                                    "    ${data.docs[index]['course']}  ${data.docs[index]['yearLevel']}",
-                                                fontSize: 12,
-                                                color: Colors.grey),
+                                                    "   -    ${data.docs[index]['course']}  -  ${data.docs[index]['yearLevel']}",
+                                                fontSize: 10,
+                                                color: primary),
                                             trailing: NormalText(
                                                 label: data.docs[index]['time'],
                                                 fontSize: 14,
-                                                color: Colors.grey),
+                                                color: primary),
                                           );
                                         }),
                                       ),

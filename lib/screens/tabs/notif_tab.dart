@@ -50,7 +50,7 @@ class _NotfiTabState extends State<NotfiTab> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BoldText(
+                  NormalText(
                       label: 'Notifications', fontSize: 28, color: primary),
                   const SizedBox(
                     height: 30,
@@ -79,7 +79,7 @@ class _NotfiTabState extends State<NotfiTab> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            BoldText(
+                            NormalText(
                                 label: 'Schedule a Notification',
                                 fontSize: 18,
                                 color: Colors.black),

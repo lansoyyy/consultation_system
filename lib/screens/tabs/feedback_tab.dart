@@ -19,8 +19,8 @@ class FeedbackTab extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 30, left: 20, bottom: 20),
-                child:
-                    BoldText(label: 'Feedbacks', fontSize: 32, color: primary),
+                child: NormalText(
+                    label: 'Feedbacks', fontSize: 32, color: primary),
               ),
               SingleChildScrollView(
                 child: StreamBuilder<QuerySnapshot>(
@@ -56,100 +56,105 @@ class FeedbackTab extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.white),
                               child: SingleChildScrollView(
-                                child: DataTable(
-                                  // datatable widget
-                                  columns: [
-                                    // column to set the name
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'No.',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Student\nProfile',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Student\nName',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Email',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Course',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Year\nLevel',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                    DataColumn(
-                                        label: NormalText(
-                                            label: 'Feedback',
-                                            fontSize: 16,
-                                            color: Colors.black)),
-                                  ],
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: DataTable(
+                                    // datatable widget
+                                    columns: [
+                                      // column to set the name
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'No.',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Student\nProfile',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Student\nName',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Email',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Course',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Year\nLevel',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                      DataColumn(
+                                          label: NormalText(
+                                              label: 'Feedback',
+                                              fontSize: 16,
+                                              color: Colors.black)),
+                                    ],
 
-                                  rows: [
-                                    // row to set the values
-                                    for (int i = 0;
-                                        i < snapshot.data!.size;
-                                        i++)
-                                      DataRow(cells: [
-                                        DataCell(
-                                          NormalText(
-                                              label: i.toString(),
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                        DataCell(Container(
-                                          color: Colors.black,
-                                          height: 40,
-                                          width: 50,
-                                          child: Image.network(
-                                            data.docs[i]['profilePicture'],
-                                            fit: BoxFit.cover,
+                                    rows: [
+                                      // row to set the values
+                                      for (int i = 0;
+                                          i < snapshot.data!.size;
+                                          i++)
+                                        DataRow(cells: [
+                                          DataCell(
+                                            NormalText(
+                                                label: i.toString(),
+                                                fontSize: 14,
+                                                color: Colors.grey),
                                           ),
-                                        )),
-                                        DataCell(
-                                          NormalText(
-                                              label: data.docs[i]['name'],
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                        DataCell(
-                                          NormalText(
-                                              label: data.docs[i]['email'],
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                        DataCell(
-                                          NormalText(
-                                              label: data.docs[i]['course'],
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                        DataCell(
-                                          NormalText(
-                                              label: data.docs[i]['yearLevel'],
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                        DataCell(
-                                          NormalText(
-                                              label: data.docs[i]['feedback'],
-                                              fontSize: 14,
-                                              color: Colors.grey),
-                                        ),
-                                      ]),
-                                  ],
+                                          DataCell(Container(
+                                            color: Colors.transparent,
+                                            height: 40,
+                                            width: 50,
+                                            child: Image.network(
+                                              data.docs[i]['profilePicture'],
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                          DataCell(
+                                            NormalText(
+                                                label: data.docs[i]['name'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                          DataCell(
+                                            NormalText(
+                                                label: data.docs[i]['email'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                          DataCell(
+                                            NormalText(
+                                                label: data.docs[i]['course'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                          DataCell(
+                                            NormalText(
+                                                label: data.docs[i]
+                                                    ['yearLevel'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                          DataCell(
+                                            NormalText(
+                                                label: data.docs[i]['feedback'],
+                                                fontSize: 14,
+                                                color: Colors.grey),
+                                          ),
+                                        ]),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

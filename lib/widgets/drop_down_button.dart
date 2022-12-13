@@ -1,3 +1,4 @@
+import 'package:consultation_system/constant/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/text_widget.dart';
@@ -15,7 +16,7 @@ class DropDownItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Row(children: [
-      NormalText(color: Colors.black, fontSize: 12, label: label),
+      NormalText(color: primary, fontSize: 12, label: label),
     ]));
   }
 }
