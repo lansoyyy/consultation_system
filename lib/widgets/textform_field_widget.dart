@@ -1,3 +1,4 @@
+import 'package:consultation_system/constant/colors.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -20,7 +21,7 @@ class TextformfieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(5)),
+          color: greyColor, borderRadius: BorderRadius.circular(5)),
       child: TextFormField(
         obscureText: isObscure,
         controller: textFieldController,

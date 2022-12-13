@@ -232,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     child: NormalText(
                                                         label: 'Register now',
                                                         fontSize: 16,
-                                                        color: Colors.black),
+                                                        color: brownAccent),
                                                   ),
                                                 ],
                                               ),

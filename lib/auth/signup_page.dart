@@ -111,7 +111,7 @@ class _SignupPageState extends State<SignupPage> {
                                   Container(
                                     width: 400,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: greyColor,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Padding(
@@ -278,7 +278,7 @@ class _SignupPageState extends State<SignupPage> {
                                   child: NormalText(
                                       label: 'Login now',
                                       fontSize: 16,
-                                      color: Colors.black),
+                                      color: brownAccent),
                                 ),
                               ],
                             ),

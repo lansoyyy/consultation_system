@@ -58,12 +58,12 @@ class _NotfiTabState extends State<NotfiTab> {
                   BoldText(
                       label: 'Status: ${data['status']}',
                       fontSize: 14,
-                      color: Colors.grey),
+                      color: primary),
                   BoldText(
                       label:
                           'Your scheduled notification: ${data['from']}:00am - ${data['to']}:00pm',
                       fontSize: 14,
-                      color: Colors.grey),
+                      color: primary),
                   const SizedBox(
                     height: 20,
                   ),
@@ -82,12 +82,12 @@ class _NotfiTabState extends State<NotfiTab> {
                             NormalText(
                                 label: 'Schedule a Notification',
                                 fontSize: 18,
-                                color: Colors.black),
+                                color: primary),
                             NormalText(
                                 label:
                                     "You'all only receive notification in the hours you choose. Outside of those times, notifications will be paused.",
                                 fontSize: 12,
-                                color: Colors.grey),
+                                color: primary),
                             const SizedBox(
                               height: 30,
                             ),
@@ -103,7 +103,7 @@ class _NotfiTabState extends State<NotfiTab> {
                                   child: Container(
                                     width: 150,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: greyColor,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Padding(
@@ -212,7 +212,7 @@ class _NotfiTabState extends State<NotfiTab> {
                                   child: Container(
                                     width: 150,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Padding(
@@ -222,7 +222,7 @@ class _NotfiTabState extends State<NotfiTab> {
                                         child: NormalText(
                                             label: 'TO',
                                             fontSize: 14,
-                                            color: Colors.grey),
+                                            color: primary),
                                       ),
                                     ),
                                   ),
@@ -232,7 +232,7 @@ class _NotfiTabState extends State<NotfiTab> {
                                   child: Container(
                                     width: 150,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: greyColor,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Padding(
@@ -399,7 +399,7 @@ class _NotfiTabState extends State<NotfiTab> {
                             Container(
                               width: 150,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: greyColor,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Padding(
