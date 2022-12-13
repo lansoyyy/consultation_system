@@ -66,6 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         width: 10,
                       ),
+                      Image.asset(
+                        'assets/images/bsu.png',
+                        width: 33,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       BoldText(
                         label: 'STUDCON',
                         fontSize: 24,
