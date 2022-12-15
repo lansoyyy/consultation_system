@@ -40,7 +40,7 @@ class _SignupPageState extends State<SignupPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/background1.jpeg'),
+                  image: AssetImage('assets/images/background1.jpg'),
                   fit: BoxFit.cover),
             ),
           ),
@@ -236,7 +236,7 @@ class _SignupPageState extends State<SignupPage> {
                                     if (signupformKey.currentState!
                                             .validate() &&
                                         _emailController.text
-                                            .contains('buksu')) {
+                                            .contains('buksu.edu.ph')) {
                                       AuthRepository().userSignUp(
                                           _firstNameController.text,
                                           _middleNameController.text,
