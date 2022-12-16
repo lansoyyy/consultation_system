@@ -72,21 +72,7 @@ class FeedbackTab extends StatelessWidget {
                                                 label: 'No.',
                                                 fontSize: 16,
                                                 color: primary)),
-                                        DataColumn(
-                                            label: NormalText(
-                                                label: 'Student\nProfile',
-                                                fontSize: 16,
-                                                color: primary)),
-                                        DataColumn(
-                                            label: NormalText(
-                                                label: 'Student\nName',
-                                                fontSize: 16,
-                                                color: primary)),
-                                        DataColumn(
-                                            label: NormalText(
-                                                label: 'Email',
-                                                fontSize: 16,
-                                                color: primary)),
+
                                         DataColumn(
                                             label: NormalText(
                                                 label: 'Course',
@@ -94,7 +80,7 @@ class FeedbackTab extends StatelessWidget {
                                                 color: primary)),
                                         DataColumn(
                                             label: NormalText(
-                                                label: 'Year\nLevel',
+                                                label: 'Year Level',
                                                 fontSize: 16,
                                                 color: primary)),
                                         DataColumn(
@@ -113,27 +99,6 @@ class FeedbackTab extends StatelessWidget {
                                             DataCell(
                                               NormalText(
                                                   label: i.toString(),
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(Container(
-                                              color: Colors.transparent,
-                                              height: 40,
-                                              width: 50,
-                                              child: Image.network(
-                                                data.docs[i]['profilePicture'],
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]['name'],
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]['email'],
                                                   fontSize: 14,
                                                   color: Colors.black),
                                             ),
