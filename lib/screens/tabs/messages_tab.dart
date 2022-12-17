@@ -67,30 +67,40 @@ class _MessagesTabState extends State<MessagesTab> {
     if (filterMsg == 'All') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
-          .where('name',
-              isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
-          .where('name',
-              isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          // .where('name',
+          //     isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          // .where('name',
+          //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .where('concern', isEqualTo: concernFilter)
           .snapshots();
     } else if (filterMsg == 'Read') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Read')
+          // .where('name',
+          //     isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          // .where('name',
+          //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          .where('concern', isEqualTo: concernFilter)
+          .snapshots();
+    } else if (nameSearched != '') {
+      return FirebaseFirestore.instance
+          .collection(FirebaseAuth.instance.currentUser!.uid)
+          // .where('status', isEqualTo: 'Read')
           .where('name',
               isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
           .where('name',
               isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
-          .where('concern', isEqualTo: concernFilter)
+          // .where('concern', isEqualTo: concernFilter)
           .snapshots();
     } else if (filterMsg == 'Unread') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Unread')
-          .where('name',
-              isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
-          .where('name',
-              isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
+          // .where('name',
+          //     isGreaterThanOrEqualTo: toBeginningOfSentenceCase(nameSearched))
+          // .where('name',
+          //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .where('concern', isEqualTo: concernFilter)
           .snapshots();
     }
