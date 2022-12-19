@@ -88,6 +88,11 @@ class FeedbackTab extends StatelessWidget {
                                                 label: 'Feedback',
                                                 fontSize: 16,
                                                 color: primary)),
+                                        DataColumn(
+                                            label: NormalText(
+                                                label: 'Ratings',
+                                                fontSize: 16,
+                                                color: primary)),
                                       ],
 
                                       rows: [
@@ -121,6 +126,14 @@ class FeedbackTab extends StatelessWidget {
                                                       ['feedback'],
                                                   fontSize: 14,
                                                   color: Colors.black),
+                                            ),
+                                            DataCell(
+                                              NormalText(
+                                                  label: data.docs[i]['rating']
+                                                          .toString() +
+                                                      ' ⭐',
+                                                  fontSize: 18,
+                                                  color: Colors.amber),
                                             ),
                                           ]),
                                       ],
