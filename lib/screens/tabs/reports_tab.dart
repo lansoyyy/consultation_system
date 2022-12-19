@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,6 +24,32 @@ class ReportTab extends StatefulWidget {
 }
 
 class _ReportTabState extends State<ReportTab> {
+  @override
+  void initState() {
+    getData();
+
+    super.initState();
+  }
+
+  late String myName = '';
+
+  getData() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('CONSULTATION-USERS')
+        .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          myName = data['first_name'] + ' ' + data['sur_name'];
+        }
+      });
+    }
+  }
+
   int _dropdownValue = 0;
 
   late String year = 'All';
@@ -161,7 +188,7 @@ class _ReportTabState extends State<ReportTab> {
               pw.SizedBox(
                 height: 50,
               ),
-              pw.Text('Lance Olana',
+              pw.Text(myName,
                   style: pw.TextStyle(
                     decoration: pw.TextDecoration.underline,
                   )),
