@@ -157,7 +157,18 @@ class _ReportTabState extends State<ReportTab> {
                           pw.Divider(thickness: 1)
                         ]),
                   ])
-                ])
+                ]),
+              pw.SizedBox(
+                height: 50,
+              ),
+              pw.Text('Lance Olana',
+                  style: pw.TextStyle(
+                    decoration: pw.TextDecoration.underline,
+                  )),
+              pw.SizedBox(
+                height: 5,
+              ),
+              pw.Text('Instructor', style: pw.TextStyle(fontSize: 12)),
             ]),
           );
         },
