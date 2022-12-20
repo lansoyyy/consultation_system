@@ -17,6 +17,31 @@ class MessagesTab extends StatefulWidget {
 }
 
 class _MessagesTabState extends State<MessagesTab> {
+  @override
+  void initState() {
+    super.initState();
+    getMyData();
+  }
+
+  late String myName = '';
+
+  getMyData() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('CONSULTATION-USERS')
+        .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid);
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          myName = data['first_name'] + ' ' + data['sur_name'];
+        }
+      });
+    }
+  }
+
   final _messageController = TextEditingController();
 
   late String id = '';
@@ -83,7 +108,7 @@ class _MessagesTabState extends State<MessagesTab> {
           //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .where('concern', isEqualTo: concernFilter)
           .snapshots();
-    } else if (nameSearched != '') {
+    } else if (nameSearched != '' && filterMsg == '' && concernFilter == '') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           // .where('status', isEqualTo: 'Read')
@@ -148,6 +173,8 @@ class _MessagesTabState extends State<MessagesTab> {
                             onPressed: (() {
                               setState(() {
                                 nameSearched = one;
+                                filterMsg = '';
+                                concernFilter = '';
                               });
                             }),
                             icon: Icon(Icons.search),
@@ -403,7 +430,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('Concerns')
-                            .where('email', isEqualTo: email)
+                            .where('name', isEqualTo: name)
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -584,49 +611,138 @@ class _MessagesTabState extends State<MessagesTab> {
                                       child: ListView.builder(
                                         itemCount: snapshot.data?.size ?? 0,
                                         itemBuilder: ((context, index) {
-                                          return ListTile(
-                                            leading: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: CircleAvatar(
-                                                minRadius: 30,
-                                                maxRadius: 30,
-                                                child: BoldText(
-                                                    label: data.docs[index]
-                                                        ['name'][0],
-                                                    fontSize: 22,
-                                                    color: Colors.white),
-                                                backgroundColor: blueAccent,
-                                              ),
-                                            ),
-                                            title: Container(
-                                              decoration: BoxDecoration(
-                                                color: greyAccent,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 10, 20, 10),
-                                                child: NormalText(
-                                                    label: data.docs[index]
-                                                        ['message'],
-                                                    fontSize: 14,
-                                                    color: primary),
-                                              ),
-                                            ),
-                                            subtitle: NormalText(
-                                                label: data.docs[index]
-                                                        ['name'] +
-                                                    "   -    ${data.docs[index]['course']}  -  ${data.docs[index]['yearLevel']}",
-                                                fontSize: 10,
-                                                color: primary),
-                                            trailing: NormalText(
-                                                label: data.docs[index]['time'],
-                                                fontSize: 14,
-                                                color: primary),
-                                          );
+                                          return data.docs[index]['name'] ==
+                                                  myName
+                                              ? ListTile(
+                                                  trailing: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: CircleAvatar(
+                                                      minRadius: 30,
+                                                      maxRadius: 30,
+                                                      child: BoldText(
+                                                          label:
+                                                              data.docs[index]
+                                                                  ['name'][0],
+                                                          fontSize: 22,
+                                                          color: Colors.white),
+                                                      backgroundColor:
+                                                          blueAccent,
+                                                    ),
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 100),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: greyAccent,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    20,
+                                                                    10,
+                                                                    20,
+                                                                    10),
+                                                            child: NormalText(
+                                                                label: data.docs[
+                                                                        index]
+                                                                    ['message'],
+                                                                fontSize: 14,
+                                                                color: primary),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        NormalText(
+                                                            label:
+                                                                data.docs[index]
+                                                                    ['time'],
+                                                            fontSize: 12,
+                                                            color: primary),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              : ListTile(
+                                                  leading: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: CircleAvatar(
+                                                      minRadius: 30,
+                                                      maxRadius: 30,
+                                                      child: BoldText(
+                                                          label:
+                                                              data.docs[index]
+                                                                  ['name'][0],
+                                                          fontSize: 22,
+                                                          color: Colors.white),
+                                                      backgroundColor:
+                                                          blueAccent,
+                                                    ),
+                                                  ),
+                                                  title: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 100),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: greyAccent,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    20,
+                                                                    10,
+                                                                    20,
+                                                                    10),
+                                                            child: NormalText(
+                                                                label: data.docs[
+                                                                        index]
+                                                                    ['message'],
+                                                                fontSize: 14,
+                                                                color: primary),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        NormalText(
+                                                            label:
+                                                                data.docs[index]
+                                                                    ['time'],
+                                                            fontSize: 12,
+                                                            color: primary),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
                                         }),
                                       ),
                                     ),
