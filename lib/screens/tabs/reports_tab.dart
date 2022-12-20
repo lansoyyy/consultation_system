@@ -479,7 +479,7 @@ class _ReportTabState extends State<ReportTab> {
                   return Expanded(
                     child: SizedBox(
                       child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
+                          itemCount: 1,
                           itemBuilder: ((context, index) {
                             name.add(data.docs[index]['name']);
                             email.add(data.docs[index]['email']);
