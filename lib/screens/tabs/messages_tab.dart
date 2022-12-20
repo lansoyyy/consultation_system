@@ -133,6 +133,7 @@ class _MessagesTabState extends State<MessagesTab> {
 
   @override
   Widget build(BuildContext context) {
+    print(concernFilter);
     return Scaffold(
       appBar: appbarWidget(widget.page),
       body: Row(
@@ -243,57 +244,64 @@ class _MessagesTabState extends State<MessagesTab> {
                       SizedBox(
                         width: 10,
                       ),
-                      Container(
-                        width: 190,
-                        decoration: BoxDecoration(
-                          color: greyColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
-                          child: DropdownButton(
-                            underline: Container(color: Colors.transparent),
-                            iconEnabledColor: Colors.black,
-                            isExpanded: true,
-                            value: value4,
-                            items: [
-                              DropdownMenuItem(
-                                onTap: () {
-                                  concernFilter = 'Grades';
-                                },
-                                value: 0,
-                                child: DropDownItem(label: 'Grades'),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Categ')
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              print('error');
+                              return const Center(child: Text('Error'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              print('waiting');
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                )),
+                              );
+                            }
+                            dynamic data9 = snapshot.requireData;
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: greyColor,
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              DropdownMenuItem(
-                                onTap: () {
-                                  concernFilter = 'Requirements';
-                                },
-                                value: 1,
-                                child: DropDownItem(label: 'Requirements'),
+                              width: 160,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                                child: DropdownButton(
+                                  underline:
+                                      Container(color: Colors.transparent),
+                                  iconEnabledColor: Colors.black,
+                                  isExpanded: true,
+                                  value: value4,
+                                  items: [
+                                    for (int i = 0; i < data9.size; i++)
+                                      DropdownMenuItem(
+                                        onTap: () {
+                                          concernFilter = data9.docs[i]['name'];
+                                        },
+                                        value: i,
+                                        child: DropDownItem(
+                                            label: data9.docs[i]['name']),
+                                      ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      value4 = int.parse(value.toString());
+                                    });
+                                  },
+                                ),
                               ),
-                              DropdownMenuItem(
-                                onTap: () {
-                                  concernFilter = 'Attendance';
-                                },
-                                value: 2,
-                                child: DropDownItem(label: 'Attendance'),
-                              ),
-                              DropdownMenuItem(
-                                onTap: () {
-                                  concernFilter = 'Others';
-                                },
-                                value: 3,
-                                child: DropDownItem(label: 'Others'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                value4 = int.parse(value.toString());
-                              });
-                            },
-                          ),
-                        ),
-                      ),
+                            );
+                          })
                     ],
                   ),
                   const SizedBox(
