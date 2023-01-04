@@ -20,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _passwordController = TextEditingController();
 
+  final frgtController = TextEditingController();
+
   final loginformKey = GlobalKey<FormState>();
   bool secureText = true;
   @override
@@ -166,6 +168,102 @@ class _LoginPageState extends State<LoginPage> {
                                                   },
                                                 ),
                                               ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((context) {
+                                                          return Dialog(
+                                                            child: SizedBox(
+                                                              height: 300,
+                                                              width: 300,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
+                                                                            30,
+                                                                            0,
+                                                                            30,
+                                                                            0),
+                                                                    child:
+                                                                        TextformfieldWidget(
+                                                                      label:
+                                                                          'Email',
+                                                                      prefixIcon:
+                                                                          const Icon(
+                                                                              Icons.email),
+                                                                      textFieldController:
+                                                                          frgtController,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 50,
+                                                                  ),
+                                                                  MaterialButton(
+                                                                      minWidth:
+                                                                          250,
+                                                                      color:
+                                                                          primary,
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              100)),
+                                                                      onPressed:
+                                                                          (() async {
+                                                                        try {
+                                                                          await FirebaseAuth
+                                                                              .instance
+                                                                              .sendPasswordResetEmail(email: frgtController.text);
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .showSnackBar(
+                                                                            SnackBar(
+                                                                              content: NormalText(label: 'Reset password option was sent to your email', fontSize: 12, color: Colors.white),
+                                                                            ),
+                                                                          );
+                                                                        } catch (e) {
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .showSnackBar(
+                                                                            SnackBar(
+                                                                              content: NormalText(label: e.toString(), fontSize: 12, color: Colors.white),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                      }),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                        child: NormalText(
+                                                                            label:
+                                                                                'Continue',
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                Colors.white),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }));
+                                                  },
+                                                  child: NormalText(
+                                                      label: 'Forgot Password?',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ),
                                               const SizedBox(
                                                 height: 50,
                                               ),
@@ -213,31 +311,32 @@ class _LoginPageState extends State<LoginPage> {
                                                   height: 80,
                                                 ),
                                               ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  NormalText(
-                                                      label:
-                                                          'Not a member yet?',
-                                                      fontSize: 14,
-                                                      color: Colors.grey),
-                                                  TextButton(
-                                                    onPressed: (() {
-                                                      // Navigator.of(context).push(MaterialPageRoute(
-                                                      //     builder: (context) => SignupPage()));
-                                                      Navigation(context)
-                                                          .goToSignUpPage();
-                                                    }),
-                                                    child: NormalText(
-                                                        label: 'Register now',
-                                                        fontSize: 16,
-                                                        color: brownAccent),
-                                                  ),
-                                                ],
-                                              ),
+
+                                              // Row(
+                                              //   mainAxisAlignment:
+                                              //       MainAxisAlignment.center,
+                                              //   children: [
+                                              //     NormalText(
+                                              //         label:
+                                              //             'Not a member yet?',
+                                              //         fontSize: 14,
+                                              //         color: Colors.grey),
+                                              //     TextButton(
+                                              //       onPressed: (() {
+                                              //         // Navigator.of(context).push(MaterialPageRoute(
+                                              //         //     builder: (context) => SignupPage()));
+                                              //         Navigation(context)
+                                              //             .goToSignUpPage();
+                                              //       }),
+                                              //       child: NormalText(
+                                              //           label: 'Register now',
+                                              //           fontSize: 16,
+                                              //           color: brownAccent),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                               const SizedBox(
-                                                height: 20,
+                                                height: 50,
                                               ),
                                             ],
                                           ),
