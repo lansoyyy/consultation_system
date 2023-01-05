@@ -136,6 +136,8 @@ class _DashboardTabState extends State<DashboardTab> {
     }
   }
 
+  var hasLoaded = false;
+
   int message = 0;
   getMessage() async {
     // Use provider
@@ -148,6 +150,7 @@ class _DashboardTabState extends State<DashboardTab> {
         for (var queryDocumentSnapshot in querySnapshot.docs) {
           Map<String, dynamic> data = queryDocumentSnapshot.data();
           message = querySnapshot.size;
+          hasLoaded = true;
         }
       });
     }
