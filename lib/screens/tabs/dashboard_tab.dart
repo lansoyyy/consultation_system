@@ -250,7 +250,7 @@ class _DashboardTabState extends State<DashboardTab> {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 18),
+                  padding: const EdgeInsets.only(left: 18, bottom: 20),
                   child: Container(
                     padding:
                         const EdgeInsets.only(left: 20, top: 10, right: 20),
@@ -270,55 +270,26 @@ class _DashboardTabState extends State<DashboardTab> {
                         const SizedBox(
                           height: 20,
                         ),
-                        ListTile(
-                          leading: NormalText(
-                              label: 'Grades', fontSize: 12, color: primary),
-                          trailing: BoldText(
-                              label: total1.toString(),
-                              fontSize: 12,
-                              color: primary),
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                        ),
-                        ListTile(
-                          leading: NormalText(
-                              label: 'Requirements/Projects',
-                              fontSize: 12,
-                              color: primary),
-                          trailing: BoldText(
-                              label: total2.toString(),
-                              fontSize: 12,
-                              color: primary),
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                        ),
-                        ListTile(
-                          leading: NormalText(
-                              label: 'Attendance',
-                              fontSize: 12,
-                              color: primary),
-                          trailing: BoldText(
-                              label: total3.toString(),
-                              fontSize: 12,
-                              color: primary),
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                        ),
-                        ListTile(
-                          leading: NormalText(
-                              label: 'Other concerns',
-                              fontSize: 12,
-                              color: primary),
-                          trailing: BoldText(
-                              label: total4.toString(),
-                              fontSize: 12,
-                              color: primary),
-                        ),
-                        const Divider(
-                          color: Colors.white,
+                        Expanded(
+                          child: SizedBox(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) {
+                                return Divider();
+                              },
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                    leading: NormalText(
+                                        label: 'Grades',
+                                        fontSize: 12,
+                                        color: primary),
+                                    trailing: BoldText(
+                                        label: total1.toString(),
+                                        fontSize: 12,
+                                        color: primary));
+                              },
+                              itemCount: 10,
+                            ),
+                          ),
                         ),
                       ],
                     ),
