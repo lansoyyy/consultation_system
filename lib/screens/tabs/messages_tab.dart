@@ -428,411 +428,443 @@ class _MessagesTabState extends State<MessagesTab> {
             ),
           ),
           const VerticalDivider(),
-          Expanded(
-            child: SizedBox(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('Concerns')
-                            .where('name', isEqualTo: name)
-                            .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return const Center(child: Text('Error'));
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            print('waiting');
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 50),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: Colors.black,
-                              )),
-                            );
-                          }
+          id != ''
+              ? Expanded(
+                  child: SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Concerns')
+                                  .where('name', isEqualTo: name)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  print(snapshot.error);
+                                  return const Center(child: Text('Error'));
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  print('waiting');
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 50),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    )),
+                                  );
+                                }
 
-                          final data3 = snapshot.requireData;
+                                final data3 = snapshot.requireData;
 
-                          print(email);
+                                print(email);
 
-                          return Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: const BoxDecoration(),
-                              child: Center(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    minRadius: 50,
-                                    maxRadius: 50,
-                                    child: BoldText(
-                                        label: name[0],
-                                        fontSize: 22,
-                                        color: Colors.white),
-                                    backgroundColor: blueAccent,
-                                  ),
-                                  title: BoldText(
-                                      label: name,
-                                      fontSize: 18,
-                                      color: primary),
-                                  subtitle: Row(
-                                    children: [
-                                      Container(
-                                        height: 20,
-                                        width: 100,
-                                        color: primary,
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: NormalText(
-                                                label:
-                                                    data3.docs[0]['type'] ?? '',
-                                                fontSize: 12,
-                                                color: Colors.white),
-                                          ),
+                                return Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: const BoxDecoration(),
+                                    child: Center(
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          minRadius: 50,
+                                          maxRadius: 50,
+                                          child: BoldText(
+                                              label: name[0],
+                                              fontSize: 22,
+                                              color: Colors.white),
+                                          backgroundColor: blueAccent,
                                         ),
-                                      ),
-                                      Expanded(child: SizedBox()),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 20,
-                                            width: 100,
-                                            color: brownAccent,
-                                            child: Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(2.0),
-                                                child: NormalText(
-                                                    label: concern,
-                                                    fontSize: 12,
-                                                    color: Colors.white),
+                                        title: BoldText(
+                                            label: name,
+                                            fontSize: 18,
+                                            color: primary),
+                                        subtitle: Row(
+                                          children: [
+                                            Container(
+                                              height: 20,
+                                              width: 100,
+                                              color: primary,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: NormalText(
+                                                      label: data3.docs[0]
+                                                              ['type'] ??
+                                                          '',
+                                                      fontSize: 12,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          PopupMenuButton(
-                                              itemBuilder: ((context) => [
-                                                    PopupMenuItem(
-                                                      onTap: (() async {
-                                                        var collection =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'Users')
-                                                                .where('email',
-                                                                    isEqualTo:
-                                                                        email);
-
-                                                        var querySnapshot =
-                                                            await collection
-                                                                .get();
-                                                        if (mounted) {
-                                                          setState(() {
-                                                            for (var queryDocumentSnapshot
-                                                                in querySnapshot
-                                                                    .docs) {
-                                                              Map<String,
-                                                                      dynamic>
-                                                                  data12 =
-                                                                  queryDocumentSnapshot
-                                                                      .data();
-
-                                                              FirebaseFirestore
+                                            Expanded(child: SizedBox()),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  height: 20,
+                                                  width: 100,
+                                                  color: brownAccent,
+                                                  child: Center(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              2.0),
+                                                      child: NormalText(
+                                                          label: concern,
+                                                          fontSize: 12,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                PopupMenuButton(
+                                                    itemBuilder: ((context) => [
+                                                          PopupMenuItem(
+                                                            onTap: (() async {
+                                                              var collection = FirebaseFirestore
                                                                   .instance
                                                                   .collection(
-                                                                      'Concerns')
-                                                                  .doc(data12[
-                                                                      'id'])
-                                                                  .update({
-                                                                'type':
-                                                                    'Solved',
-                                                              });
-                                                            }
-                                                          });
-                                                        }
-                                                      }),
-                                                      child: NormalText(
-                                                          label:
-                                                              'Mark as Solved',
-                                                          fontSize: 12,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ])),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ));
-                        }),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    const Divider(),
-                    Expanded(
-                      child: SizedBox(
-                        child: Column(
-                          children: [
-                            StreamBuilder<QuerySnapshot>(
-                                stream: id == ''
-                                    ? FirebaseFirestore.instance
-                                        .collection(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .doc()
-                                        .collection('Messages')
-                                        .orderBy('dateTime')
-                                        .snapshots()
-                                    : FirebaseFirestore.instance
-                                        .collection(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .doc(id)
-                                        .collection('Messages')
-                                        .orderBy('dateTime')
-                                        .snapshots(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (snapshot.hasError) {
-                                    print('error');
-                                    return const Center(child: Text('Error'));
-                                  }
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    print('waiting');
-                                    return const Padding(
-                                      padding: EdgeInsets.only(top: 50),
-                                      child: Center(
-                                          child: CircularProgressIndicator(
-                                        color: Colors.black,
-                                      )),
-                                    );
-                                  }
+                                                                      'Users')
+                                                                  .where(
+                                                                      'email',
+                                                                      isEqualTo:
+                                                                          email);
 
-                                  final data = snapshot.requireData;
-                                  return Expanded(
-                                    child: SizedBox(
-                                      child: ListView.builder(
-                                        itemCount: snapshot.data?.size ?? 0,
-                                        itemBuilder: ((context, index) {
-                                          return data.docs[index]['name'] ==
-                                                  myName
-                                              ? ListTile(
-                                                  trailing: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: CircleAvatar(
-                                                      minRadius: 30,
-                                                      maxRadius: 30,
-                                                      child: BoldText(
-                                                          label:
-                                                              data.docs[index]
-                                                                  ['name'][0],
-                                                          fontSize: 22,
-                                                          color: Colors.white),
-                                                      backgroundColor:
-                                                          blueAccent,
-                                                    ),
-                                                  ),
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 100),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: greyAccent,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    20,
-                                                                    10,
-                                                                    20,
-                                                                    10),
+                                                              var querySnapshot =
+                                                                  await collection
+                                                                      .get();
+                                                              if (mounted) {
+                                                                setState(() {
+                                                                  for (var queryDocumentSnapshot
+                                                                      in querySnapshot
+                                                                          .docs) {
+                                                                    Map<String,
+                                                                            dynamic>
+                                                                        data12 =
+                                                                        queryDocumentSnapshot
+                                                                            .data();
+
+                                                                    FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'Concerns')
+                                                                        .doc(data12[
+                                                                            'id'])
+                                                                        .update({
+                                                                      'type':
+                                                                          'Solved',
+                                                                    });
+                                                                  }
+                                                                });
+                                                              }
+                                                            }),
                                                             child: NormalText(
+                                                                label:
+                                                                    'Mark as Solved',
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ])),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          const Divider(),
+                          Expanded(
+                            child: SizedBox(
+                              child: Column(
+                                children: [
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: id == ''
+                                          ? FirebaseFirestore.instance
+                                              .collection(FirebaseAuth
+                                                  .instance.currentUser!.uid)
+                                              .doc()
+                                              .collection('Messages')
+                                              .orderBy('dateTime')
+                                              .snapshots()
+                                          : FirebaseFirestore.instance
+                                              .collection(FirebaseAuth
+                                                  .instance.currentUser!.uid)
+                                              .doc(id)
+                                              .collection('Messages')
+                                              .orderBy('dateTime')
+                                              .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          print('error');
+                                          return const Center(
+                                              child: Text('Error'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          print('waiting');
+                                          return const Padding(
+                                            padding: EdgeInsets.only(top: 50),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.black,
+                                            )),
+                                          );
+                                        }
+
+                                        final data = snapshot.requireData;
+                                        return Expanded(
+                                          child: SizedBox(
+                                            child: ListView.builder(
+                                              itemCount:
+                                                  snapshot.data?.size ?? 0,
+                                              itemBuilder: ((context, index) {
+                                                return data.docs[index]
+                                                            ['name'] ==
+                                                        myName
+                                                    ? ListTile(
+                                                        trailing: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: CircleAvatar(
+                                                            minRadius: 30,
+                                                            maxRadius: 30,
+                                                            child: BoldText(
                                                                 label: data.docs[
                                                                         index]
-                                                                    ['message'],
-                                                                fontSize: 14,
-                                                                color: primary),
+                                                                    ['name'][0],
+                                                                fontSize: 22,
+                                                                color: Colors
+                                                                    .white),
+                                                            backgroundColor:
+                                                                blueAccent,
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        NormalText(
-                                                            label:
-                                                                data.docs[index]
-                                                                    ['time'],
-                                                            fontSize: 12,
-                                                            color: primary),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
-                                              : ListTile(
-                                                  leading: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: CircleAvatar(
-                                                      minRadius: 30,
-                                                      maxRadius: 30,
-                                                      child: BoldText(
-                                                          label:
-                                                              data.docs[index]
-                                                                  ['name'][0],
-                                                          fontSize: 22,
-                                                          color: Colors.white),
-                                                      backgroundColor:
-                                                          blueAccent,
-                                                    ),
-                                                  ),
-                                                  title: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 100),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: greyAccent,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
+                                                        title: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 100),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      greyAccent,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          20,
+                                                                          10,
+                                                                          20,
+                                                                          10),
+                                                                  child: NormalText(
+                                                                      label: data
+                                                                              .docs[index]
+                                                                          [
+                                                                          'message'],
+                                                                      fontSize:
+                                                                          14,
+                                                                      color:
+                                                                          primary),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              NormalText(
+                                                                  label: data.docs[
+                                                                          index]
+                                                                      ['time'],
+                                                                  fontSize: 12,
+                                                                  color:
+                                                                      primary),
+                                                            ],
                                                           ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    20,
-                                                                    10,
-                                                                    20,
-                                                                    10),
-                                                            child: NormalText(
+                                                        ),
+                                                      )
+                                                    : ListTile(
+                                                        leading: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: CircleAvatar(
+                                                            minRadius: 30,
+                                                            maxRadius: 30,
+                                                            child: BoldText(
                                                                 label: data.docs[
                                                                         index]
-                                                                    ['message'],
-                                                                fontSize: 14,
-                                                                color: primary),
+                                                                    ['name'][0],
+                                                                fontSize: 22,
+                                                                color: Colors
+                                                                    .white),
+                                                            backgroundColor:
+                                                                blueAccent,
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          height: 5,
+                                                        title: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 100),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      greyAccent,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          20,
+                                                                          10,
+                                                                          20,
+                                                                          10),
+                                                                  child: NormalText(
+                                                                      label: data
+                                                                              .docs[index]
+                                                                          [
+                                                                          'message'],
+                                                                      fontSize:
+                                                                          14,
+                                                                      color:
+                                                                          primary),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              NormalText(
+                                                                  label: data.docs[
+                                                                          index]
+                                                                      ['time'],
+                                                                  fontSize: 12,
+                                                                  color:
+                                                                      primary),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        NormalText(
-                                                            label:
-                                                                data.docs[index]
-                                                                    ['time'],
-                                                            fontSize: 12,
-                                                            color: primary),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                        }),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                            StreamBuilder<DocumentSnapshot>(
-                                stream: userData,
-                                builder: (context,
-                                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                                  if (!snapshot.hasData) {
-                                    return const Center(child: Text('Loading'));
-                                  } else if (snapshot.hasError) {
-                                    return const Center(
-                                        child: Text('Something went wrong'));
-                                  } else if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                        child: CircularProgressIndicator());
-                                  }
+                                                      );
+                                              }),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                  StreamBuilder<DocumentSnapshot>(
+                                      stream: userData,
+                                      builder: (context,
+                                          AsyncSnapshot<DocumentSnapshot>
+                                              snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return const Center(
+                                              child: Text('Loading'));
+                                        } else if (snapshot.hasError) {
+                                          return const Center(
+                                              child:
+                                                  Text('Something went wrong'));
+                                        } else if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
 
-                                  dynamic data = snapshot.data;
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, bottom: 10),
-                                    child: ListTile(
-                                      tileColor: Colors.white,
-                                      leading: SizedBox(
-                                          height: 100,
-                                          width: 500,
-                                          child: TextFormField(
-                                            controller: _messageController,
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            decoration: const InputDecoration(
-                                                fillColor: Colors.white),
-                                          )),
-                                      trailing: IconButton(
-                                          onPressed: (() {
-                                            addMessage(
-                                                '',
-                                                data['profilePicture'],
-                                                data['first_name'] +
-                                                    ' ' +
-                                                    data['sur_name'],
-                                                data['email'],
-                                                '',
-                                                _messageController.text,
-                                                name,
-                                                '',
-                                                id,
-                                                concern,
-                                                data['to'],
-                                                data['from']);
-                                            addMessage2(
-                                                '',
-                                                data['profilePicture'],
-                                                data['first_name'] +
-                                                    ' ' +
-                                                    data['sur_name'],
-                                                data['email'],
-                                                '',
-                                                _messageController.text,
-                                                name,
-                                                '',
-                                                id,
-                                                concern);
-                                            _messageController.clear();
-                                          }),
-                                          icon: const Icon(Icons.send,
-                                              color: secondary)),
-                                    ),
-                                  );
-                                }),
-                          ],
-                        ),
+                                        dynamic data = snapshot.data;
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                          child: ListTile(
+                                            tileColor: Colors.white,
+                                            leading: SizedBox(
+                                                height: 100,
+                                                width: 500,
+                                                child: TextFormField(
+                                                  controller:
+                                                      _messageController,
+                                                  textCapitalization:
+                                                      TextCapitalization.words,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          fillColor:
+                                                              Colors.white),
+                                                )),
+                                            trailing: IconButton(
+                                                onPressed: (() {
+                                                  addMessage(
+                                                      '',
+                                                      data['profilePicture'],
+                                                      data['first_name'] +
+                                                          ' ' +
+                                                          data['sur_name'],
+                                                      data['email'],
+                                                      '',
+                                                      _messageController.text,
+                                                      name,
+                                                      '',
+                                                      id,
+                                                      concern,
+                                                      data['to'],
+                                                      data['from']);
+                                                  addMessage2(
+                                                      '',
+                                                      data['profilePicture'],
+                                                      data['first_name'] +
+                                                          ' ' +
+                                                          data['sur_name'],
+                                                      data['email'],
+                                                      '',
+                                                      _messageController.text,
+                                                      name,
+                                                      '',
+                                                      id,
+                                                      concern);
+                                                  _messageController.clear();
+                                                }),
+                                                icon: const Icon(Icons.send,
+                                                    color: secondary)),
+                                          ),
+                                        );
+                                      }),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                )
+              : SizedBox(),
         ],
       ),
     );
