@@ -270,27 +270,83 @@ class _DashboardTabState extends State<DashboardTab> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Expanded(
-                          child: SizedBox(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                    leading: NormalText(
-                                        label: 'Grades',
-                                        fontSize: 12,
-                                        color: primary),
-                                    trailing: BoldText(
-                                        label: total1.toString(),
-                                        fontSize: 12,
-                                        color: primary));
-                              },
-                              itemCount: 10,
-                            ),
-                          ),
-                        ),
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('Categ')
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                                return const Center(child: Text('Error'));
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                print('waiting');
+                                return const Padding(
+                                  padding: EdgeInsets.only(top: 50),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  )),
+                                );
+                              }
+
+                              final data1 = snapshot.requireData;
+                              return Expanded(
+                                child: SizedBox(
+                                  child: ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return Divider();
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection('Concerns')
+                                              .where('concern',
+                                                  isEqualTo: data1.docs[index]
+                                                      ['name'])
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasError) {
+                                              print(snapshot.error);
+                                              return const Center(
+                                                  child: Text('Error'));
+                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              print('waiting');
+                                              return const Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 50),
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  color: Colors.black,
+                                                )),
+                                              );
+                                            }
+                                            final data2 = snapshot.requireData;
+                                            return ListTile(
+                                                leading: NormalText(
+                                                    label: data1.docs[index]
+                                                        ['name'],
+                                                    fontSize: 12,
+                                                    color: primary),
+                                                trailing: BoldText(
+                                                    label:
+                                                        data2.size.toString(),
+                                                    fontSize: 12,
+                                                    color: primary));
+                                          });
+                                    },
+                                    itemCount: data1.size,
+                                  ),
+                                ),
+                              );
+                            }),
                       ],
                     ),
                   ),
