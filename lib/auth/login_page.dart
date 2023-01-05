@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/repositories/auth_repository.dart';
 import 'package:consultation_system/services/navigation.dart';
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                         'assets/images/bsu.png',
                         height: 50,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Column(
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                               BoldText(
                                 label: 'Con',
                                 fontSize: 24,
-                                color: Color(0xffD7953F),
+                                color: const Color(0xffD7953F),
                               ),
                             ],
                           ),
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       minWidth: 120,
                       child: NormalText(
                           label: 'Login', fontSize: 16, color: Colors.white),
-                      color: Color(0xffD7953F),
+                      color: const Color(0xffD7953F),
                       onPressed: (() {
                         showDialog(
                             context: context,
@@ -281,16 +282,62 @@ class _LoginPageState extends State<LoginPage> {
                                                       if (loginformKey
                                                           .currentState!
                                                           .validate()) {
+                                                        late String userType;
                                                         try {
-                                                          await AuthRepository()
-                                                              .loginOfuser(
-                                                                  _emailController
-                                                                      .text,
-                                                                  _passwordController
-                                                                      .text);
-                                                          // ignore: use_build_context_synchronously
-                                                          Navigation(context)
-                                                              .goToHomeScreen();
+                                                          var collection = FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'CONSULTATION-USERS')
+                                                              .where('email',
+                                                                  isEqualTo:
+                                                                      _emailController
+                                                                          .text);
+
+                                                          var querySnapshot =
+                                                              await collection
+                                                                  .get();
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              for (var queryDocumentSnapshot
+                                                                  in querySnapshot
+                                                                      .docs) {
+                                                                Map<String,
+                                                                        dynamic>
+                                                                    data =
+                                                                    queryDocumentSnapshot
+                                                                        .data();
+                                                                userType = data[
+                                                                    'userType'];
+                                                              }
+                                                            });
+                                                          }
+
+                                                          if (userType !=
+                                                              'Instructor') {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: NormalText(
+                                                                    label:
+                                                                        'Invalid Account',
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            await AuthRepository()
+                                                                .loginOfuser(
+                                                                    _emailController
+                                                                        .text,
+                                                                    _passwordController
+                                                                        .text);
+                                                            // ignore: use_build_context_synchronously
+                                                            Navigation(context)
+                                                                .goToHomeScreen();
+                                                          }
                                                         } on FirebaseAuthException catch (e) {
                                                           validateLogin(e);
                                                         }
