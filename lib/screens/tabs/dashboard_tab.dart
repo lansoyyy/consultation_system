@@ -4,6 +4,7 @@ import 'package:consultation_system/widgets/appabr_widget.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 class DashboardTab extends StatefulWidget {
@@ -156,6 +157,8 @@ class _DashboardTabState extends State<DashboardTab> {
     }
   }
 
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     String date = DateFormat("MMMM, EEEE, yyyy").format(DateTime.now());
@@ -180,70 +183,109 @@ class _DashboardTabState extends State<DashboardTab> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    height: 100,
-                    width: 250,
-                    color: greyAccent,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NormalText(
-                            label: 'TOTAL MESSAGES',
-                            fontSize: 12,
-                            color: primary),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        BoldText(
-                            label: message.toString(),
-                            fontSize: 32,
-                            color: primary),
-                      ],
+                  GestureDetector(
+                    onTap: (() {
+                      box.write('filter', 'All');
+
+                      widget.page.jumpToPage(1);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: NormalText(
+                              label: 'Filtered: ${box.read('filter')}',
+                              fontSize: 18,
+                              color: Colors.white)));
+                    }),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      height: 100,
+                      width: 250,
+                      color: greyAccent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          NormalText(
+                              label: 'TOTAL MESSAGES',
+                              fontSize: 12,
+                              color: primary),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          BoldText(
+                              label: message.toString(),
+                              fontSize: 32,
+                              color: primary),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    height: 100,
-                    width: 250,
-                    color: greyAccent,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NormalText(
-                            label: 'UNREAD MESSAGES',
-                            fontSize: 12,
-                            color: primary),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        BoldText(
-                            label: unreadmessage.toString(),
-                            fontSize: 32,
-                            color: primary),
-                      ],
+                  GestureDetector(
+                    onTap: (() {
+                      box.write('filter', 'Unread');
+
+                      widget.page.jumpToPage(1);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: NormalText(
+                              label: 'Filtered: ${box.read('filter')}',
+                              fontSize: 18,
+                              color: Colors.white)));
+                    }),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      height: 100,
+                      width: 250,
+                      color: greyAccent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          NormalText(
+                              label: 'UNREAD MESSAGES',
+                              fontSize: 12,
+                              color: primary),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          BoldText(
+                              label: unreadmessage.toString(),
+                              fontSize: 32,
+                              color: primary),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    height: 100,
-                    width: 250,
-                    color: greyAccent,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        NormalText(
-                            label: 'READ MESSAGES',
-                            fontSize: 12,
-                            color: primary),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        BoldText(
-                            label: readmessage.toString(),
-                            fontSize: 32,
-                            color: primary),
-                      ],
+                  GestureDetector(
+                    onTap: (() {
+                      box.write('filter', 'Read');
+
+                      widget.page.jumpToPage(1);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: NormalText(
+                              label: 'Filtered: ${box.read('filter')}',
+                              fontSize: 18,
+                              color: Colors.white)));
+                    }),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      height: 100,
+                      width: 250,
+                      color: greyAccent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          NormalText(
+                              label: 'READ MESSAGES',
+                              fontSize: 12,
+                              color: primary),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          BoldText(
+                              label: readmessage.toString(),
+                              fontSize: 32,
+                              color: primary),
+                        ],
+                      ),
                     ),
                   ),
                 ],

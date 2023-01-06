@@ -6,6 +6,7 @@ import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 
 class MessagesTab extends StatefulWidget {
@@ -21,6 +22,10 @@ class _MessagesTabState extends State<MessagesTab> {
   void initState() {
     super.initState();
     getMyData();
+
+    if (box.read('filter') == null) {
+      box.write('filter', 'All');
+    }
   }
 
   late String myName = '';
@@ -41,6 +46,8 @@ class _MessagesTabState extends State<MessagesTab> {
       });
     }
   }
+
+  final box = GetStorage();
 
   final _messageController = TextEditingController();
 
@@ -79,17 +86,15 @@ class _MessagesTabState extends State<MessagesTab> {
   int value3 = 0;
   late String status = 'Active';
 
-  late String filterMsg = 'All';
-
   final nameController = TextEditingController();
 
   int value4 = 0;
-  late String concernFilter = 'Grades';
+  late String concernFilter = 'Assignment';
 
   late String email = '';
 
   filterMessage() {
-    if (filterMsg == 'All') {
+    if (box.read('filter') == 'All') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           // .where('name',
@@ -98,7 +103,7 @@ class _MessagesTabState extends State<MessagesTab> {
           //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .where('concern', isEqualTo: concernFilter)
           .snapshots();
-    } else if (filterMsg == 'Read') {
+    } else if (box.read('filter') == 'Read') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Read')
@@ -108,7 +113,9 @@ class _MessagesTabState extends State<MessagesTab> {
           //     isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           .where('concern', isEqualTo: concernFilter)
           .snapshots();
-    } else if (nameSearched != '' && filterMsg == '' && concernFilter == '') {
+    } else if (nameSearched != '' &&
+        box.read('filter') == '' &&
+        concernFilter == '') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           // .where('status', isEqualTo: 'Read')
@@ -118,7 +125,7 @@ class _MessagesTabState extends State<MessagesTab> {
               isLessThan: '${toBeginningOfSentenceCase(nameSearched)}z')
           // .where('concern', isEqualTo: concernFilter)
           .snapshots();
-    } else if (filterMsg == 'Unread') {
+    } else if (box.read('filter') == 'Unread') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .where('status', isEqualTo: 'Unread')
@@ -133,7 +140,7 @@ class _MessagesTabState extends State<MessagesTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(concernFilter);
+    print(box.read('filter'));
     return Scaffold(
       appBar: appbarWidget(widget.page),
       body: Row(
@@ -173,8 +180,9 @@ class _MessagesTabState extends State<MessagesTab> {
                           suffixIcon: IconButton(
                             onPressed: (() {
                               setState(() {
+                                box.write('filter', '');
                                 nameSearched = one;
-                                filterMsg = '';
+
                                 concernFilter = '';
                               });
                             }),
@@ -213,27 +221,34 @@ class _MessagesTabState extends State<MessagesTab> {
                             items: [
                               DropdownMenuItem(
                                 onTap: () {
-                                  filterMsg = 'All';
+                                  setState(() {
+                                    box.write('filter', 'All');
+                                  });
                                 },
                                 value: 0,
                                 child: DropDownItem(label: 'All'),
                               ),
                               DropdownMenuItem(
                                 onTap: () {
-                                  filterMsg = 'Read';
+                                  setState(() {
+                                    box.write('filter', 'Read');
+                                  });
                                 },
                                 value: 1,
                                 child: DropDownItem(label: 'Read'),
                               ),
                               DropdownMenuItem(
                                 onTap: () {
-                                  filterMsg = 'Unread';
+                                  setState(() {
+                                    box.write('filter', 'Unread');
+                                  });
                                 },
                                 value: 2,
                                 child: DropDownItem(label: 'Unread'),
                               ),
                             ],
                             onChanged: (value) {
+                              print(box.read('filter'));
                               setState(() {
                                 value3 = int.parse(value.toString());
                               });
