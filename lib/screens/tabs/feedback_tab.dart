@@ -54,16 +54,16 @@ class FeedbackTab extends StatelessWidget {
                                   const EdgeInsets.only(left: 20, right: 20),
                               child: Container(
                                 height: 500,
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: primary, width: 2),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white),
+                                decoration:
+                                    const BoxDecoration(color: Colors.white),
                                 child: SingleChildScrollView(
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 0, right: 0),
                                     child: DataTable(
+                                      border: TableBorder.all(
+                                        color: Colors.grey,
+                                      ),
                                       // datatable widget
                                       columns: [
                                         // column to set the name
@@ -100,42 +100,52 @@ class FeedbackTab extends StatelessWidget {
                                         for (int i = 0;
                                             i < snapshot.data!.size;
                                             i++)
-                                          DataRow(cells: [
-                                            DataCell(
-                                              NormalText(
-                                                  label: i.toString(),
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]['course'],
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]
-                                                      ['yearLevel'],
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]
-                                                      ['feedback'],
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            DataCell(
-                                              NormalText(
-                                                  label: data.docs[i]['rating']
-                                                          .toString() +
-                                                      ' ⭐',
-                                                  fontSize: 18,
-                                                  color: Colors.amber),
-                                            ),
-                                          ]),
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                if (i.floor().isEven) {
+                                                  return Colors.blueGrey[50];
+                                                }
+                                                return null; // Use the default value.
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: i.toString(),
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['course'],
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['yearLevel'],
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['feedback'],
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label:
+                                                          '${data.docs[i]['rating']} ⭐',
+                                                      fontSize: 18,
+                                                      color: Colors.amber),
+                                                ),
+                                              ]),
                                       ],
                                     ),
                                   ),
