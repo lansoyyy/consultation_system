@@ -1,12 +1,10 @@
 import 'package:consultation_system/screens/tabs/analytics_tab.dart';
 import 'package:consultation_system/screens/tabs/dashboard_tab.dart';
-import 'package:consultation_system/screens/tabs/feedback_tab.dart';
 import 'package:consultation_system/screens/tabs/messages_tab.dart';
 import 'package:consultation_system/screens/tabs/notif_tab.dart';
 import 'package:consultation_system/screens/tabs/reports_tab.dart';
 import 'package:consultation_system/screens/tabs/settings_tab.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -57,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey[100],
-                    border: Border(
+                    border: const Border(
                         bottom: BorderSide(width: 1, color: greyAccent))),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -117,26 +115,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Icons.analytics),
                 ),
                 SideMenuItem(
-                  priority: 4,
-                  title: 'Feedback',
                   onTap: () {
                     page.jumpToPage(4);
                   },
-                  icon: const Icon(Icons.feedback),
+                  priority: 4,
+                  title: 'Notification',
+                  icon: const Icon(Icons.notifications),
                 ),
                 SideMenuItem(
                   onTap: () {
                     page.jumpToPage(5);
                   },
                   priority: 5,
-                  title: 'Notification',
-                  icon: const Icon(Icons.notifications),
-                ),
-                SideMenuItem(
-                  onTap: () {
-                    page.jumpToPage(6);
-                  },
-                  priority: 6,
                   title: 'Settings',
                   icon: const Icon(Icons.settings),
                 ),
@@ -157,9 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   page: page,
                 ),
                 AnalyticsTab(
-                  page: page,
-                ),
-                FeedbackTab(
                   page: page,
                 ),
                 NotfiTab(
