@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constant/colors.dart';
-import '../widgets/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -53,30 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   // backgroundColor: Colors.blueGrey[700]
                   ),
               title: Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    border: const Border(
-                        bottom: BorderSide(width: 1, color: greyAccent))),
+                decoration: const BoxDecoration(
+                  color: primary,
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Image.asset(
-                        'assets/images/bsu.png',
-                        width: 33,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      BoldText(
-                        label: 'STUDCON',
-                        fontSize: 24,
-                        color: blueAccent,
-                      ),
-                    ],
+                  padding: const EdgeInsets.all(15.0),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/bsu.png',
+                      height: 120,
+                    ),
                   ),
                 ),
               ),
@@ -88,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     page.jumpToPage(0);
                   },
                   icon: const Icon(Icons.home),
-                  tooltipContent: "This is a tooltip for Dashboard item",
                 ),
                 SideMenuItem(
                   priority: 1,

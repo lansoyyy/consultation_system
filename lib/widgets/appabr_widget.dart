@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/constant/uid.dart';
+import 'package:consultation_system/services/navigation.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,13 @@ PreferredSizeWidget appbarWidget(PageController page) {
 
   return AppBar(
     actions: [
+      const SizedBox(
+        width: 20,
+      ),
+      Center(
+          child: BoldText(
+              label: 'BukSU Consultation', fontSize: 24, color: primary)),
+      const Expanded(child: SizedBox()),
       StreamBuilder<DocumentSnapshot>(
           stream: userData,
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -29,7 +38,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
               backgroundImage: NetworkImage(data['profilePicture']),
             );
           }),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
       StreamBuilder<DocumentSnapshot>(
@@ -49,11 +58,11 @@ PreferredSizeWidget appbarWidget(PageController page) {
                     fontSize: 18,
                     color: Colors.black));
           }),
-      SizedBox(
+      const SizedBox(
         width: 10,
       ),
       PopupMenuButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_drop_down,
           color: Colors.black,
         ),
@@ -61,10 +70,10 @@ PreferredSizeWidget appbarWidget(PageController page) {
           return [
             PopupMenuItem(
               onTap: (() {
-                page.jumpToPage(6);
+                page.jumpToPage(5);
               }),
               child: ListTile(
-                leading: Icon(Icons.edit),
+                leading: const Icon(Icons.edit),
                 title: NormalText(
                     label: 'Edit Profile', fontSize: 12, color: Colors.black),
               ),
@@ -73,11 +82,11 @@ PreferredSizeWidget appbarWidget(PageController page) {
               onTap: (() async {
                 await FirebaseAuth.instance.signOut();
 
-                Navigator.pushReplacementNamed(context, '/loginpage');
-                Navigator.pushReplacementNamed(context, '/loginpage');
+                Navigation(context).goToLoginPage();
+                Navigation(context).goToLoginPage();
               }),
               child: ListTile(
-                leading: Icon(Icons.logout),
+                leading: const Icon(Icons.logout),
                 title: NormalText(
                     label: 'Logout', fontSize: 12, color: Colors.black),
               ),
@@ -85,7 +94,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
           ];
         },
       ),
-      SizedBox(
+      const SizedBox(
         width: 20,
       ),
     ],
