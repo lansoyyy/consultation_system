@@ -160,7 +160,7 @@ class _MessagesTabState extends State<MessagesTab> {
                     width: 350,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     decoration: BoxDecoration(
-                      color: greyColor,
+                      color: Colors.grey[300],
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(5),
                         topRight: Radius.circular(5),
@@ -177,7 +177,7 @@ class _MessagesTabState extends State<MessagesTab> {
                         one = value;
                       }),
                       decoration: InputDecoration(
-                          suffixIcon: IconButton(
+                          prefixIcon: IconButton(
                             onPressed: (() {
                               setState(() {
                                 box.write('filter', '');
@@ -188,7 +188,7 @@ class _MessagesTabState extends State<MessagesTab> {
                             }),
                             icon: Icon(Icons.search),
                           ),
-                          prefixIcon: IconButton(
+                          suffixIcon: IconButton(
                             onPressed: (() {
                               setState(() {
                                 nameSearched = '';
@@ -197,7 +197,7 @@ class _MessagesTabState extends State<MessagesTab> {
                             }),
                             icon: Icon(Icons.close),
                           ),
-                          hintText: 'Search'),
+                          hintText: 'Search Messages'),
                     ),
                   ),
                   SizedBox(
@@ -208,7 +208,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       Container(
                         width: 150,
                         decoration: BoxDecoration(
-                          color: greyColor,
+                          color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -284,7 +284,7 @@ class _MessagesTabState extends State<MessagesTab> {
 
                             return Container(
                               decoration: BoxDecoration(
-                                color: greyColor,
+                                color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               width: 160,
@@ -398,7 +398,11 @@ class _MessagesTabState extends State<MessagesTab> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          color: brownAccent,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue[700],
+                                            borderRadius:
+                                                BorderRadius.circular(2.5),
+                                          ),
                                           child: Center(
                                             child: Padding(
                                               padding:
@@ -415,7 +419,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                         NormalText(
                                             label: data.docs[index]['time'],
                                             fontSize: 12,
-                                            color: Colors.grey),
+                                            color: Colors.black),
                                       ],
                                     ),
                                   ),
@@ -595,282 +599,290 @@ class _MessagesTabState extends State<MessagesTab> {
                             height: 20,
                           ),
                           const Divider(),
-                          Expanded(
-                            child: SizedBox(
-                              child: Column(
-                                children: [
-                                  StreamBuilder<QuerySnapshot>(
-                                      stream: id == ''
-                                          ? FirebaseFirestore.instance
-                                              .collection(FirebaseAuth
-                                                  .instance.currentUser!.uid)
-                                              .doc()
-                                              .collection('Messages')
-                                              .orderBy('dateTime')
-                                              .snapshots()
-                                          : FirebaseFirestore.instance
-                                              .collection(FirebaseAuth
-                                                  .instance.currentUser!.uid)
-                                              .doc(id)
-                                              .collection('Messages')
-                                              .orderBy('dateTime')
-                                              .snapshots(),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<QuerySnapshot>
-                                              snapshot) {
-                                        if (snapshot.hasError) {
-                                          print('error');
-                                          return const Center(
-                                              child: Text('Error'));
-                                        }
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          print('waiting');
-                                          return const Padding(
-                                            padding: EdgeInsets.only(top: 50),
-                                            child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                              color: Colors.black,
-                                            )),
-                                          );
-                                        }
+                          Container(
+                            color: greyAccent,
+                            child: Expanded(
+                              child: SizedBox(
+                                child: Column(
+                                  children: [
+                                    StreamBuilder<QuerySnapshot>(
+                                        stream: id == ''
+                                            ? FirebaseFirestore.instance
+                                                .collection(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .doc()
+                                                .collection('Messages')
+                                                .orderBy('dateTime')
+                                                .snapshots()
+                                            : FirebaseFirestore.instance
+                                                .collection(FirebaseAuth
+                                                    .instance.currentUser!.uid)
+                                                .doc(id)
+                                                .collection('Messages')
+                                                .orderBy('dateTime')
+                                                .snapshots(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (snapshot.hasError) {
+                                            print('error');
+                                            return const Center(
+                                                child: Text('Error'));
+                                          }
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            print('waiting');
+                                            return const Padding(
+                                              padding: EdgeInsets.only(top: 50),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: Colors.black,
+                                              )),
+                                            );
+                                          }
 
-                                        final data = snapshot.requireData;
-                                        return Expanded(
-                                          child: SizedBox(
-                                            child: ListView.builder(
-                                              itemCount:
-                                                  snapshot.data?.size ?? 0,
-                                              itemBuilder: ((context, index) {
-                                                return data.docs[index]
-                                                            ['name'] ==
-                                                        myName
-                                                    ? ListTile(
-                                                        trailing: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: CircleAvatar(
-                                                            minRadius: 30,
-                                                            maxRadius: 30,
-                                                            child: BoldText(
-                                                                label: data.docs[
-                                                                        index]
-                                                                    ['name'][0],
-                                                                fontSize: 22,
-                                                                color: Colors
-                                                                    .white),
-                                                            backgroundColor:
-                                                                blueAccent,
-                                                          ),
-                                                        ),
-                                                        title: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 100),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color:
-                                                                      greyAccent,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          20,
-                                                                          10,
-                                                                          20,
-                                                                          10),
-                                                                  child: NormalText(
-                                                                      label: data
-                                                                              .docs[index]
-                                                                          [
-                                                                          'message'],
-                                                                      fontSize:
-                                                                          14,
-                                                                      color:
-                                                                          primary),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              NormalText(
+                                          final data = snapshot.requireData;
+                                          return Expanded(
+                                            child: SizedBox(
+                                              child: ListView.builder(
+                                                itemCount:
+                                                    snapshot.data?.size ?? 0,
+                                                itemBuilder: ((context, index) {
+                                                  return data.docs[index]
+                                                              ['name'] ==
+                                                          myName
+                                                      ? ListTile(
+                                                          trailing: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: CircleAvatar(
+                                                              minRadius: 30,
+                                                              maxRadius: 30,
+                                                              child: BoldText(
                                                                   label: data.docs[
-                                                                          index]
-                                                                      ['time'],
-                                                                  fontSize: 12,
-                                                                  color:
-                                                                      primary),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : ListTile(
-                                                        leading: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: CircleAvatar(
-                                                            minRadius: 30,
-                                                            maxRadius: 30,
-                                                            child: BoldText(
-                                                                label: data.docs[
-                                                                        index]
-                                                                    ['name'][0],
-                                                                fontSize: 22,
-                                                                color: Colors
-                                                                    .white),
-                                                            backgroundColor:
-                                                                blueAccent,
-                                                          ),
-                                                        ),
-                                                        title: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 100),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color:
-                                                                      greyAccent,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              10),
-                                                                ),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .fromLTRB(
-                                                                          20,
-                                                                          10,
-                                                                          20,
-                                                                          10),
-                                                                  child: NormalText(
-                                                                      label: data
-                                                                              .docs[index]
+                                                                              index]
                                                                           [
-                                                                          'message'],
-                                                                      fontSize:
-                                                                          14,
-                                                                      color:
-                                                                          primary),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              NormalText(
-                                                                  label: data.docs[
-                                                                          index]
-                                                                      ['time'],
-                                                                  fontSize: 12,
-                                                                  color:
-                                                                      primary),
-                                                            ],
+                                                                          'name']
+                                                                      [0],
+                                                                  fontSize: 22,
+                                                                  color: Colors
+                                                                      .white),
+                                                              backgroundColor:
+                                                                  blueAccent,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      );
-                                              }),
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                  StreamBuilder<DocumentSnapshot>(
-                                      stream: userData,
-                                      builder: (context,
-                                          AsyncSnapshot<DocumentSnapshot>
-                                              snapshot) {
-                                        if (!snapshot.hasData) {
-                                          return const Center(
-                                              child: Text('Loading'));
-                                        } else if (snapshot.hasError) {
-                                          return const Center(
-                                              child:
-                                                  Text('Something went wrong'));
-                                        } else if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-
-                                        dynamic data = snapshot.data;
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10, bottom: 10),
-                                          child: ListTile(
-                                            tileColor: Colors.white,
-                                            leading: SizedBox(
-                                                height: 100,
-                                                width: 500,
-                                                child: TextFormField(
-                                                  controller:
-                                                      _messageController,
-                                                  textCapitalization:
-                                                      TextCapitalization.words,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          fillColor:
-                                                              Colors.white),
-                                                )),
-                                            trailing: IconButton(
-                                                onPressed: (() {
-                                                  addMessage(
-                                                      '',
-                                                      data['profilePicture'],
-                                                      data['first_name'] +
-                                                          ' ' +
-                                                          data['sur_name'],
-                                                      data['email'],
-                                                      '',
-                                                      _messageController.text,
-                                                      name,
-                                                      '',
-                                                      id,
-                                                      concern,
-                                                      data['to'],
-                                                      data['from']);
-                                                  addMessage2(
-                                                      '',
-                                                      data['profilePicture'],
-                                                      data['first_name'] +
-                                                          ' ' +
-                                                          data['sur_name'],
-                                                      data['email'],
-                                                      '',
-                                                      _messageController.text,
-                                                      name,
-                                                      '',
-                                                      id,
-                                                      concern);
-                                                  _messageController.clear();
+                                                          title: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 100),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        greyAccent,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
+                                                                            20,
+                                                                            10,
+                                                                            20,
+                                                                            10),
+                                                                    child: NormalText(
+                                                                        label: data.docs[index]
+                                                                            [
+                                                                            'message'],
+                                                                        fontSize:
+                                                                            14,
+                                                                        color:
+                                                                            primary),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                NormalText(
+                                                                    label: data.docs[
+                                                                            index]
+                                                                        [
+                                                                        'time'],
+                                                                    fontSize:
+                                                                        12,
+                                                                    color:
+                                                                        primary),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : ListTile(
+                                                          leading: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: CircleAvatar(
+                                                              minRadius: 30,
+                                                              maxRadius: 30,
+                                                              child: BoldText(
+                                                                  label: data.docs[
+                                                                              index]
+                                                                          [
+                                                                          'name']
+                                                                      [0],
+                                                                  fontSize: 22,
+                                                                  color: Colors
+                                                                      .white),
+                                                              backgroundColor:
+                                                                  blueAccent,
+                                                            ),
+                                                          ),
+                                                          title: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 100),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        greyAccent,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.fromLTRB(
+                                                                            20,
+                                                                            10,
+                                                                            20,
+                                                                            10),
+                                                                    child: NormalText(
+                                                                        label: data.docs[index]
+                                                                            [
+                                                                            'message'],
+                                                                        fontSize:
+                                                                            14,
+                                                                        color:
+                                                                            primary),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                NormalText(
+                                                                    label: data.docs[
+                                                                            index]
+                                                                        [
+                                                                        'time'],
+                                                                    fontSize:
+                                                                        12,
+                                                                    color:
+                                                                        primary),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
                                                 }),
-                                                icon: const Icon(Icons.send,
-                                                    color: secondary)),
-                                          ),
-                                        );
-                                      }),
-                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                    StreamBuilder<DocumentSnapshot>(
+                                        stream: userData,
+                                        builder: (context,
+                                            AsyncSnapshot<DocumentSnapshot>
+                                                snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return const Center(
+                                                child: Text('Loading'));
+                                          } else if (snapshot.hasError) {
+                                            return const Center(
+                                                child: Text(
+                                                    'Something went wrong'));
+                                          } else if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          }
+
+                                          dynamic data = snapshot.data;
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10, bottom: 10),
+                                            child: ListTile(
+                                              tileColor: Colors.white,
+                                              leading: SizedBox(
+                                                  height: 100,
+                                                  width: 500,
+                                                  child: TextFormField(
+                                                    controller:
+                                                        _messageController,
+                                                    textCapitalization:
+                                                        TextCapitalization
+                                                            .words,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            fillColor:
+                                                                Colors.white),
+                                                  )),
+                                              trailing: IconButton(
+                                                  onPressed: (() {
+                                                    addMessage(
+                                                        '',
+                                                        data['profilePicture'],
+                                                        data['first_name'] +
+                                                            ' ' +
+                                                            data['sur_name'],
+                                                        data['email'],
+                                                        '',
+                                                        _messageController.text,
+                                                        name,
+                                                        '',
+                                                        id,
+                                                        concern,
+                                                        data['to'],
+                                                        data['from']);
+                                                    addMessage2(
+                                                        '',
+                                                        data['profilePicture'],
+                                                        data['first_name'] +
+                                                            ' ' +
+                                                            data['sur_name'],
+                                                        data['email'],
+                                                        '',
+                                                        _messageController.text,
+                                                        name,
+                                                        '',
+                                                        id,
+                                                        concern);
+                                                    _messageController.clear();
+                                                  }),
+                                                  icon: const Icon(Icons.send,
+                                                      color: secondary)),
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
