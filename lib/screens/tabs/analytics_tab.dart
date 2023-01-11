@@ -5,6 +5,7 @@ import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../widgets/appabr_widget.dart';
 
@@ -18,7 +19,7 @@ class AnalyticsTab extends StatefulWidget {
 
 class _AnalyticsTabState extends State<AnalyticsTab> {
   Map<String, double> nulldatamap = {
-    'Empty': 100,
+    'No Data': 100,
   };
 
   late List<Concern> _concern = [];
@@ -145,6 +146,113 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
     }
   }
 
+  int year1 = 0;
+  getYear1() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'First Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year1 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int year2 = 0;
+  getYear2() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Second Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year2 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int year3 = 0;
+  getYear3() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Third Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year3 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  int year4 = 0;
+  getYear4() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Fourth Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year4 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  List categ = [];
+
+  List nums = [];
+  getCateg() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance.collection('Categ');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          categ.add(data['name']);
+        }
+      });
+    }
+
+    for (int i = 0; i < categ.length; i++) {
+      var collection1 = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('concern', isEqualTo: categ[i]);
+
+      var querySnapshot1 = await collection1.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot1.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            nums.add(querySnapshot1.size);
+          }
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -152,10 +260,17 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
     getData2();
     getData3();
     getData4();
+    getYear1();
+    getYear2();
+    getYear3();
+    getYear4();
+    getCateg();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(categ);
+
     return Scaffold(
         appBar: appbarWidget(widget.page),
         body: Padding(
@@ -168,48 +283,6 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
                     label: 'CONSULTATION ANALYSIS',
                     fontSize: 24,
                     color: primary),
-                StreamBuilder<Object>(
-                    stream: dataStream,
-                    builder: (
-                      context,
-                      snapshot,
-                    ) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                            child: Text('something went wrong'));
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final data = snapshot.requireData;
-                      getFromSnapShot(data);
-
-                      int i = 0;
-
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
-                        child: SfCartesianChart(
-                          primaryXAxis: CategoryAxis(),
-                          legend: Legend(
-                            isVisible: true,
-                          ),
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                          series: <ChartSeries>[
-                            LineSeries<ChartData, String>(
-                                dataSource: [
-                                  // Bind data source
-                                  ChartData('Grades', total1.toDouble()),
-                                  ChartData('Requirements', total2.toDouble()),
-                                  ChartData('Attendance', total3.toDouble()),
-                                  ChartData('Others', total4.toDouble()),
-                                ],
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y)
-                          ],
-                        ),
-                      );
-                    }),
                 const SizedBox(
                   height: 40,
                 ),
@@ -231,7 +304,12 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
                       animationDuration: const Duration(milliseconds: 800),
                       chartLegendSpacing: 32,
                       chartRadius: MediaQuery.of(context).size.width / 6.2,
-                      colorList: const [Colors.blue, Colors.red, Colors.green],
+                      colorList: [
+                        Colors.lightBlue[100]!,
+                        Colors.red[100]!,
+                        Colors.lightGreen[100]!,
+                        Colors.amber[100]!
+                      ],
                       initialAngleInDegree: 0,
                       chartType: ChartType.ring,
                       ringStrokeWidth: 32,
@@ -251,6 +329,109 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
                       ),
                     );
                   },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BoldText(
+                            label: 'Year Level',
+                            fontSize: 14,
+                            color: Colors.black),
+                        Container(
+                            width: 500,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 20),
+                            child: SfCartesianChart(
+                                primaryXAxis: CategoryAxis(),
+                                primaryYAxis: NumericAxis(
+                                    minimum: 0, maximum: 40, interval: 10),
+                                tooltipBehavior: TooltipBehavior(enable: true),
+                                series: <ChartSeries<ChartData, String>>[
+                                  BarSeries<ChartData, String>(
+                                      dataSource: [
+                                        // Bind data source
+                                        ChartData('1st Year', year1.toDouble()),
+                                        ChartData('2nd Year', year2.toDouble()),
+                                        ChartData('3rd Year', year3.toDouble()),
+                                        ChartData('4th Year', year4.toDouble()),
+                                      ],
+                                      xValueMapper: (ChartData data, _) =>
+                                          data.x,
+                                      yValueMapper: (ChartData data, _) =>
+                                          data.y,
+                                      name: 'Year Level',
+                                      color: Color.fromRGBO(8, 142, 255, 1))
+                                ])),
+                      ],
+                    ),
+                    StreamBuilder<Object>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Concern')
+                            .snapshots(),
+                        builder: (
+                          context,
+                          snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                                child: Text('something went wrong'));
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          final data = snapshot.requireData;
+                          getFromSnapShot(data);
+
+                          return Column(
+                            children: [
+                              BoldText(
+                                  label: 'Courses',
+                                  fontSize: 14,
+                                  color: Colors.black),
+                              Container(
+                                  width: 500,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 20),
+                                  child: SfCartesianChart(
+                                      primaryXAxis: CategoryAxis(),
+                                      primaryYAxis: NumericAxis(
+                                          minimum: 0,
+                                          maximum: 40,
+                                          interval: 10),
+                                      tooltipBehavior:
+                                          TooltipBehavior(enable: true),
+                                      series: <ChartSeries<ChartData, String>>[
+                                        BarSeries<ChartData, String>(
+                                            dataSource: [
+                                              // Bind data source
+                                              for (int i = 0;
+                                                  i < categ.length;
+                                                  i++)
+                                                for (int j = 0;
+                                                    j < nums.length;
+                                                    j++)
+                                                  ChartData(categ[i], nums[j]),
+                                            ],
+                                            xValueMapper: (ChartData data, _) =>
+                                                data.x,
+                                            yValueMapper: (ChartData data, _) =>
+                                                data.y,
+                                            name: 'Courses',
+                                            color:
+                                                Color.fromRGBO(8, 142, 255, 1))
+                                      ])),
+                            ],
+                          );
+                        }),
+                  ],
                 ),
                 const SizedBox(
                   height: 50,

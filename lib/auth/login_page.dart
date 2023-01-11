@@ -16,6 +16,7 @@
 //   State<LoginPage> createState() => _LoginPageState();
 // }
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/services/navigation.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
@@ -24,6 +25,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../repositories/auth_repository.dart';
 import '../widgets/error_dialogue_widget.dart';
 
 // class _LoginPageState extends State<LoginPage> {
@@ -633,74 +635,74 @@ class _LoginPageState extends State<LoginPage> {
                                                                             10)),
                                                             onPressed:
                                                                 (() async {
-                                                              Navigation(
-                                                                      context)
-                                                                  .goToHomeScreen();
-                                                              // if (loginformKey
-                                                              //     .currentState!
-                                                              //     .validate()) {
-                                                              //   late String
-                                                              //       userType;
-                                                              //   try {
-                                                              //     var collection = FirebaseFirestore
-                                                              //         .instance
-                                                              //         .collection(
-                                                              //             'CONSULTATION-USERS')
-                                                              //         .where(
-                                                              //             'email',
-                                                              //             isEqualTo:
-                                                              //                 _emailController.text);
+                                                              // Navigation(
+                                                              //         context)
+                                                              //     .goToHomeScreen();
+                                                              if (loginformKey
+                                                                  .currentState!
+                                                                  .validate()) {
+                                                                late String
+                                                                    userType;
+                                                                try {
+                                                                  var collection = FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          'CONSULTATION-USERS')
+                                                                      .where(
+                                                                          'email',
+                                                                          isEqualTo:
+                                                                              _emailController.text);
 
-                                                              //     var querySnapshot =
-                                                              //         await collection
-                                                              //             .get();
-                                                              //     if (mounted) {
-                                                              //       setState(
-                                                              //           () {
-                                                              //         for (var queryDocumentSnapshot
-                                                              //             in querySnapshot
-                                                              //                 .docs) {
-                                                              //           Map<String,
-                                                              //                   dynamic>
-                                                              //               data =
-                                                              //               queryDocumentSnapshot.data();
-                                                              //           userType =
-                                                              //               data['userType'];
-                                                              //         }
-                                                              //       });
-                                                              //     }
+                                                                  var querySnapshot =
+                                                                      await collection
+                                                                          .get();
+                                                                  if (mounted) {
+                                                                    setState(
+                                                                        () {
+                                                                      for (var queryDocumentSnapshot
+                                                                          in querySnapshot
+                                                                              .docs) {
+                                                                        Map<String,
+                                                                                dynamic>
+                                                                            data =
+                                                                            queryDocumentSnapshot.data();
+                                                                        userType =
+                                                                            data['userType'];
+                                                                      }
+                                                                    });
+                                                                  }
 
-                                                              //     if (userType !=
-                                                              //         'Instructor') {
-                                                              //       ScaffoldMessenger.of(
-                                                              //               context)
-                                                              //           .showSnackBar(
-                                                              //         SnackBar(
-                                                              //           content: NormalText(
-                                                              //               label:
-                                                              //                   'Invalid Account',
-                                                              //               fontSize:
-                                                              //                   12,
-                                                              //               color:
-                                                              //                   Colors.white),
-                                                              //         ),
-                                                              //       );
-                                                              //     } else {
-                                                              //       await AuthRepository().loginOfuser(
-                                                              //           _emailController
-                                                              //               .text,
-                                                              //           _passwordController
-                                                              //               .text);
-                                                              //       // ignore: use_build_context_synchronously
-                                                              //       Navigation(
-                                                              //               context)
-                                                              //           .goToHomeScreen();
-                                                              //     }
-                                                              //   } on FirebaseAuthException catch (e) {
-                                                              //     validateLogin(
-                                                              //         e);
-                                                              //   }
-                                                              // }
+                                                                  if (userType !=
+                                                                      'Instructor') {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      SnackBar(
+                                                                        content: NormalText(
+                                                                            label:
+                                                                                'Invalid Account',
+                                                                            fontSize:
+                                                                                12,
+                                                                            color:
+                                                                                Colors.white),
+                                                                      ),
+                                                                    );
+                                                                  } else {
+                                                                    await AuthRepository().loginOfuser(
+                                                                        _emailController
+                                                                            .text,
+                                                                        _passwordController
+                                                                            .text);
+                                                                    // ignore: use_build_context_synchronously
+                                                                    Navigation(
+                                                                            context)
+                                                                        .goToHomeScreen();
+                                                                  }
+                                                                } on FirebaseAuthException catch (e) {
+                                                                  validateLogin(
+                                                                      e);
+                                                                }
+                                                              }
                                                             }),
                                                             child: Padding(
                                                               padding:

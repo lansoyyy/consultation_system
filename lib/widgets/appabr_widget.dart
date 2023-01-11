@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 PreferredSizeWidget appbarWidget(PageController page) {
   final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
       .collection('CONSULTATION-USERS')
-      .doc(FirebaseAuthToken().uid)
+      .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
 
   return AppBar(
@@ -20,7 +20,11 @@ PreferredSizeWidget appbarWidget(PageController page) {
       Center(
           child: BoldText(
               label: 'BukSU Consultation', fontSize: 24, color: primary)),
-      const Expanded(child: SizedBox()),
+      Expanded(
+        child: SizedBox(
+          width: 50,
+        ),
+      ),
       StreamBuilder<DocumentSnapshot>(
           stream: userData,
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
