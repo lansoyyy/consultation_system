@@ -3,9 +3,8 @@ import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/models/model.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:pie_chart/pie_chart.dart' as p;
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../../widgets/appabr_widget.dart';
 
@@ -273,170 +272,182 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
 
     return Scaffold(
         appBar: appbarWidget(widget.page),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NormalText(
-                    label: 'CONSULTATION ANALYSIS',
-                    fontSize: 24,
-                    color: primary),
-                const SizedBox(
-                  height: 40,
-                ),
-                StreamBuilder<Object>(
-                  stream: dataStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(child: Text('something went wrong'));
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final data = snapshot.requireData;
-                    getFromSnapShot(data);
-                    return PieChart(
-                      dataMap: getCategoryData().isEmpty
-                          ? nulldatamap
-                          : getCategoryData(),
-                      animationDuration: const Duration(milliseconds: 800),
-                      chartLegendSpacing: 32,
-                      chartRadius: MediaQuery.of(context).size.width / 6.2,
-                      colorList: [
-                        Colors.lightBlue[100]!,
-                        Colors.red[100]!,
-                        Colors.lightGreen[100]!,
-                        Colors.amber[100]!
-                      ],
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.ring,
-                      ringStrokeWidth: 32,
-                      legendOptions: const LegendOptions(
-                        showLegendsInRow: false,
-                        showLegends: true,
-                        legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
+        body: Container(
+          color: greyAccent,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NormalText(
+                      label: 'CONSULTATION ANALYSIS',
+                      fontSize: 24,
+                      color: primary),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  StreamBuilder<Object>(
+                    stream: dataStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                            child: Text('something went wrong'));
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final data = snapshot.requireData;
+                      getFromSnapShot(data);
+                      return p.PieChart(
+                        dataMap: getCategoryData().isEmpty
+                            ? nulldatamap
+                            : getCategoryData(),
+                        animationDuration: const Duration(milliseconds: 800),
+                        chartLegendSpacing: 32,
+                        chartRadius: MediaQuery.of(context).size.width / 6.2,
+                        colorList: [
+                          Colors.lightBlue[100]!,
+                          Colors.red[100]!,
+                          Colors.lightGreen[100]!,
+                          Colors.amber[100]!
+                        ],
+                        initialAngleInDegree: 0,
+                        chartType: p.ChartType.ring,
+                        ringStrokeWidth: 32,
+                        legendOptions: p.LegendOptions(
+                          legendPosition: p.LegendPosition.bottom,
+                          showLegendsInRow: false,
+                          showLegends: true,
+                          legendTextStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        chartValuesOptions: const p.ChartValuesOptions(
+                          showChartValueBackground: true,
+                          showChartValues: true,
+                          showChartValuesInPercentage: true,
+                          showChartValuesOutside: false,
+                          decimalPlaces: 1,
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          BoldText(
+                              label: 'Year Level',
+                              fontSize: 14,
+                              color: Colors.black),
+                          Container(
+                              width: 500,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              child: SfCartesianChart(
+                                  primaryXAxis: CategoryAxis(),
+                                  primaryYAxis: NumericAxis(
+                                      minimum: 0, maximum: 40, interval: 10),
+                                  tooltipBehavior:
+                                      TooltipBehavior(enable: true),
+                                  series: <ChartSeries<ChartData, String>>[
+                                    BarSeries<ChartData, String>(
+                                        dataSource: [
+                                          // Bind data source
+                                          ChartData(
+                                              '1st Year', year1.toDouble()),
+                                          ChartData(
+                                              '2nd Year', year2.toDouble()),
+                                          ChartData(
+                                              '3rd Year', year3.toDouble()),
+                                          ChartData(
+                                              '4th Year', year4.toDouble()),
+                                        ],
+                                        xValueMapper: (ChartData data, _) =>
+                                            data.x,
+                                        yValueMapper: (ChartData data, _) =>
+                                            data.y,
+                                        name: 'Year Level',
+                                        color: Color.fromRGBO(8, 142, 255, 1))
+                                  ])),
+                        ],
                       ),
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValueBackground: true,
-                        showChartValues: true,
-                        showChartValuesInPercentage: true,
-                        showChartValuesOutside: false,
-                        decimalPlaces: 1,
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        BoldText(
-                            label: 'Year Level',
-                            fontSize: 14,
-                            color: Colors.black),
-                        Container(
-                            width: 500,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            child: SfCartesianChart(
-                                primaryXAxis: CategoryAxis(),
-                                primaryYAxis: NumericAxis(
-                                    minimum: 0, maximum: 40, interval: 10),
-                                tooltipBehavior: TooltipBehavior(enable: true),
-                                series: <ChartSeries<ChartData, String>>[
-                                  BarSeries<ChartData, String>(
-                                      dataSource: [
-                                        // Bind data source
-                                        ChartData('1st Year', year1.toDouble()),
-                                        ChartData('2nd Year', year2.toDouble()),
-                                        ChartData('3rd Year', year3.toDouble()),
-                                        ChartData('4th Year', year4.toDouble()),
-                                      ],
-                                      xValueMapper: (ChartData data, _) =>
-                                          data.x,
-                                      yValueMapper: (ChartData data, _) =>
-                                          data.y,
-                                      name: 'Year Level',
-                                      color: Color.fromRGBO(8, 142, 255, 1))
-                                ])),
-                      ],
-                    ),
-                    StreamBuilder<Object>(
-                        stream: FirebaseFirestore.instance
-                            .collection('Concern')
-                            .snapshots(),
-                        builder: (
-                          context,
-                          snapshot,
-                        ) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                                child: Text('something went wrong'));
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                          final data = snapshot.requireData;
-                          getFromSnapShot(data);
+                      StreamBuilder<Object>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Concern')
+                              .snapshots(),
+                          builder: (
+                            context,
+                            snapshot,
+                          ) {
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text('something went wrong'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                            final data = snapshot.requireData;
+                            getFromSnapShot(data);
 
-                          return Column(
-                            children: [
-                              BoldText(
-                                  label: 'Courses',
-                                  fontSize: 14,
-                                  color: Colors.black),
-                              Container(
-                                  width: 500,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 20),
-                                  child: SfCartesianChart(
-                                      primaryXAxis: CategoryAxis(),
-                                      primaryYAxis: NumericAxis(
-                                          minimum: 0,
-                                          maximum: 40,
-                                          interval: 10),
-                                      tooltipBehavior:
-                                          TooltipBehavior(enable: true),
-                                      series: <ChartSeries<ChartData, String>>[
-                                        BarSeries<ChartData, String>(
-                                            dataSource: [
-                                              // Bind data source
-                                              for (int i = 0;
-                                                  i < categ.length;
-                                                  i++)
-                                                for (int j = 0;
-                                                    j < nums.length;
-                                                    j++)
-                                                  ChartData(categ[i], nums[j]),
-                                            ],
-                                            xValueMapper: (ChartData data, _) =>
-                                                data.x,
-                                            yValueMapper: (ChartData data, _) =>
-                                                data.y,
-                                            name: 'Courses',
-                                            color:
-                                                Color.fromRGBO(8, 142, 255, 1))
-                                      ])),
-                            ],
-                          );
-                        }),
-                  ],
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-              ],
+                            return Column(
+                              children: [
+                                BoldText(
+                                    label: 'Courses',
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                Container(
+                                    width: 500,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 20),
+                                    child: SfCartesianChart(
+                                        primaryXAxis: CategoryAxis(),
+                                        primaryYAxis: NumericAxis(
+                                            minimum: 0,
+                                            maximum: 40,
+                                            interval: 10),
+                                        tooltipBehavior:
+                                            TooltipBehavior(enable: true),
+                                        series: <
+                                            ChartSeries<ChartData, String>>[
+                                          BarSeries<ChartData, String>(
+                                              dataSource: [
+                                                // Bind data source
+                                                for (int i = 0;
+                                                    i < categ.length;
+                                                    i++)
+                                                  for (int j = 0;
+                                                      j < nums.length;
+                                                      j++)
+                                                    ChartData(
+                                                        categ[i], nums[j]),
+                                              ],
+                                              xValueMapper:
+                                                  (ChartData data, _) => data.x,
+                                              yValueMapper:
+                                                  (ChartData data, _) => data.y,
+                                              name: 'Courses',
+                                              color: Color.fromRGBO(
+                                                  8, 142, 255, 1))
+                                        ])),
+                              ],
+                            );
+                          }),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                ],
+              ),
             ),
           ),
         ));
