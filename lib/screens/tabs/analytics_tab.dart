@@ -308,16 +308,17 @@ class _AnalyticsTabState extends State<AnalyticsTab> {
                         chartRadius: MediaQuery.of(context).size.width / 6.2,
                         colorList: [
                           Colors.lightBlue[100]!,
-                          Colors.red[100]!,
-                          Colors.lightGreen[100]!,
-                          Colors.amber[100]!
+                          Colors.lightBlue[200]!,
+                          Colors.lightBlue[300]!,
+                          Colors.lightBlue[400]!,
+                          Colors.lightBlue[500]!,
                         ],
                         initialAngleInDegree: 0,
                         chartType: p.ChartType.ring,
                         ringStrokeWidth: 32,
                         legendOptions: p.LegendOptions(
                           legendPosition: p.LegendPosition.bottom,
-                          showLegendsInRow: false,
+                          showLegendsInRow: true,
                           showLegends: true,
                           legendTextStyle: TextStyle(
                             fontWeight: FontWeight.bold,

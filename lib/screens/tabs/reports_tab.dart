@@ -249,451 +249,457 @@ class _ReportTabState extends State<ReportTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarWidget(widget.page),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                NormalText(label: 'Reports', fontSize: 24, color: primary),
-                const Expanded(child: SizedBox()),
-                GestureDetector(
-                  onTap: () async {
-                    _loggedin();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: primary, borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                      child: NormalText(
-                          label: 'Download File',
-                          fontSize: 15,
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: greyAccent,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                      child: DropdownButton(
-                        underline: Container(color: Colors.transparent),
-                        iconEnabledColor: Colors.black,
-                        isExpanded: true,
-                        style: const TextStyle(color: Colors.white),
-                        value: _dropdownValue,
-                        items: [
-                          DropdownMenuItem(
-                            onTap: () {
-                              year = 'All';
-                            },
-                            value: 0,
-                            child: DropDownItem(label: 'All'),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              year = 'First Year';
-                            },
-                            value: 1,
-                            child: DropDownItem(label: '1st Year'),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              year = 'Second Year';
-                            },
-                            value: 2,
-                            child: DropDownItem(label: '2nd Year'),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              year = 'Third Year';
-                            },
-                            value: 3,
-                            child: DropDownItem(label: '3rd Year'),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              year = 'Fourth Year';
-                            },
-                            value: 4,
-                            child: DropDownItem(label: '4th Year'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _dropdownValue = int.parse(value.toString());
-                          });
-                        },
+      body: Container(
+        color: greyAccent,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  NormalText(label: 'Reports', fontSize: 24, color: primary),
+                  const Expanded(child: SizedBox()),
+                  GestureDetector(
+                    onTap: () async {
+                      _loggedin();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: primary,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                        child: NormalText(
+                            label: 'Download File',
+                            fontSize: 15,
+                            color: Colors.white),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: greyAccent,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                      child: DropdownButton(
-                        underline: Container(color: Colors.transparent),
-                        iconEnabledColor: Colors.black,
-                        isExpanded: true,
-                        value: _dropdownValue1,
-                        items: [
-                          DropdownMenuItem(
-                            onTap: () {
-                              course = "All";
-                            },
-                            value: 0,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("All",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              course = "Automotive";
-                            },
-                            value: 1,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("Automotive",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              course = "Food Technology";
-                            },
-                            value: 2,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("Food Technology",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              course = "Electronic Technology";
-                            },
-                            value: 3,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("Electronic Technology",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              course =
-                                  "Entertainment and\nMultimedia Computing";
-                            },
-                            value: 4,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("Entertainment and\nMultimedia Computing",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              course = "Information Technology";
-                            },
-                            value: 5,
-                            child: Center(
-                                child: Row(children: const [
-                              Text("Information Technology",
-                                  style: TextStyle(
-                                    fontFamily: 'QRegular',
-                                    color: primary,
-                                  ))
-                            ])),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _dropdownValue1 = int.parse(value.toString());
-                          });
-                        },
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                        child: DropdownButton(
+                          underline: Container(color: Colors.transparent),
+                          iconEnabledColor: Colors.black,
+                          isExpanded: true,
+                          style: const TextStyle(color: Colors.white),
+                          value: _dropdownValue,
+                          items: [
+                            DropdownMenuItem(
+                              onTap: () {
+                                year = 'All';
+                              },
+                              value: 0,
+                              child: DropDownItem(label: 'All'),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                year = 'First Year';
+                              },
+                              value: 1,
+                              child: DropDownItem(label: '1st Year'),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                year = 'Second Year';
+                              },
+                              value: 2,
+                              child: DropDownItem(label: '2nd Year'),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                year = 'Third Year';
+                              },
+                              value: 3,
+                              child: DropDownItem(label: '3rd Year'),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                year = 'Fourth Year';
+                              },
+                              value: 4,
+                              child: DropDownItem(label: '4th Year'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _dropdownValue = int.parse(value.toString());
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: greyAccent,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                      child: DropdownButton(
-                        underline: Container(color: Colors.transparent),
-                        iconEnabledColor: Colors.black,
-                        isExpanded: true,
-                        style: const TextStyle(color: Colors.white),
-                        value: _dropdownValue2,
-                        items: [
-                          DropdownMenuItem(
-                            onTap: () {
-                              setState(() {
-                                sort = 'name';
-                              });
-                            },
-                            value: 0,
-                            child: DropDownItem(label: 'Sort by: Names'),
-                          ),
-                          DropdownMenuItem(
-                            onTap: () {
-                              setState(() {
-                                sort = 'dateTime';
-                              });
-                            },
-                            value: 1,
-                            child: DropDownItem(label: 'Sort by: Date'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _dropdownValue2 = int.parse(value.toString());
-                          });
-                        },
-                      ),
-                    ),
+                  const SizedBox(
+                    width: 30,
                   ),
-                ),
-                const SizedBox(
-                  width: 50,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            StreamBuilder<QuerySnapshot>(
-                stream: getFilter(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return const Center(child: Text('Error'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    print('waiting');
-                    return const Padding(
-                      padding: EdgeInsets.only(top: 50),
-                      child: Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.black,
-                      )),
-                    );
-                  }
-
-                  final data = snapshot.requireData;
-
-                  return Expanded(
-                    child: SizedBox(
-                      child: ListView.builder(
-                          itemCount: 1,
-                          itemBuilder: ((context, index) {
-                            name.add(data.docs[index]['name']);
-                            email.add(data.docs[index]['email']);
-                            courseStud.add(data.docs[index]['course']);
-                            yearLevel.add(data.docs[index]['yearLevel']);
-                            concern.add(data.docs[index]['concern']);
-                            status.add(data.docs[index]['type']);
-                            DateTime created =
-                                data.docs[index]['dateTime'].toDate();
-
-                            String formattedTime =
-                                DateFormat.yMMMd().add_jm().format(created);
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 25),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                        child: DropdownButton(
+                          underline: Container(color: Colors.transparent),
+                          iconEnabledColor: Colors.black,
+                          isExpanded: true,
+                          value: _dropdownValue1,
+                          items: [
+                            DropdownMenuItem(
+                              onTap: () {
+                                course = "All";
+                              },
+                              value: 0,
                               child: Center(
-                                child: Container(
-                                  height: 500,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.white),
-                                  child: SingleChildScrollView(
-                                    child: DataTable(
-                                      // datatable widget
-                                      headingRowColor: MaterialStateProperty
-                                          .resolveWith<Color?>(
-                                              (Set<MaterialState> states) {
-                                        return Colors.blue[400];
-                                        // Use the default value.
-                                      }),
-                                      border: TableBorder.all(
-                                        color: Colors.white,
-                                      ),
-                                      columns: [
-                                        // column to set the name
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'No.',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Student\nName',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Time of\nConsultation',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Date of\nConsultation',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Course',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Year\nLevel',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label:
-                                                    'Purpose of\nConsultation',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Ticket\nStatus',
-                                                fontSize: 16,
-                                                color: Colors.white)),
-                                      ],
+                                  child: Row(children: const [
+                                Text("All",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                course = "Automotive";
+                              },
+                              value: 1,
+                              child: Center(
+                                  child: Row(children: const [
+                                Text("Automotive",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                course = "Food Technology";
+                              },
+                              value: 2,
+                              child: Center(
+                                  child: Row(children: const [
+                                Text("Food Technology",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                course = "Electronic Technology";
+                              },
+                              value: 3,
+                              child: Center(
+                                  child: Row(children: const [
+                                Text("Electronic Technology",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                course =
+                                    "Entertainment and\nMultimedia Computing";
+                              },
+                              value: 4,
+                              child: Center(
+                                  child: Row(children: const [
+                                Text("Entertainment and\nMultimedia Computing",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                course = "Information Technology";
+                              },
+                              value: 5,
+                              child: Center(
+                                  child: Row(children: const [
+                                Text("Information Technology",
+                                    style: TextStyle(
+                                      fontFamily: 'QRegular',
+                                      color: primary,
+                                    ))
+                              ])),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _dropdownValue1 = int.parse(value.toString());
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                        child: DropdownButton(
+                          underline: Container(color: Colors.transparent),
+                          iconEnabledColor: Colors.black,
+                          isExpanded: true,
+                          style: const TextStyle(color: Colors.white),
+                          value: _dropdownValue2,
+                          items: [
+                            DropdownMenuItem(
+                              onTap: () {
+                                setState(() {
+                                  sort = 'name';
+                                });
+                              },
+                              value: 0,
+                              child: DropDownItem(label: 'Sort by: Names'),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                setState(() {
+                                  sort = 'dateTime';
+                                });
+                              },
+                              value: 1,
+                              child: DropDownItem(label: 'Sort by: Date'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _dropdownValue2 = int.parse(value.toString());
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: getFilter(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return const Center(child: Text('Error'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      print('waiting');
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.black,
+                        )),
+                      );
+                    }
 
-                                      rows: [
-                                        // row to set the values
-                                        for (int i = 0;
-                                            i < snapshot.data!.size;
-                                            i++)
-                                          DataRow(
-                                              color: MaterialStateProperty
-                                                  .resolveWith<Color?>(
-                                                      (Set<MaterialState>
-                                                          states) {
-                                                if (i.floor().isEven) {
-                                                  return Colors.blueGrey[100];
-                                                } else {
-                                                  return Colors.grey[200];
-                                                }
-                                              }),
-                                              cells: [
-                                                DataCell(
-                                                  NormalText(
-                                                      label: i.toString(),
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['name'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['time'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: formattedTime
-                                                          .toString(),
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['course'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['yearLevel'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['concern'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['type'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                              ]),
-                                      ],
+                    final data = snapshot.requireData;
+
+                    return Expanded(
+                      child: SizedBox(
+                        child: ListView.builder(
+                            itemCount: 1,
+                            itemBuilder: ((context, index) {
+                              name.add(data.docs[index]['name']);
+                              email.add(data.docs[index]['email']);
+                              courseStud.add(data.docs[index]['course']);
+                              yearLevel.add(data.docs[index]['yearLevel']);
+                              concern.add(data.docs[index]['concern']);
+                              status.add(data.docs[index]['type']);
+                              DateTime created =
+                                  data.docs[index]['dateTime'].toDate();
+
+                              String formattedTime =
+                                  DateFormat.yMMMd().add_jm().format(created);
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 25),
+                                child: Center(
+                                  child: Container(
+                                    height: 500,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white),
+                                    child: SingleChildScrollView(
+                                      child: DataTable(
+                                        // datatable widget
+                                        headingRowColor: MaterialStateProperty
+                                            .resolveWith<Color?>(
+                                                (Set<MaterialState> states) {
+                                          return Colors.blue[400];
+                                          // Use the default value.
+                                        }),
+                                        border: TableBorder.all(
+                                          color: Colors.white,
+                                        ),
+                                        columns: [
+                                          // column to set the name
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'No.',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Student\nName',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Time of\nConsultation',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Date of\nConsultation',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Course',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Year\nLevel',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Purpose of\nConsultation',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Ticket\nStatus',
+                                                  fontSize: 16,
+                                                  color: Colors.white)),
+                                        ],
+
+                                        rows: [
+                                          // row to set the values
+                                          for (int i = 0;
+                                              i < snapshot.data!.size;
+                                              i++)
+                                            DataRow(
+                                                color: MaterialStateProperty
+                                                    .resolveWith<Color?>(
+                                                        (Set<MaterialState>
+                                                            states) {
+                                                  if (i.floor().isEven) {
+                                                    return Colors.blueGrey[100];
+                                                  } else {
+                                                    return Colors.grey[200];
+                                                  }
+                                                }),
+                                                cells: [
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: i.toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['name'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['time'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: formattedTime
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['course'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['yearLevel'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['concern'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: data.docs[i]
+                                                            ['type'],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                ]),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          })),
-                    ),
-                  );
-                })
-          ],
+                              );
+                            })),
+                      ),
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );
