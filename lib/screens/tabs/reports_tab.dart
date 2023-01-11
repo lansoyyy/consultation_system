@@ -133,58 +133,60 @@ class _ReportTabState extends State<ReportTab> {
                 height: 20,
               ),
               for (int i = 0; i < name.length; i++)
-                pw.Table(children: [
-                  pw.TableRow(children: [
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(name[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(email[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(courseStud[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(yearLevel[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(concern[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text(status[i],
-                              style: const pw.TextStyle(fontSize: 6)),
-                          pw.Divider(thickness: 1)
-                        ]),
-                  ])
-                ]),
+                pw.Table(
+                    border: pw.TableBorder.all(color: PdfColors.black),
+                    children: [
+                      pw.TableRow(children: [
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(name[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(email[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(courseStud[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(yearLevel[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(concern[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                        pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.center,
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: [
+                              pw.Text(status[i],
+                                  style: const pw.TextStyle(fontSize: 6)),
+                              pw.Divider(thickness: 1)
+                            ]),
+                      ])
+                    ]),
               pw.SizedBox(
                 height: 50,
               ),
