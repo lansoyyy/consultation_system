@@ -551,145 +551,141 @@ class _ReportTabState extends State<ReportTab> {
                                   DateFormat.yMMMd().add_jm().format(created);
                               return Padding(
                                 padding: const EdgeInsets.only(right: 25),
-                                child: Center(
-                                  child: Container(
-                                    height: 500,
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white),
-                                    child: SingleChildScrollView(
-                                      child: DataTable(
-                                        // datatable widget
-                                        headingRowColor: MaterialStateProperty
-                                            .resolveWith<Color?>(
-                                                (Set<MaterialState> states) {
-                                          return Colors.blue[400];
-                                          // Use the default value.
-                                        }),
-                                        border: TableBorder.all(
-                                          color: Colors.white,
-                                        ),
-                                        columns: [
-                                          // column to set the name
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label: 'No.',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label: 'Student\nName',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label:
-                                                      'Time of\nConsultation',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label:
-                                                      'Date of\nConsultation',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label: 'Course',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label: 'Year\nLevel',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label:
-                                                      'Purpose of\nConsultation',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                          DataColumn(
-                                              label: BoldText(
-                                                  label: 'Ticket\nStatus',
-                                                  fontSize: 16,
-                                                  color: Colors.white)),
-                                        ],
-
-                                        rows: [
-                                          // row to set the values
-                                          for (int i = 0;
-                                              i < snapshot.data!.size;
-                                              i++)
-                                            DataRow(
-                                                color: MaterialStateProperty
-                                                    .resolveWith<Color?>(
-                                                        (Set<MaterialState>
-                                                            states) {
-                                                  if (i.floor().isEven) {
-                                                    return Colors.blueGrey[100];
-                                                  } else {
-                                                    return Colors.grey[200];
-                                                  }
-                                                }),
-                                                cells: [
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: i.toString(),
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['name'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['time'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: formattedTime
-                                                            .toString(),
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['course'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['yearLevel'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['concern'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  DataCell(
-                                                    NormalText(
-                                                        label: data.docs[i]
-                                                            ['type'],
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                ]),
-                                        ],
+                                child: Container(
+                                  height: 500,
+                                  decoration:
+                                      const BoxDecoration(color: Colors.white),
+                                  child: SingleChildScrollView(
+                                    child: DataTable(
+                                      // datatable widget
+                                      headingRowColor: MaterialStateProperty
+                                          .resolveWith<Color?>(
+                                              (Set<MaterialState> states) {
+                                        return Colors.blue[400];
+                                        // Use the default value.
+                                      }),
+                                      border: TableBorder.all(
+                                        color: Colors.white,
                                       ),
+                                      columns: [
+                                        // column to set the name
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'No.',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Student\nName',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Time of\nConsultation',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Date of\nConsultation',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Course',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Year\nLevel',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label:
+                                                    'Purpose of\nConsultation',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                        DataColumn(
+                                            label: BoldText(
+                                                label: 'Ticket\nStatus',
+                                                fontSize: 16,
+                                                color: Colors.white)),
+                                      ],
+
+                                      rows: [
+                                        // row to set the values
+                                        for (int i = 0;
+                                            i < snapshot.data!.size;
+                                            i++)
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                if (i.floor().isEven) {
+                                                  return Colors.blueGrey[100];
+                                                } else {
+                                                  return Colors.grey[200];
+                                                }
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: i.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['name'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['time'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: formattedTime
+                                                          .toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['course'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['yearLevel'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['concern'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: data.docs[i]
+                                                          ['type'],
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                      ],
                                     ),
                                   ),
                                 ),
