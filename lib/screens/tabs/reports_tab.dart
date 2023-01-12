@@ -132,7 +132,7 @@ class _ReportTabState extends State<ReportTab> {
               pw.SizedBox(
                 height: 20,
               ),
-              for (int i = 0; i < name.length; i++)
+              for (int i = 1; i < name.length; i++)
                 pw.Table(
                     border: pw.TableBorder.all(color: PdfColors.black),
                     children: [
@@ -573,7 +573,7 @@ class _ReportTabState extends State<ReportTab> {
                                         // column to set the name
                                         DataColumn(
                                             label: BoldText(
-                                                label: 'No.',
+                                                label: 'ID',
                                                 fontSize: 16,
                                                 color: Colors.white)),
                                         DataColumn(
@@ -616,7 +616,7 @@ class _ReportTabState extends State<ReportTab> {
 
                                       rows: [
                                         // row to set the values
-                                        for (int i = 0;
+                                        for (int i = 1;
                                             i < snapshot.data!.size;
                                             i++)
                                           DataRow(
