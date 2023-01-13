@@ -33,6 +33,8 @@ class _ReportTabState extends State<ReportTab> {
 
   final doc = pw.Document();
 
+  String cdate2 = DateFormat("MMMM, dd, yyyy").format(DateTime.now());
+
   var name = [];
   var email = [];
   var courseStud = [];
@@ -197,6 +199,63 @@ class _ReportTabState extends State<ReportTab> {
                         ),
                       ])
                   ]),
+              pw.Expanded(
+                child: pw.SizedBox(height: 50),
+              ),
+              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+                pw.Text('Consulated by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Faculty', style: pw.TextStyle(fontSize: 6)),
+                    ]),
+                pw.SizedBox(
+                  width: 10,
+                ),
+                pw.Text('Reviewed by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Academic Adviser',
+                          style: pw.TextStyle(fontSize: 6)),
+                    ]),
+                pw.SizedBox(
+                  width: 10,
+                ),
+                pw.Text('Approved by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Program Coordinature/Chairperson',
+                          style: pw.TextStyle(fontSize: 6)),
+                    ]),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text('Document Code: OVPAA-F-INS-060B',
+                            style: pw.TextStyle(fontSize: 6)),
+                        pw.Text('Uncontrolled document once printed',
+                            style: pw.TextStyle(
+                                fontSize: 4, fontStyle: pw.FontStyle.italic)),
+                      ]),
+                  pw.Text('Revision No.:0', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue No.:1', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue Date: $cdate2',
+                      style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
             ]),
           );
         },

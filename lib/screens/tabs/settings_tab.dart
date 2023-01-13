@@ -62,7 +62,7 @@ class _SettingsTabState extends State<SettingsTab> {
         .snapshots();
     return Scaffold(
         appBar: appbarWidget(widget.page),
-        backgroundColor: Colors.grey[200],
+        backgroundColor: greyAccent,
         body: Container(
           color: greyAccent,
           child: Padding(
