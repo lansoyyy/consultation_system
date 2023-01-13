@@ -203,37 +203,29 @@ class _ReportTabState extends State<ReportTab> {
                 child: pw.SizedBox(height: 50),
               ),
               pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Text('Consulated by: ', style: pw.TextStyle(fontSize: 6)),
-                pw.Column(
-                    mainAxisAlignment: pw.MainAxisAlignment.end,
-                    crossAxisAlignment: pw.CrossAxisAlignment.center,
-                    children: [
-                      pw.Text('______________'),
-                      pw.Text('Faculty', style: pw.TextStyle(fontSize: 6)),
-                    ]),
-                pw.SizedBox(
-                  width: 10,
-                ),
-                pw.Text('Reviewed by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Text('Consolidated by: ', style: pw.TextStyle(fontSize: 6)),
                 pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
                     children: [
                       pw.Text('______________'),
                       pw.Text('Academic Adviser',
-                          style: pw.TextStyle(fontSize: 6)),
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
                     ]),
-                pw.SizedBox(
-                  width: 10,
+                pw.Expanded(
+                  child: pw.SizedBox(height: 50),
                 ),
-                pw.Text('Approved by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Text('Reviewed and Approved by: ',
+                    style: pw.TextStyle(fontSize: 6)),
                 pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
                     children: [
                       pw.Text('______________'),
-                      pw.Text('Program Coordinature/Chairperson',
-                          style: pw.TextStyle(fontSize: 6)),
+                      pw.Text('Program Coordinator/Chairperson',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
                     ]),
               ]),
               pw.SizedBox(height: 20),
