@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/widgets/drop_down_button.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,32 +23,6 @@ class ReportTab extends StatefulWidget {
 }
 
 class _ReportTabState extends State<ReportTab> {
-  @override
-  void initState() {
-    getData();
-
-    super.initState();
-  }
-
-  late String myName = '';
-
-  getData() async {
-    // Use provider
-    var collection = FirebaseFirestore.instance
-        .collection('CONSULTATION-USERS')
-        .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid);
-
-    var querySnapshot = await collection.get();
-    if (mounted) {
-      setState(() {
-        for (var queryDocumentSnapshot in querySnapshot.docs) {
-          Map<String, dynamic> data = queryDocumentSnapshot.data();
-          myName = data['first_name'] + ' ' + data['sur_name'];
-        }
-      });
-    }
-  }
-
   int _dropdownValue = 0;
 
   late String year = 'All';
@@ -69,7 +42,8 @@ class _ReportTabState extends State<ReportTab> {
 
   void _loggedin() async {
     /// for using an image from assets
-    // final image = await imageFromAssetBundle('assets/image.png');
+    final image = await imageFromAssetBundle('assets/images/bsu.png');
+    final image1 = await imageFromAssetBundle('assets/images/dean.jpg');
 
     doc.addPage(
       pw.Page(
@@ -78,126 +52,151 @@ class _ReportTabState extends State<ReportTab> {
           return pw.Container(
             margin: const pw.EdgeInsets.all(20),
             child: pw.Column(children: [
-              pw.Table(children: [
-                pw.TableRow(children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Image(image, height: 50, width: 50),
+                  pw.SizedBox(width: 25),
                   pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Name', style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                  pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Email',
-                            style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                  pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Course',
-                            style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                  pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Year Level',
-                            style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                  pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Concern',
-                            style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                  pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      children: [
-                        pw.Text('Status',
-                            style: const pw.TextStyle(fontSize: 6)),
-                        pw.Divider(thickness: 1)
-                      ]),
-                ])
-              ]),
-              pw.SizedBox(
-                height: 20,
-              ),
-              for (int i = 1; i < name.length; i++)
-                pw.Table(
-                    border: pw.TableBorder.all(color: PdfColors.black),
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
                     children: [
-                      pw.TableRow(children: [
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(name[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(email[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(courseStud[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(yearLevel[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(concern[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                        pw.Column(
-                            crossAxisAlignment: pw.CrossAxisAlignment.center,
-                            mainAxisAlignment: pw.MainAxisAlignment.center,
-                            children: [
-                              pw.Text(status[i],
-                                  style: const pw.TextStyle(fontSize: 6)),
-                              pw.Divider(thickness: 1)
-                            ]),
-                      ])
+                      pw.Text('BUKIDNON STATE UNIVERSITY',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('COLLEGE OF TECHNOLOGIES',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Sayre Hwy, Malaybalay, 8700 Bukidnon',
+                          style: const pw.TextStyle(fontSize: 8)),
+                      pw.Text(
+                          'Tel (088) 813-5661 to 5663; TeleFax (088) 813-2717, www.buksu.edu.ph',
+                          style: const pw.TextStyle(fontSize: 8)),
+                    ],
+                  ),
+                  pw.SizedBox(width: 25),
+                  pw.Image(image1, height: 50, width: 50),
+                ],
+              ),
+              pw.SizedBox(height: 50),
+              pw.Text("STUDENT'S CONSULTATION LOG BOOK",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 10),
+              pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.black),
+                  children: [
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Name of Faculty',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        child: pw.Text('                   ',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Semester & School Year',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        child: pw.Text('                   ',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
                     ]),
-              pw.SizedBox(
-                height: 50,
-              ),
-              pw.Text(myName,
-                  style: const pw.TextStyle(
-                    decoration: pw.TextDecoration.underline,
-                  )),
-              pw.SizedBox(
-                height: 5,
-              ),
-              pw.Text('Instructor', style: const pw.TextStyle(fontSize: 12)),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Department',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        child:
+                            pw.Text('', style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        child: pw.Text('                   ',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        child: pw.Text('                   ',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ])
+                  ]),
+              pw.SizedBox(height: 20),
+              pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.black),
+                  children: [
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Name',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Email',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Course',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Year Level',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Concern',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Status',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    for (int i = 0; i < name.length; i++)
+                      pw.TableRow(children: [
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(name[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(email[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(courseStud[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(yearLevel[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(concern[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(5),
+                          child: pw.Text(status[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                      ])
+                  ]),
             ]),
           );
         },
@@ -219,7 +218,6 @@ class _ReportTabState extends State<ReportTab> {
     await file.writeAsBytes(await doc.save());
   }
 
-  int _dropdownValue2 = 0;
   String sort = 'name';
 
   getFilter() {
@@ -247,8 +245,11 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
+  int _dropdownValue2 = 0;
+
   @override
   Widget build(BuildContext context) {
+    print(sort);
     return Scaffold(
       appBar: appbarWidget(widget.page),
       body: Container(
@@ -273,7 +274,7 @@ class _ReportTabState extends State<ReportTab> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                         child: NormalText(
-                            label: 'Download File',
+                            label: 'Export in PDF',
                             fontSize: 15,
                             color: Colors.white),
                       ),
@@ -538,7 +539,7 @@ class _ReportTabState extends State<ReportTab> {
                     return Expanded(
                       child: SizedBox(
                         child: ListView.builder(
-                            itemCount: 1,
+                            itemCount: data.size == 0 ? 0 : 1,
                             itemBuilder: ((context, index) {
                               name.add(data.docs[index]['name']);
                               email.add(data.docs[index]['email']);
@@ -555,11 +556,11 @@ class _ReportTabState extends State<ReportTab> {
                                 padding: const EdgeInsets.only(right: 25),
                                 child: Container(
                                   height: 500,
-                                  decoration:
-                                      const BoxDecoration(color: Colors.white),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 3, color: Colors.grey[200]!)),
                                   child: SingleChildScrollView(
                                     child: DataTable(
-                                      // datatable widget
                                       headingRowColor: MaterialStateProperty
                                           .resolveWith<Color?>(
                                               (Set<MaterialState> states) {
@@ -569,48 +570,49 @@ class _ReportTabState extends State<ReportTab> {
                                       border: TableBorder.all(
                                         color: Colors.white,
                                       ),
+                                      // datatable widget
                                       columns: [
                                         // column to set the name
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'ID',
-                                                fontSize: 16,
+                                                fontSize: 12,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Student\nName',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Time of\nConsultation',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Date of\nConsultation',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Course',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Year\nLevel',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label:
                                                     'Purpose of\nConsultation',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                         DataColumn(
                                             label: BoldText(
                                                 label: 'Ticket\nStatus',
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 color: Colors.white)),
                                       ],
 
