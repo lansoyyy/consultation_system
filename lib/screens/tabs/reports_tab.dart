@@ -41,6 +41,8 @@ class _ReportTabState extends State<ReportTab> {
   var yearLevel = [];
   var concern = [];
   var status = [];
+  var classCodes = [];
+  var sections = [];
 
   void _loggedin() async {
     /// for using an image from assets
@@ -86,44 +88,44 @@ class _ReportTabState extends State<ReportTab> {
                   children: [
                     pw.TableRow(children: [
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Name of Faculty',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        padding: const pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
                         child: pw.Text('                   ',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Semester & School Year',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        padding: const pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
                         child: pw.Text('                   ',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                     ]),
                     pw.TableRow(children: [
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Department',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        padding: const pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
                         child:
                             pw.Text('', style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        padding: const pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
                         child: pw.Text('                   ',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
+                        padding: const pw.EdgeInsets.fromLTRB(50, 2, 50, 2),
                         child: pw.Text('                   ',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
@@ -135,32 +137,42 @@ class _ReportTabState extends State<ReportTab> {
                   children: [
                     pw.TableRow(children: [
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
+                        child: pw.Text('Class Code',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Name',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Email',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
+                        child: pw.Text('Section',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Course',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Year Level',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Concern',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                       pw.Padding(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         child: pw.Text('Status',
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
@@ -168,32 +180,42 @@ class _ReportTabState extends State<ReportTab> {
                     for (int i = 0; i < name.length; i++)
                       pw.TableRow(children: [
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
+                          child: pw.Text(classCodes[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(name[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(email[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
+                          child: pw.Text(sections[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(courseStud[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(yearLevel[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(concern[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
-                          padding: pw.EdgeInsets.all(5),
+                          padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(status[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
@@ -203,7 +225,8 @@ class _ReportTabState extends State<ReportTab> {
                 child: pw.SizedBox(height: 50),
               ),
               pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-                pw.Text('Consolidated by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Text('Consolidated by: ',
+                    style: const pw.TextStyle(fontSize: 6)),
                 pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -217,7 +240,7 @@ class _ReportTabState extends State<ReportTab> {
                   child: pw.SizedBox(height: 50),
                 ),
                 pw.Text('Reviewed and Approved by: ',
-                    style: pw.TextStyle(fontSize: 6)),
+                    style: const pw.TextStyle(fontSize: 6)),
                 pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.end,
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -237,15 +260,17 @@ class _ReportTabState extends State<ReportTab> {
                       crossAxisAlignment: pw.CrossAxisAlignment.start,
                       children: [
                         pw.Text('Document Code: OVPAA-F-INS-060B',
-                            style: pw.TextStyle(fontSize: 6)),
+                            style: const pw.TextStyle(fontSize: 6)),
                         pw.Text('Uncontrolled document once printed',
                             style: pw.TextStyle(
                                 fontSize: 4, fontStyle: pw.FontStyle.italic)),
                       ]),
-                  pw.Text('Revision No.:0', style: pw.TextStyle(fontSize: 6)),
-                  pw.Text('Issue No.:1', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Revision No.:0',
+                      style: const pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue No.:1',
+                      style: const pw.TextStyle(fontSize: 6)),
                   pw.Text('Issue Date: $cdate2',
-                      style: pw.TextStyle(fontSize: 6)),
+                      style: const pw.TextStyle(fontSize: 6)),
                 ],
               ),
             ]),
@@ -510,7 +535,7 @@ class _ReportTabState extends State<ReportTab> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
                   Padding(
@@ -592,6 +617,8 @@ class _ReportTabState extends State<ReportTab> {
                         child: ListView.builder(
                             itemCount: data.size == 0 ? 0 : 1,
                             itemBuilder: ((context, index) {
+                              classCodes.add(data.docs[index]['classCode']);
+                              sections.add(data.docs[index]['section']);
                               name.add(data.docs[index]['name']);
                               email.add(data.docs[index]['email']);
                               courseStud.add(data.docs[index]['course']);
