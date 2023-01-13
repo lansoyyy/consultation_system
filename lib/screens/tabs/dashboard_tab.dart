@@ -209,6 +209,9 @@ class _DashboardTabState extends State<DashboardTab> {
                               height: 100,
                               width: 250,
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                ),
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -253,6 +256,9 @@ class _DashboardTabState extends State<DashboardTab> {
                               width: 250,
                               decoration: BoxDecoration(
                                 color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -295,6 +301,9 @@ class _DashboardTabState extends State<DashboardTab> {
                           height: 100,
                           width: 250,
                           decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
