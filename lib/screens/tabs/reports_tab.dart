@@ -330,8 +330,6 @@ class _ReportTabState extends State<ReportTab> {
   var yearLevel = [];
   var concern = [];
   var status = [];
-  var classCodes = [];
-  var sections = [];
 
   void _loggedin() async {
     /// for using an image from assets
