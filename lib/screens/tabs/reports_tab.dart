@@ -67,9 +67,12 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
+  var listSections = [];
   var sections = [];
   List<int> sectionNumber = [];
   List<int> enrolled = [];
+
+  var hasLoaded = false;
 
   getSections() async {
     // Use provider
@@ -80,15 +83,15 @@ class _ReportTabState extends State<ReportTab> {
       setState(() {
         for (var queryDocumentSnapshot in querySnapshot.docs) {
           Map<String, dynamic> data = queryDocumentSnapshot.data();
-          sections.add(data['section']);
+          listSections.add(data['section']);
         }
       });
     }
 
-    for (int i = 0; i < sections.length; i++) {
+    for (int i = 0; i < listSections.length; i++) {
       var collection = FirebaseFirestore.instance
           .collection('Concerns')
-          .where('section', isEqualTo: sections[i]);
+          .where('section', isEqualTo: listSections[i]);
 
       var querySnapshot = await collection.get();
 
@@ -96,7 +99,7 @@ class _ReportTabState extends State<ReportTab> {
 
       var collection1 = FirebaseFirestore.instance
           .collection('Users')
-          .where('section', isEqualTo: sections[i]);
+          .where('section', isEqualTo: listSections[i]);
 
       var querySnapshot1 = await collection1.get();
 
@@ -139,6 +142,9 @@ class _ReportTabState extends State<ReportTab> {
       var querySnapshot1 = await collection1.get();
       codeEnrolled.add(querySnapshot1.size);
     }
+    setState(() {
+      hasLoaded = true;
+    });
   }
 
   late int year2 = 0;
@@ -322,6 +328,8 @@ class _ReportTabState extends State<ReportTab> {
 
   final doc = pw.Document();
 
+  var index = 0;
+
   String cdate2 = DateFormat("MMMM, dd, yyyy").format(DateTime.now());
 
   var name = [];
@@ -483,7 +491,7 @@ class _ReportTabState extends State<ReportTab> {
                         ),
                         pw.Padding(
                           padding: const pw.EdgeInsets.all(5),
-                          child: pw.Text(sections[i],
+                          child: pw.Text(listSections[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
@@ -1049,11 +1057,11 @@ class _ReportTabState extends State<ReportTab> {
                             style: const pw.TextStyle(fontSize: 6)),
                       ),
                     ]),
-                    for (int i = 0; i < sections.length; i++)
+                    for (int i = 0; i < listSections.length; i++)
                       pw.TableRow(children: [
                         pw.Padding(
                           padding: pw.EdgeInsets.all(2),
-                          child: pw.Text(sections[i],
+                          child: pw.Text(listSections[i],
                               style: const pw.TextStyle(fontSize: 6)),
                         ),
                         pw.Padding(
@@ -1415,514 +1423,1384 @@ class _ReportTabState extends State<ReportTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(sort);
-    return Scaffold(
-      appBar: appbarWidget(widget.page),
-      body: Container(
-        color: greyAccent,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  NormalText(label: 'Reports', fontSize: 24, color: primary),
-                  const Expanded(child: SizedBox()),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                        child: DropdownButton(
-                          underline: Container(color: Colors.transparent),
-                          iconEnabledColor: Colors.black,
-                          isExpanded: true,
-                          style: const TextStyle(color: Colors.white),
-                          value: _dropdownValue,
-                          items: [
-                            DropdownMenuItem(
-                              onTap: () {
-                                year = 'All';
-                              },
-                              value: 0,
-                              child: DropDownItem(label: 'All'),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                year = 'First Year';
-                              },
-                              value: 1,
-                              child: DropDownItem(label: '1st Year'),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                year = 'Second Year';
-                              },
-                              value: 2,
-                              child: DropDownItem(label: '2nd Year'),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                year = 'Third Year';
-                              },
-                              value: 3,
-                              child: DropDownItem(label: '3rd Year'),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                year = 'Fourth Year';
-                              },
-                              value: 4,
-                              child: DropDownItem(label: '4th Year'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _dropdownValue = int.parse(value.toString());
-                            });
-                          },
+    return hasLoaded
+        ? Scaffold(
+            appBar: appbarWidget(widget.page),
+            body: Container(
+              color: greyAccent,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        NormalText(
+                            label: 'Reports', fontSize: 24, color: primary),
+                        const Expanded(child: SizedBox()),
+                        const SizedBox(
+                          width: 30,
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                        child: DropdownButton(
-                          underline: Container(color: Colors.transparent),
-                          iconEnabledColor: Colors.black,
-                          isExpanded: true,
-                          value: _dropdownValue1,
-                          items: [
-                            DropdownMenuItem(
-                              onTap: () {
-                                course = "All";
-                              },
-                              value: 0,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("All",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                course = "Automotive";
-                              },
-                              value: 1,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("Automotive",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                              child: DropdownButton(
+                                underline: Container(color: Colors.transparent),
+                                iconEnabledColor: Colors.black,
+                                isExpanded: true,
+                                style: const TextStyle(color: Colors.white),
+                                value: _dropdownValue,
+                                items: [
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      year = 'All';
+                                    },
+                                    value: 0,
+                                    child: DropDownItem(label: 'All'),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      year = 'First Year';
+                                    },
+                                    value: 1,
+                                    child: DropDownItem(label: '1st Year'),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      year = 'Second Year';
+                                    },
+                                    value: 2,
+                                    child: DropDownItem(label: '2nd Year'),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      year = 'Third Year';
+                                    },
+                                    value: 3,
+                                    child: DropDownItem(label: '3rd Year'),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      year = 'Fourth Year';
+                                    },
+                                    value: 4,
+                                    child: DropDownItem(label: '4th Year'),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dropdownValue =
+                                        int.parse(value.toString());
+                                  });
+                                },
+                              ),
                             ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                course = "Food Technology";
-                              },
-                              value: 2,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("Food Technology",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                course = "Electronic Technology";
-                              },
-                              value: 3,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("Electronic Technology",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                course =
-                                    "Entertainment and\nMultimedia Computing";
-                              },
-                              value: 4,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("Entertainment and\nMultimedia Computing",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                course = "Information Technology";
-                              },
-                              value: 5,
-                              child: Center(
-                                  child: Row(children: const [
-                                Text("Information Technology",
-                                    style: TextStyle(
-                                      fontFamily: 'QRegular',
-                                      color: primary,
-                                    ))
-                              ])),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _dropdownValue1 = int.parse(value.toString());
-                            });
-                          },
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                        child: DropdownButton(
-                          underline: Container(color: Colors.transparent),
-                          iconEnabledColor: Colors.black,
-                          isExpanded: true,
-                          style: const TextStyle(color: Colors.white),
-                          value: _dropdownValue2,
-                          items: [
-                            DropdownMenuItem(
-                              onTap: () {
-                                setState(() {
-                                  sort = 'name';
-                                });
-                              },
-                              value: 0,
-                              child: DropDownItem(label: 'Sort by: Names'),
-                            ),
-                            DropdownMenuItem(
-                              onTap: () {
-                                setState(() {
-                                  sort = 'dateTime';
-                                });
-                              },
-                              value: 1,
-                              child: DropDownItem(label: 'Sort by: Date'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _dropdownValue2 = int.parse(value.toString());
-                            });
-                          },
+                        const SizedBox(
+                          width: 30,
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, bottom: 7, top: 7),
-                      child: Row(
-                        children: [
-                          BoldText(
-                              label: 'Export Report',
-                              fontSize: 14,
-                              color: Colors.black),
-                          PopupMenuButton(itemBuilder: ((context) {
-                            return [
-                              PopupMenuItem(
-                                child: ListTile(
-                                  onTap: (() {
-                                    _loggedin();
-                                  }),
-                                  title: NormalText(
-                                      label: 'Log Book',
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Container(
+                            width: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                              child: DropdownButton(
+                                underline: Container(color: Colors.transparent),
+                                iconEnabledColor: Colors.black,
+                                isExpanded: true,
+                                value: _dropdownValue1,
+                                items: [
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course = "All";
+                                    },
+                                    value: 0,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text("All",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course = "Automotive";
+                                    },
+                                    value: 1,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text("Automotive",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course = "Food Technology";
+                                    },
+                                    value: 2,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text("Food Technology",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course = "Electronic Technology";
+                                    },
+                                    value: 3,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text("Electronic Technology",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course =
+                                          "Entertainment and\nMultimedia Computing";
+                                    },
+                                    value: 4,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text(
+                                          "Entertainment and\nMultimedia Computing",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      course = "Information Technology";
+                                    },
+                                    value: 5,
+                                    child: Center(
+                                        child: Row(children: const [
+                                      Text("Information Technology",
+                                          style: TextStyle(
+                                            fontFamily: 'QRegular',
+                                            color: primary,
+                                          ))
+                                    ])),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dropdownValue1 =
+                                        int.parse(value.toString());
+                                  });
+                                },
                               ),
-                              PopupMenuItem(
-                                child: ListTile(
-                                  onTap: (() {
-                                    consultationReport();
-                                  }),
-                                  title: NormalText(
-                                      label: 'Consultation Report',
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Container(
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                              child: DropdownButton(
+                                underline: Container(color: Colors.transparent),
+                                iconEnabledColor: Colors.black,
+                                isExpanded: true,
+                                style: const TextStyle(color: Colors.white),
+                                value: _dropdownValue2,
+                                items: [
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      setState(() {
+                                        sort = 'name';
+                                      });
+                                    },
+                                    value: 0,
+                                    child:
+                                        DropDownItem(label: 'Sort by: Names'),
+                                  ),
+                                  DropdownMenuItem(
+                                    onTap: () {
+                                      setState(() {
+                                        sort = 'dateTime';
+                                      });
+                                    },
+                                    value: 1,
+                                    child: DropDownItem(label: 'Sort by: Date'),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dropdownValue2 =
+                                        int.parse(value.toString());
+                                  });
+                                },
                               ),
-                              PopupMenuItem(
-                                child: ListTile(
-                                  onTap: (() {
-                                    reportByYear();
-                                  }),
-                                  title: NormalText(
-                                      label: 'Report by Year Level',
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
-                              ),
-                              PopupMenuItem(
-                                child: ListTile(
-                                  onTap: (() {
-                                    codeReport();
-                                  }),
-                                  title: NormalText(
-                                      label: 'Student Consultation Report',
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                ),
-                              ),
-                            ];
-                          })),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              StreamBuilder<QuerySnapshot>(
-                  stream: getFilter(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return const Center(child: Text('Error'));
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      print('waiting');
-                      return const Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          color: Colors.black,
-                        )),
-                      );
-                    }
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 7, top: 7),
+                            child: Row(
+                              children: [
+                                BoldText(
+                                    label: 'Types of Report',
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                PopupMenuButton(itemBuilder: ((context) {
+                                  return [
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 0;
+                                            hasLoaded = false;
+                                          });
+                                          getData();
 
-                    final data = snapshot.requireData;
-
-                    return Expanded(
-                      child: SizedBox(
-                        child: ListView.builder(
-                            itemCount: data.size == 0 ? 0 : 1,
-                            itemBuilder: ((context, index) {
-                              classCodes.add(data.docs[index]['classCode']);
-                              sections.add(data.docs[index]['section']);
-                              name.add(data.docs[index]['name']);
-                              email.add(data.docs[index]['email']);
-                              courseStud.add(data.docs[index]['course']);
-                              yearLevel.add(data.docs[index]['yearLevel']);
-                              concern.add(data.docs[index]['concern']);
-                              status.add(data.docs[index]['type']);
-
-                              DateTime created =
-                                  data.docs[index]['dateTime'].toDate();
-
-                              String formattedTime =
-                                  DateFormat.yMMMd().add_jm().format(created);
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 25),
-                                child: Container(
-                                  height: 500,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 3, color: Colors.grey[200]!)),
-                                  child: SingleChildScrollView(
-                                    child: DataTable(
-                                      headingRowColor: MaterialStateProperty
-                                          .resolveWith<Color?>(
-                                              (Set<MaterialState> states) {
-                                        return Colors.blue[400];
-                                        // Use the default value.
-                                      }),
-                                      border: TableBorder.all(
-                                        color: Colors.white,
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                        }),
+                                        title: NormalText(
+                                            label: 'Log Book',
+                                            fontSize: 12,
+                                            color: Colors.black),
                                       ),
-                                      // datatable widget
-                                      columns: [
-                                        // column to set the name
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'ID',
-                                                fontSize: 12,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Student\nName',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Time of\nConsultation',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Date of\nConsultation',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Course',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Year\nLevel',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label:
-                                                    'Purpose of\nConsultation',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                        DataColumn(
-                                            label: BoldText(
-                                                label: 'Ticket\nStatus',
-                                                fontSize: 14,
-                                                color: Colors.white)),
-                                      ],
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 1;
+                                            hasLoaded = false;
+                                          });
+                                          getData();
 
-                                      rows: [
-                                        // row to set the values
-                                        for (int i = 1;
-                                            i < snapshot.data!.size;
-                                            i++)
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+
+                                          // consultationReport();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Consultation Report',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 2;
+                                            hasLoaded = false;
+                                          });
+                                          getData();
+
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                          // reportByYear();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Year Level',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 3;
+                                            hasLoaded = false;
+                                          });
+                                          getData();
+
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                          // codeReport();
+                                        }),
+                                        title: NormalText(
+                                            label:
+                                                'Student Consultation Report',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ];
+                                })),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: IndexedStack(
+                          index: index,
+                          children: [
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: MaterialButton(
+                                      child: NormalText(
+                                          label: 'Export in PDF',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                      color: primary,
+                                      minWidth: 150,
+                                      height: 50,
+                                      onPressed: (() {
+                                        _loggedin();
+                                      })),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: getFilter(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return const Center(
+                                            child: Text('Error'));
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        print('waiting');
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 50),
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          )),
+                                        );
+                                      }
+
+                                      final data = snapshot.requireData;
+
+                                      return Expanded(
+                                        child: SizedBox(
+                                          child: ListView.builder(
+                                              itemCount: data.size == 0 ? 0 : 1,
+                                              itemBuilder: ((context, index) {
+                                                classCodes.add(data.docs[index]
+                                                    ['classCode']);
+                                                sections.add(data.docs[index]
+                                                    ['section']);
+                                                name.add(
+                                                    data.docs[index]['name']);
+                                                email.add(
+                                                    data.docs[index]['email']);
+                                                courseStud.add(
+                                                    data.docs[index]['course']);
+                                                yearLevel.add(data.docs[index]
+                                                    ['yearLevel']);
+                                                concern.add(data.docs[index]
+                                                    ['concern']);
+                                                status.add(
+                                                    data.docs[index]['type']);
+
+                                                DateTime created = data
+                                                    .docs[index]['dateTime']
+                                                    .toDate();
+
+                                                String formattedTime =
+                                                    DateFormat.yMMMd()
+                                                        .add_jm()
+                                                        .format(created);
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 25),
+                                                  child: Container(
+                                                    height: 500,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 3,
+                                                            color: Colors
+                                                                .grey[200]!)),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: DataTable(
+                                                        headingRowColor:
+                                                            MaterialStateProperty
+                                                                .resolveWith<
+                                                                    Color?>((Set<
+                                                                        MaterialState>
+                                                                    states) {
+                                                          return Colors
+                                                              .blue[400];
+                                                          // Use the default value.
+                                                        }),
+                                                        border: TableBorder.all(
+                                                          color: Colors.white,
+                                                        ),
+                                                        // datatable widget
+                                                        columns: [
+                                                          // column to set the name
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label: 'ID',
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Student\nName',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Time of\nConsultation',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Date of\nConsultation',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Course',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Year\nLevel',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Purpose of\nConsultation',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                          DataColumn(
+                                                              label: BoldText(
+                                                                  label:
+                                                                      'Ticket\nStatus',
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .white)),
+                                                        ],
+
+                                                        rows: [
+                                                          // row to set the values
+                                                          for (int i = 1;
+                                                              i <
+                                                                  snapshot.data!
+                                                                      .size;
+                                                              i++)
+                                                            DataRow(
+                                                                color: MaterialStateProperty
+                                                                    .resolveWith<
+                                                                        Color?>((Set<
+                                                                            MaterialState>
+                                                                        states) {
+                                                                  if (i
+                                                                      .floor()
+                                                                      .isEven) {
+                                                                    return Colors
+                                                                            .blueGrey[
+                                                                        100];
+                                                                  } else {
+                                                                    return Colors
+                                                                            .grey[
+                                                                        200];
+                                                                  }
+                                                                }),
+                                                                cells: [
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: i
+                                                                            .toString(),
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'name'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'time'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: formattedTime
+                                                                            .toString(),
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'course'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'yearLevel'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'concern'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  DataCell(
+                                                                    NormalText(
+                                                                        label: data.docs[i]
+                                                                            [
+                                                                            'type'],
+                                                                        fontSize:
+                                                                            12,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                ]),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              })),
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: MaterialButton(
+                                      child: NormalText(
+                                          label: 'Export in PDF',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                      color: primary,
+                                      minWidth: 150,
+                                      height: 50,
+                                      onPressed: (() {
+                                        consultationReport();
+                                      })),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 25),
+                                  child: Container(
+                                    height: 450,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 3,
+                                            color: Colors.grey[200]!)),
+                                    child: SingleChildScrollView(
+                                      child: DataTable(
+                                        headingRowColor: MaterialStateProperty
+                                            .resolveWith<Color?>(
+                                                (Set<MaterialState> states) {
+                                          return Colors.blue[400];
+                                          // Use the default value.
+                                        }),
+                                        border: TableBorder.all(
+                                          color: Colors.white,
+                                        ),
+                                        // datatable widget
+                                        columns: [
+                                          // column to set the name
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Year\nLevel',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Enrolled',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Consulted',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Percentage of\nConsultation',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Consultation\nPlatform',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Major or Common\nConcerns/Issues\nEncountered by Students',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Actions Taken\nand Status',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                        ],
+
+                                        rows: [
                                           DataRow(
                                               color: MaterialStateProperty
                                                   .resolveWith<Color?>(
                                                       (Set<MaterialState>
                                                           states) {
-                                                if (i.floor().isEven) {
-                                                  return Colors.blueGrey[100];
-                                                } else {
-                                                  return Colors.grey[200];
-                                                }
+                                                return Colors.blueGrey[100];
                                               }),
                                               cells: [
                                                 DataCell(
                                                   NormalText(
-                                                      label: i.toString(),
+                                                      label: '1st',
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: data.docs[i]
-                                                          ['name'],
+                                                      label: total1.toString(),
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: data.docs[i]
-                                                          ['time'],
+                                                      label: year1.toString(),
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: formattedTime
-                                                          .toString(),
+                                                      label: year1 == 0
+                                                          ? "0.00%"
+                                                          : ((year1 / total1) *
+                                                                      100)
+                                                                  .toStringAsFixed(
+                                                                      2) +
+                                                              "%",
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: data.docs[i]
-                                                          ['course'],
+                                                      label:
+                                                          'Studcon Messaging App',
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: data.docs[i]
-                                                          ['yearLevel'],
+                                                      label: concern1,
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                                 DataCell(
                                                   NormalText(
-                                                      label: data.docs[i]
-                                                          ['concern'],
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                                DataCell(
-                                                  NormalText(
-                                                      label: data.docs[i]
-                                                          ['type'],
+                                                      label: type,
                                                       fontSize: 12,
                                                       color: Colors.black),
                                                 ),
                                               ]),
-                                      ],
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                return Colors.blueGrey[100];
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: '2nd',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: total2.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year2.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year2 == 0
+                                                          ? "0.00%"
+                                                          : ((year2 / total2) *
+                                                                      100)
+                                                                  .toStringAsFixed(
+                                                                      2) +
+                                                              "%",
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label:
+                                                          'Studcon Messaging App',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: concern1,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: type,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                return Colors.blueGrey[100];
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: '3rd',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: total3.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year3.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year3 == 0
+                                                          ? "0.00%"
+                                                          : ((year3 / total3) *
+                                                                      100)
+                                                                  .toStringAsFixed(
+                                                                      2) +
+                                                              "%",
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label:
+                                                          'Studcon Messaging App',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: concern1,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: type,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                return Colors.blueGrey[100];
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: '4th',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: total4.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year4.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year4 == 0
+                                                          ? "0.00%"
+                                                          : ((year4 / total4) *
+                                                                      100)
+                                                                  .toStringAsFixed(
+                                                                      2) +
+                                                              "%",
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label:
+                                                          'Studcon Messaging App',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: concern1,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: type,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                          DataRow(
+                                              color: MaterialStateProperty
+                                                  .resolveWith<Color?>(
+                                                      (Set<MaterialState>
+                                                          states) {
+                                                return Colors.blueGrey[100];
+                                              }),
+                                              cells: [
+                                                DataCell(
+                                                  NormalText(
+                                                      label: '5th',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: total5.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year5.toString(),
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: year5 == 0
+                                                          ? "0.00%"
+                                                          : ((year5 / total5) *
+                                                                      100)
+                                                                  .toStringAsFixed(
+                                                                      2) +
+                                                              "%",
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label:
+                                                          'Studcon Messaging App',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: concern1,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                DataCell(
+                                                  NormalText(
+                                                      label: type,
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ]),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              );
-                            })),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: MaterialButton(
+                                      child: NormalText(
+                                          label: 'Export in PDF',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                      color: primary,
+                                      minWidth: 150,
+                                      height: 50,
+                                      onPressed: (() {
+                                        reportByYear();
+                                      })),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 25),
+                                  child: Container(
+                                    height: 450,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 3,
+                                            color: Colors.grey[200]!)),
+                                    child: SingleChildScrollView(
+                                      child: DataTable(
+                                        headingRowColor: MaterialStateProperty
+                                            .resolveWith<Color?>(
+                                                (Set<MaterialState> states) {
+                                          return Colors.blue[400];
+                                          // Use the default value.
+                                        }),
+                                        border: TableBorder.all(
+                                          color: Colors.white,
+                                        ),
+                                        // datatable widget
+                                        columns: [
+                                          // column to set the name
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Class\nSection',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Enrolled',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Consulted',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Percentage of\nConsultation',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Consultation\nPlatform',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Major or Common\nConcerns/Issues\nEncountered by Students',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Actions Taken\nand Status',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                        ],
+
+                                        rows: [
+                                          for (int i = 0;
+                                              i < listSections.length;
+                                              i++)
+                                            DataRow(
+                                                color: MaterialStateProperty
+                                                    .resolveWith<Color?>(
+                                                        (Set<MaterialState>
+                                                            states) {
+                                                  return Colors.blueGrey[100];
+                                                }),
+                                                cells: [
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: listSections[i],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: enrolled[i]
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: sectionNumber[i]
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: sectionNumber[
+                                                                    i] ==
+                                                                0
+                                                            ? "0"
+                                                            : sectionNumber[i]
+                                                                .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label:
+                                                            'Studcon Messaging App',
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: concern1,
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: type,
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                ])
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: MaterialButton(
+                                      child: NormalText(
+                                          label: 'Export in PDF',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                      color: primary,
+                                      minWidth: 150,
+                                      height: 50,
+                                      onPressed: (() {
+                                        codeReport();
+                                      })),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 25),
+                                  child: Container(
+                                    height: 450,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 3,
+                                            color: Colors.grey[200]!)),
+                                    child: SingleChildScrollView(
+                                      child: DataTable(
+                                        headingRowColor: MaterialStateProperty
+                                            .resolveWith<Color?>(
+                                                (Set<MaterialState> states) {
+                                          return Colors.blue[400];
+                                          // Use the default value.
+                                        }),
+                                        border: TableBorder.all(
+                                          color: Colors.white,
+                                        ),
+                                        // datatable widget
+                                        columns: [
+                                          // column to set the name
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label: 'Class\nCode',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Enrolled',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'No. of\nStudents Consulted',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Percentage of\nConsultation',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Consultation\nPlatform',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Major or Common\nConcerns/Issues\nEncountered by Students',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                          DataColumn(
+                                              label: BoldText(
+                                                  label:
+                                                      'Actions Taken\nand Status',
+                                                  fontSize: 12,
+                                                  color: Colors.white)),
+                                        ],
+
+                                        rows: [
+                                          for (int i = 0;
+                                              i < classCodes.length;
+                                              i++)
+                                            DataRow(
+                                                color: MaterialStateProperty
+                                                    .resolveWith<Color?>(
+                                                        (Set<MaterialState>
+                                                            states) {
+                                                  return Colors.blueGrey[100];
+                                                }),
+                                                cells: [
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: classCodes[i],
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: codeEnrolled[i]
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: codeNumber[i]
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: codeNumber[i] ==
+                                                                0
+                                                            ? "0"
+                                                            : codeEnrolled[i]
+                                                                .toString(),
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label:
+                                                            'Studcon Messaging App',
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: concern1,
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                  DataCell(
+                                                    NormalText(
+                                                        label: type,
+                                                        fontSize: 12,
+                                                        color: Colors.black),
+                                                  ),
+                                                ])
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  })
-            ],
-          ),
-        ),
-      ),
-    );
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Scaffold(
+            backgroundColor: greyAccent,
+            body: Center(child: CircularProgressIndicator()));
   }
 }

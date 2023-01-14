@@ -51,16 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   // ),
                   // backgroundColor: Colors.blueGrey[700]
                   ),
-              title: Container(
-                decoration: const BoxDecoration(
-                  color: primary,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/bsu.png',
-                      height: 120,
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: primary,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/bsu.png',
+                        height: 120,
+                      ),
                     ),
                   ),
                 ),
