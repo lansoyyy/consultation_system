@@ -1498,7 +1498,21 @@ class _ReportTabState extends State<ReportTab> {
                                   setState(() {
                                     _dropdownValue =
                                         int.parse(value.toString());
+                                    hasLoaded = false;
                                   });
+                                  getData();
+
+                                  getData2();
+                                  getData3();
+                                  getData4();
+                                  getData5();
+                                  getTotal();
+                                  getTotal2();
+                                  getTotal3();
+                                  getTotal4();
+                                  getTotal5();
+                                  getSections();
+                                  getCodes();
                                 },
                               ),
                             ),
@@ -1614,7 +1628,21 @@ class _ReportTabState extends State<ReportTab> {
                                   setState(() {
                                     _dropdownValue1 =
                                         int.parse(value.toString());
+                                    hasLoaded = false;
                                   });
+                                  getData();
+
+                                  getData2();
+                                  getData3();
+                                  getData4();
+                                  getData5();
+                                  getTotal();
+                                  getTotal2();
+                                  getTotal3();
+                                  getTotal4();
+                                  getTotal5();
+                                  getSections();
+                                  getCodes();
                                 },
                               ),
                             ),
@@ -1664,7 +1692,21 @@ class _ReportTabState extends State<ReportTab> {
                                   setState(() {
                                     _dropdownValue2 =
                                         int.parse(value.toString());
+                                    hasLoaded = false;
                                   });
+                                  getData();
+
+                                  getData2();
+                                  getData3();
+                                  getData4();
+                                  getData5();
+                                  getTotal();
+                                  getTotal2();
+                                  getTotal3();
+                                  getTotal4();
+                                  getTotal5();
+                                  getSections();
+                                  getCodes();
                                 },
                               ),
                             ),
