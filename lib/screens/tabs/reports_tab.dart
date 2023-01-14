@@ -23,6 +23,295 @@ class ReportTab extends StatefulWidget {
 }
 
 class _ReportTabState extends State<ReportTab> {
+  @override
+  void initState() {
+    getData();
+
+    getData2();
+    getData3();
+    getData4();
+    getData5();
+    getTotal();
+    getTotal2();
+    getTotal3();
+    getTotal4();
+    getTotal5();
+    getSections();
+    getCodes();
+
+    super.initState();
+  }
+
+  late int year1 = 0;
+
+  late String concern1 = '';
+
+  late String type = '';
+
+  getData() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'First Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year1 = querySnapshot.size;
+          concern1 = data['concern'];
+          type = data['type'];
+        }
+      });
+    }
+  }
+
+  var sections = [];
+  List<int> sectionNumber = [];
+  List<int> enrolled = [];
+
+  getSections() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance.collection('Section');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          sections.add(data['section']);
+        }
+      });
+    }
+
+    for (int i = 0; i < sections.length; i++) {
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('section', isEqualTo: sections[i]);
+
+      var querySnapshot = await collection.get();
+
+      sectionNumber.add(querySnapshot.size);
+
+      var collection1 = FirebaseFirestore.instance
+          .collection('Users')
+          .where('section', isEqualTo: sections[i]);
+
+      var querySnapshot1 = await collection1.get();
+
+      enrolled.add(querySnapshot1.size);
+    }
+  }
+
+  var classCodes = [];
+
+  var codeNumber = [];
+  var codeEnrolled = [];
+
+  getCodes() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance.collection('Class Code');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          classCodes.add(data['classCode']);
+        }
+      });
+    }
+
+    for (int i = 0; i < classCodes.length; i++) {
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('classCode', isEqualTo: classCodes[i]);
+
+      var querySnapshot = await collection.get();
+
+      codeNumber.add(querySnapshot.size);
+
+      var collection1 = FirebaseFirestore.instance
+          .collection('Users')
+          .where('classCode', isEqualTo: classCodes[i]);
+
+      var querySnapshot1 = await collection1.get();
+      codeEnrolled.add(querySnapshot1.size);
+    }
+  }
+
+  late int year2 = 0;
+
+  getData2() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Second Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year2 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int year3 = 0;
+
+  getData3() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Third Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year3 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int year4 = 0;
+
+  getData4() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Fourth Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year4 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int year5 = 0;
+
+  getData5() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Concerns')
+        .where('yearLevel', isEqualTo: 'Fifth Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          year5 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int total1 = 0;
+
+  getTotal() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .where('yearLevel', isEqualTo: 'First Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total1 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int total2 = 0;
+
+  getTotal2() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .where('yearLevel', isEqualTo: 'Second Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total2 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int total3 = 0;
+
+  getTotal3() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .where('yearLevel', isEqualTo: 'Third Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total3 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int total4 = 0;
+
+  getTotal4() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .where('yearLevel', isEqualTo: 'Fourth Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total4 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
+  late int total5 = 0;
+
+  getTotal5() async {
+    // Use provider
+    var collection = FirebaseFirestore.instance
+        .collection('Users')
+        .where('yearLevel', isEqualTo: 'Fifth Year');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+          total5 = querySnapshot.size;
+        }
+      });
+    }
+  }
+
   int _dropdownValue = 0;
 
   late String year = 'All';
@@ -259,14 +548,600 @@ class _ReportTabState extends State<ReportTab> {
         onLayout: (PdfPageFormat format) async => doc.save());
 
     /// share the document to other applications:
-    await Printing.sharePdf(
-        bytes: await doc.save(), filename: 'my-document.pdf');
+    // await Printing.sharePdf(
+    //     bytes: await doc.save(), filename: 'my-document.pdf');
 
-    /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
-    /// save PDF with Flutter library "path_provider":
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/reports.pdf');
-    await file.writeAsBytes(await doc.save());
+    // /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
+    // /// save PDF with Flutter library "path_provider":
+    // final output = await getTemporaryDirectory();
+    // final file = File('${output.path}/reports.pdf');
+    // await file.writeAsBytes(await doc.save());
+  }
+
+  void consultationReport() async {
+    /// for using an image from assets
+    final image = await imageFromAssetBundle('assets/images/bsu.png');
+    final image1 = await imageFromAssetBundle('assets/images/dean.jpg');
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Container(
+            margin: const pw.EdgeInsets.all(20),
+            child: pw.Column(children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Image(image, height: 50, width: 50),
+                  pw.SizedBox(width: 25),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('BUKIDNON STATE UNIVERSITY',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('COLLEGE OF TECHNOLOGIES',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Sayre Hwy, Malaybalay, 8700 Bukidnon',
+                          style: const pw.TextStyle(fontSize: 8)),
+                      pw.Text(
+                          'Tel (088) 813-5661 to 5663; TeleFax (088) 813-2717, www.buksu.edu.ph',
+                          style: const pw.TextStyle(fontSize: 8)),
+                    ],
+                  ),
+                  pw.SizedBox(width: 25),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text("CONSOLIDATED STUDENT CONSULTATION REPORT",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 20),
+              pw.Text("___________________________________________",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 10),
+              pw.Text("(Program)",
+                  style: pw.TextStyle(
+                      fontSize: 6, fontStyle: pw.FontStyle.italic)),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Text('Semester:___________ ',
+                      style: pw.TextStyle(fontSize: 6)),
+                  pw.SizedBox(width: 30),
+                  pw.Text('SY:___________ ', style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.black),
+                  children: [
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Year Level',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Enrolled',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Consulted',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Percentage of Consultation',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Consultation Platform',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            'Major or Common Issues Encountered by Students',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Action Taken and Status',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('1st',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(total1.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year1.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            year1 == 0
+                                ? "0.00%"
+                                : ((year1 / total1) * 100).toStringAsFixed(2) +
+                                    "%",
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Studcon Messaging App',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year1 == 0 ? 'None' : concern1,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year1 == 0 ? 'None' : type,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('2nd',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(total2.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year2.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            year2 == 0
+                                ? "0.00%"
+                                : ((year2 / total2) * 100).toStringAsFixed(2) +
+                                    "%",
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Studcon Messaging App',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year2 == 0 ? 'None' : concern1,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year2 == 0 ? 'None' : type,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('3rd',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(total3.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year3.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            year3 == 0
+                                ? "0.00%"
+                                : ((year3 / total3) * 100).toStringAsFixed(2) +
+                                    "%",
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Studcon Messaging App',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year3 == 0 ? 'None' : concern1,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year3 == 0 ? 'None' : type,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('4th',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(total4.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year4.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            year4 == 0
+                                ? "0.00%"
+                                : ((year4 / total4) * 100).toStringAsFixed(2) +
+                                    "%",
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Studcon Messaging App',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year4 == 0 ? 'None' : concern1,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year4 == 0 ? 'None' : type,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('5th',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(total5.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year5.toString(),
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            year5 == 0
+                                ? "0.00%"
+                                : ((year5 / total5) * 100).toStringAsFixed(2) +
+                                    "%",
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Studcon Messaging App',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year5 == 0 ? 'None' : concern1,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(year5 == 0 ? 'None' : type,
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                  ]),
+              pw.Expanded(
+                child: pw.SizedBox(height: 50),
+              ),
+              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+                pw.Text('Consolidated by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Program Coordinator/Chairperson',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+                pw.Expanded(
+                  child: pw.SizedBox(height: 50),
+                ),
+                pw.Text('Reviewed and Approved by: ',
+                    style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Dean',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text('Document Code: OVPAA-F-INS-060B',
+                            style: pw.TextStyle(fontSize: 6)),
+                        pw.Text('Uncontrolled document once printed',
+                            style: pw.TextStyle(
+                                fontSize: 4, fontStyle: pw.FontStyle.italic)),
+                      ]),
+                  pw.Text('Revision No.:0', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue No.:1', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue Date: $cdate2',
+                      style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+            ]),
+          );
+        },
+      ),
+    ); // Page
+
+    /// print the document using the iOS or Android print service:
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+
+    /// share the document to other applications:
+    // await Printing.sharePdf(
+    //     bytes: await doc.save(), filename: 'my-document.pdf');
+
+    // /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
+    // /// save PDF with Flutter library "path_provider":
+    // final output = await getTemporaryDirectory();
+    // final file = File('${output.path}/reports.pdf');
+    // await file.writeAsBytes(await doc.save());
+  }
+
+  void reportByYear() async {
+    /// for using an image from assets
+    final image = await imageFromAssetBundle('assets/images/bsu.png');
+    final image1 = await imageFromAssetBundle('assets/images/dean.jpg');
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Container(
+            margin: const pw.EdgeInsets.all(20),
+            child: pw.Column(children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Image(image, height: 50, width: 50),
+                  pw.SizedBox(width: 25),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('BUKIDNON STATE UNIVERSITY',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('COLLEGE OF TECHNOLOGIES',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Sayre Hwy, Malaybalay, 8700 Bukidnon',
+                          style: const pw.TextStyle(fontSize: 8)),
+                      pw.Text(
+                          'Tel (088) 813-5661 to 5663; TeleFax (088) 813-2717, www.buksu.edu.ph',
+                          style: const pw.TextStyle(fontSize: 8)),
+                    ],
+                  ),
+                  pw.SizedBox(width: 25),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text("CONSOLIDATED STUDENT CONSULTATION REPORT",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 20),
+              pw.Text("___________________________________________",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 10),
+              pw.Text("Program and Year Level",
+                  style: pw.TextStyle(
+                      fontSize: 6, fontStyle: pw.FontStyle.italic)),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Text('Semester:___________ ',
+                      style: pw.TextStyle(fontSize: 6)),
+                  pw.SizedBox(width: 30),
+                  pw.Text('SY:___________ ', style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.black),
+                  children: [
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Class Section',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Enrolled',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Consulted',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Percentage of Consultation',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Consultation Platform',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            'Major or Common Issues Encountered by Students',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Action Taken and Status',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    for (int i = 0; i < sections.length; i++)
+                      pw.TableRow(children: [
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(sections[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(enrolled[i].toString(),
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(
+                              sectionNumber[i] == 0
+                                  ? "0"
+                                  : sectionNumber[i].toString(),
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(
+                              sectionNumber[i] == 0
+                                  ? "0.00%"
+                                  : ((sectionNumber[i] / enrolled[i]) * 100)
+                                          .toStringAsFixed(2) +
+                                      "%",
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text('Studcon Messaging App',
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(
+                              sectionNumber[i] == 0 ? 'None' : concern1,
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(sectionNumber[i] == 0 ? 'None' : type,
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                      ]),
+                  ]),
+              pw.Expanded(
+                child: pw.SizedBox(height: 50),
+              ),
+              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+                pw.Text('Consolidated by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Program Coordinator/Chairperson',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+                pw.Expanded(
+                  child: pw.SizedBox(height: 50),
+                ),
+                pw.Text('Reviewed and Approved by: ',
+                    style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Dean',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text('Document Code: OVPAA-F-INS-060B',
+                            style: pw.TextStyle(fontSize: 6)),
+                        pw.Text('Uncontrolled document once printed',
+                            style: pw.TextStyle(
+                                fontSize: 4, fontStyle: pw.FontStyle.italic)),
+                      ]),
+                  pw.Text('Revision No.:0', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue No.:1', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue Date: $cdate2',
+                      style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+            ]),
+          );
+        },
+      ),
+    ); // Page
+
+    /// print the document using the iOS or Android print service:
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+
+    /// share the document to other applications:
+    // await Printing.sharePdf(
+    //     bytes: await doc.save(), filename: 'my-document.pdf');
+
+    // /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
+    // /// save PDF with Flutter library "path_provider":
+    // final output = await getTemporaryDirectory();
+    // final file = File('${output.path}/reports.pdf');
+    // await file.writeAsBytes(await doc.save());
   }
 
   String sort = 'name';
@@ -298,6 +1173,223 @@ class _ReportTabState extends State<ReportTab> {
 
   int _dropdownValue2 = 0;
 
+  void codeReport() async {
+    /// for using an image from assets
+    final image = await imageFromAssetBundle('assets/images/bsu.png');
+    final image1 = await imageFromAssetBundle('assets/images/dean.jpg');
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Container(
+            margin: const pw.EdgeInsets.all(20),
+            child: pw.Column(children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Image(image, height: 50, width: 50),
+                  pw.SizedBox(width: 25),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('BUKIDNON STATE UNIVERSITY',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('COLLEGE OF TECHNOLOGIES',
+                          style: const pw.TextStyle(fontSize: 12)),
+                      pw.Text('Sayre Hwy, Malaybalay, 8700 Bukidnon',
+                          style: const pw.TextStyle(fontSize: 8)),
+                      pw.Text(
+                          'Tel (088) 813-5661 to 5663; TeleFax (088) 813-2717, www.buksu.edu.ph',
+                          style: const pw.TextStyle(fontSize: 8)),
+                    ],
+                  ),
+                  pw.SizedBox(width: 25),
+                ],
+              ),
+              pw.SizedBox(height: 50),
+              pw.Text("STUDENT'S CONSULTATION REPORT",
+                  style: const pw.TextStyle(fontSize: 10)),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Text('Semester:___________ ',
+                      style: pw.TextStyle(fontSize: 6)),
+                  pw.SizedBox(width: 30),
+                  pw.Text('SY:___________ ', style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.black),
+                  children: [
+                    pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Class Code',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Enrolled',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('No. of Students Consulted',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Percentage of Consultation',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Consultation Platform',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text(
+                            'Major or Common Issues Encountered by Students',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(2),
+                        child: pw.Text('Action Taken and Status',
+                            style: const pw.TextStyle(fontSize: 6)),
+                      ),
+                    ]),
+                    for (int i = 0; i < classCodes.length; i++)
+                      pw.TableRow(children: [
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(classCodes[i],
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(codeEnrolled[i].toString(),
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(
+                              codeNumber[i] == 0
+                                  ? "0"
+                                  : codeNumber[i].toString(),
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(
+                              ((codeNumber[i] / codeEnrolled[i]) * 100)
+                                          .toStringAsFixed(2) +
+                                      "%" ??
+                                  0,
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text('Studcon Messaging App',
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(codeNumber[i] == 0 ? 'None' : concern1,
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(2),
+                          child: pw.Text(codeNumber[i] == 0 ? 'None' : type,
+                              style: const pw.TextStyle(fontSize: 6)),
+                        ),
+                      ]),
+                  ]),
+              pw.Expanded(
+                child: pw.SizedBox(height: 50),
+              ),
+              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+                pw.Text('Consolidated by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Faculty',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+                pw.Expanded(
+                  child: pw.SizedBox(height: 50),
+                ),
+                pw.Text('Reviewed by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Academic Adviser',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+                pw.Expanded(
+                  child: pw.SizedBox(height: 50),
+                ),
+                pw.Text('Approved by: ', style: pw.TextStyle(fontSize: 6)),
+                pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text('______________'),
+                      pw.Text('Program Coordinator/Chairperson',
+                          style: pw.TextStyle(
+                              fontSize: 6, fontStyle: pw.FontStyle.italic)),
+                    ]),
+              ]),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.end,
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text('Document Code: OVPAA-F-INS-060B',
+                            style: pw.TextStyle(fontSize: 6)),
+                        pw.Text('Uncontrolled document once printed',
+                            style: pw.TextStyle(
+                                fontSize: 4, fontStyle: pw.FontStyle.italic)),
+                      ]),
+                  pw.Text('Revision No.:0', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue No.:1', style: pw.TextStyle(fontSize: 6)),
+                  pw.Text('Issue Date: $cdate2',
+                      style: pw.TextStyle(fontSize: 6)),
+                ],
+              ),
+            ]),
+          );
+        },
+      ),
+    ); // Page
+
+    /// print the document using the iOS or Android print service:
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+
+    /// share the document to other applications:
+    // await Printing.sharePdf(
+    //     bytes: await doc.save(), filename: 'my-document.pdf');
+
+    // /// tutorial for using path_provider: https://www.youtube.com/watch?v=fJtFDrjEvE8
+    // /// save PDF with Flutter library "path_provider":
+    // final output = await getTemporaryDirectory();
+    // final file = File('${output.path}/reports.pdf');
+    // await file.writeAsBytes(await doc.save());
+  }
+
   @override
   Widget build(BuildContext context) {
     print(sort);
@@ -314,23 +1406,6 @@ class _ReportTabState extends State<ReportTab> {
                 children: [
                   NormalText(label: 'Reports', fontSize: 24, color: primary),
                   const Expanded(child: SizedBox()),
-                  GestureDetector(
-                    onTap: () async {
-                      _loggedin();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: primary,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                        child: NormalText(
-                            label: 'Export in PDF',
-                            fontSize: 15,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
                   const SizedBox(
                     width: 30,
                   ),
@@ -561,6 +1636,75 @@ class _ReportTabState extends State<ReportTab> {
                   const SizedBox(
                     width: 50,
                   ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, bottom: 7, top: 7),
+                      child: Row(
+                        children: [
+                          BoldText(
+                              label: 'Export Report',
+                              fontSize: 14,
+                              color: Colors.black),
+                          PopupMenuButton(itemBuilder: ((context) {
+                            return [
+                              PopupMenuItem(
+                                child: ListTile(
+                                  onTap: (() {
+                                    _loggedin();
+                                  }),
+                                  title: NormalText(
+                                      label: 'Log Book',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                child: ListTile(
+                                  onTap: (() {
+                                    consultationReport();
+                                  }),
+                                  title: NormalText(
+                                      label: 'Consultation Report',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                child: ListTile(
+                                  onTap: (() {
+                                    reportByYear();
+                                  }),
+                                  title: NormalText(
+                                      label: 'Report by Year Level',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                child: ListTile(
+                                  onTap: (() {
+                                    codeReport();
+                                  }),
+                                  title: NormalText(
+                                      label: 'Student Consultation Report',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ];
+                          })),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
                 ],
               ),
               const SizedBox(
@@ -598,6 +1742,7 @@ class _ReportTabState extends State<ReportTab> {
                               yearLevel.add(data.docs[index]['yearLevel']);
                               concern.add(data.docs[index]['concern']);
                               status.add(data.docs[index]['type']);
+
                               DateTime created =
                                   data.docs[index]['dateTime'].toDate();
 
