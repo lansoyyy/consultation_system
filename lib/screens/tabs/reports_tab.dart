@@ -1420,16 +1420,23 @@ class _ReportTabState extends State<ReportTab> {
           .where('type', isEqualTo: filterType)
           .orderBy(sort)
           .snapshots();
-    } else if (course == 'All' && year == 'All' && filterType == 'All') {
+    } else if (year == 'All' && filterConcern == 'All' && filterType == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
-          .where('concern', isEqualTo: filterConcern)
+          .where('course', isEqualTo: course)
           .orderBy(sort)
           .snapshots();
     } else if (course == 'All' && year == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
           .where('type', isEqualTo: filterType)
+          .where('concern', isEqualTo: filterConcern)
+          .orderBy(sort)
+          .snapshots();
+    } else if (year == 'All' && filterType == 'All') {
+      return FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('course', isEqualTo: course)
           .where('concern', isEqualTo: filterConcern)
           .orderBy(sort)
           .snapshots();
@@ -1737,7 +1744,7 @@ class _ReportTabState extends State<ReportTab> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      width: 90,
+                                      width: 120,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(5),
@@ -1843,7 +1850,7 @@ class _ReportTabState extends State<ReportTab> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 210,
+                                width: 230,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5),
@@ -2318,7 +2325,7 @@ class _ReportTabState extends State<ReportTab> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: 100,
+                                              width: 120,
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
@@ -2668,7 +2675,7 @@ class _ReportTabState extends State<ReportTab> {
 
                                                         rows: [
                                                           // row to set the values
-                                                          for (int i = 1;
+                                                          for (int i = 0;
                                                               i <
                                                                   snapshot.data!
                                                                       .size;

@@ -114,8 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     page.jumpToPage(5);
                   },
                   priority: 5,
-                  title: 'Settings',
-                  icon: const Icon(Icons.settings),
+                  title: 'Personal Information',
+                  icon: const Icon(Icons.person),
                 ),
               ],
             ),
