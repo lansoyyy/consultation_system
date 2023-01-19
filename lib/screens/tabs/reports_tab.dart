@@ -65,7 +65,9 @@ class _ReportTabState extends State<ReportTab> {
         });
       }
     } else {
-      var collection = FirebaseFirestore.instance.collection('Concerns');
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('yearLevel', isEqualTo: 'First Year');
 
       var querySnapshot = await collection.get();
       if (mounted) {
