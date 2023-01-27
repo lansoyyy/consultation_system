@@ -1,8 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
-import 'package:consultation_system/constant/uid.dart';
 import 'package:consultation_system/services/navigation.dart';
+import 'package:consultation_system/widgets/notification_widget.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +21,14 @@ PreferredSizeWidget appbarWidget(PageController page) {
       Center(
           child: BoldText(
               label: 'BukSU Consultation', fontSize: 24, color: primary)),
-      Expanded(
+      const Expanded(
         child: SizedBox(
           width: 50,
         ),
+      ),
+      const NotificationWidget(),
+      const SizedBox(
+        width: 10,
       ),
       StreamBuilder<DocumentSnapshot>(
           stream: userData,
