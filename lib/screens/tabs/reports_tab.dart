@@ -75,8 +75,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year1 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -191,6 +189,7 @@ class _ReportTabState extends State<ReportTab> {
         setState(() {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
+
             classCodes.add(data['classCode']);
           }
         });
@@ -327,6 +326,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -341,6 +342,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -507,6 +510,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -521,6 +526,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -1832,7 +1839,7 @@ class _ReportTabState extends State<ReportTab> {
                                       ),
                                       DropdownMenuItem(
                                         onTap: () {
-                                          course = "All";
+                                          course = "Information Technology";
                                         },
                                         value: 5,
                                         child: Center(
@@ -1903,205 +1910,207 @@ class _ReportTabState extends State<ReportTab> {
                         const SizedBox(
                           width: 20,
                         ),
-                        PopupMenuButton(
-                            tooltip: 'Generate Reports',
-                            itemBuilder: ((context) {
-                              return [
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 0;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                        course != 'All'
+                            ? PopupMenuButton(
+                                tooltip: 'Generate Reports',
+                                itemBuilder: ((context) {
+                                  return [
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 0;
+                                            hasLoaded = false;
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      listSections.clear();
-                                      classCodes.clear();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
 
-                                      getData();
+                                          getData();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                    }),
-                                    title: NormalText(
-                                        label: 'Log Book',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 1;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                        }),
+                                        title: NormalText(
+                                            label: 'Log Book',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 1;
+                                            hasLoaded = false;
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      listSections.clear();
-                                      classCodes.clear();
-                                      getData();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
 
-                                      // consultationReport();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Report by Year Level',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 2;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                          // consultationReport();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Year Level',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 2;
+                                            hasLoaded = false;
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      listSections.clear();
-                                      classCodes.clear();
-                                      getData();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                      // reportByYear();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Report by Class Section',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 3;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                          // reportByYear();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Class Section',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 3;
+                                            hasLoaded = false;
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      listSections.clear();
-                                      classCodes.clear();
-                                      getData();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                      // codeReport();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Report by Class Code',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                              ];
-                            })),
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+                                          getSections();
+                                          getCodes();
+                                          Navigator.pop(context);
+                                          // codeReport();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Class Code',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ];
+                                }))
+                            : SizedBox(),
                         const SizedBox(
                           width: 50,
                         ),
@@ -2176,11 +2185,11 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DropdownMenuItem(
                                                       onTap: () {
-                                                        filterType = 'Unsvoled';
+                                                        filterType = 'Unsolved';
                                                       },
                                                       value: 1,
                                                       child: DropDownItem(
-                                                          label: 'Unsvoled'),
+                                                          label: 'Unsolved'),
                                                     ),
                                                     DropdownMenuItem(
                                                       onTap: () {
@@ -2743,13 +2752,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year1 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year1 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -2798,13 +2811,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year2 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -2853,13 +2870,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -2908,13 +2929,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year4 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year4 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -2963,13 +2988,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year5 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year5 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -3068,7 +3097,7 @@ class _ReportTabState extends State<ReportTab> {
                                           ],
 
                                           rows: [
-                                            for (int i = 0;
+                                            for (int i = 1;
                                                 i < listSections.length;
                                                 i++)
                                               DataRow(
@@ -3121,13 +3150,21 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: concern1,
+                                                          label: sectionNumber[
+                                                                      i] ==
+                                                                  0
+                                                              ? '0'
+                                                              : concern1,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: type,
+                                                          label: sectionNumber[
+                                                                      i] ==
+                                                                  0
+                                                              ? '0'
+                                                              : type,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
@@ -3278,13 +3315,19 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: concern1,
+                                                          label:
+                                                              codeNumber[i] == 0
+                                                                  ? "0"
+                                                                  : concern1,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: type,
+                                                          label:
+                                                              codeNumber[i] == 0
+                                                                  ? "0"
+                                                                  : type,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
