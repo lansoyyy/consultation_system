@@ -47,6 +47,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
             dynamic data = snapshot.data;
 
             List notifs = data['notif'];
+
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -66,7 +67,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
                                 height: 400,
                                 width: 400,
                                 child: ListView.builder(
-                                    itemCount: notifs.length,
+                                    itemCount: notifs.reversed.length,
                                     itemBuilder: ((context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(
@@ -96,7 +97,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.openSans(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontSize: 14,
                                                     color: Colors.black),
                                               ),
@@ -106,7 +107,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.openSans(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontSize: 12,
                                                     color: Colors.grey),
                                               ),
@@ -116,7 +117,7 @@ PreferredSizeWidget appbarWidget(PageController page) {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.openSans(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontSize: 12,
                                                     color: Colors.black),
                                               ),
@@ -130,13 +131,13 @@ PreferredSizeWidget appbarWidget(PageController page) {
                             );
                           }));
                     }),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.notifications,
                       color: primary,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 CircleAvatar(
