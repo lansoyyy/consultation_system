@@ -51,10 +51,8 @@ class _MessagesTabState extends State<MessagesTab> {
 
   final _messageController = TextEditingController();
 
-  late String id = '';
-
   data() {
-    if (id != '') {
+    if (box.read('userId') != '') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .doc()
@@ -64,7 +62,7 @@ class _MessagesTabState extends State<MessagesTab> {
     } else {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
-          .doc(id)
+          .doc(box.read('userId'))
           .collection('Messages')
           .orderBy('dateTime')
           .snapshots();
@@ -354,7 +352,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                   return ListTile(
                                     onTap: (() {
                                       setState(() {
-                                        id = data.docs[index].id;
+                                        box.write(
+                                            'userId', data.docs[index].id);
                                         name = data.docs[index]['name'];
                                         concern = data.docs[index]['concern'];
                                         email = data.docs[index]['email'];
@@ -450,7 +449,7 @@ class _MessagesTabState extends State<MessagesTab> {
               ),
             ),
             const VerticalDivider(),
-            id != ''
+            box.read('userId') != ''
                 ? Expanded(
                     child: SizedBox(
                       child: Padding(
@@ -617,7 +616,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   child: Column(
                                     children: [
                                       StreamBuilder<QuerySnapshot>(
-                                          stream: id == ''
+                                          stream: box.read('userId') == ''
                                               ? FirebaseFirestore.instance
                                                   .collection(FirebaseAuth
                                                       .instance
@@ -632,7 +631,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                                       .instance
                                                       .currentUser!
                                                       .uid)
-                                                  .doc(id)
+                                                  .doc(box.read('userId'))
                                                   .collection('Messages')
                                                   .orderBy('dateTime')
                                                   .snapshots(),
@@ -907,7 +906,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   .text,
                                                               name,
                                                               '',
-                                                              id,
+                                                              box.read(
+                                                                  'userId'),
                                                               concern,
                                                               data['to'],
                                                               data['from']);
@@ -925,7 +925,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   .text,
                                                               name,
                                                               '',
-                                                              id,
+                                                              box.read(
+                                                                  'userId'),
                                                               concern);
                                                           _messageController
                                                               .clear();

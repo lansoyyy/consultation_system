@@ -6,12 +6,16 @@ import 'package:consultation_system/widgets/notification_widget.dart';
 import 'package:consultation_system/widgets/text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 PreferredSizeWidget appbarWidget(PageController page) {
   final Stream<DocumentSnapshot> userData = FirebaseFirestore.instance
       .collection('CONSULTATION-USERS')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
+
+  final box = GetStorage();
 
   return AppBar(
     actions: [
@@ -26,9 +30,9 @@ PreferredSizeWidget appbarWidget(PageController page) {
           width: 50,
         ),
       ),
-      const NotificationWidget(),
+      // const NotificationWidget(),
       const SizedBox(
-        width: 10,
+        width: 20,
       ),
       StreamBuilder<DocumentSnapshot>(
           stream: userData,
@@ -52,7 +56,80 @@ PreferredSizeWidget appbarWidget(PageController page) {
                       fontSize: 12,
                       color: Colors.white),
                   child: IconButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return Dialog(
+                              child: Container(
+                                color: greyAccent,
+                                height: 400,
+                                width: 400,
+                                child: ListView.builder(
+                                    itemCount: notifs.length,
+                                    itemBuilder: ((context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 5, 20, 5),
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: ListTile(
+                                            onTap: (() async {
+                                              box.write('userId',
+                                                  notifs[index]['id']);
+                                              Navigator.pop(context);
+                                              page.jumpToPage(1);
+                                              await FirebaseFirestore.instance
+                                                  .collection(
+                                                      'CONSULTATION-USERS')
+                                                  .doc(FirebaseAuth.instance
+                                                      .currentUser!.uid)
+                                                  .update({
+                                                'notif': FieldValue.arrayRemove(
+                                                    [notifs[index]]),
+                                              });
+                                            }),
+                                            title: Text(
+                                              notifs[index]['message'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.openSans(
+                                                textStyle: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              notifs[index]['name'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.openSans(
+                                                textStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey),
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              notifs[index]['time'],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.openSans(
+                                                textStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                            tileColor: Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                    })),
+                              ),
+                            );
+                          }));
+                    }),
                     icon: Icon(
                       Icons.notifications,
                       color: primary,

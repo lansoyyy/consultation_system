@@ -6,6 +6,7 @@ import 'package:consultation_system/screens/tabs/reports_tab.dart';
 import 'package:consultation_system/screens/tabs/settings_tab.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constant/colors.dart';
@@ -22,8 +23,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PageController page = PageController();
 
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
+    box.write('userId', '');
     return Scaffold(
       backgroundColor: primary,
       body: Row(
