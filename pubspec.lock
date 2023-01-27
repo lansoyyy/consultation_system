@@ -30,7 +30,7 @@ packages:
     source: hosted
     version: "1.0.0"
   badges:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: badges
       url: "https://pub.dartlang.org"

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation_system/constant/colors.dart';
 import 'package:consultation_system/constant/uid.dart';
@@ -36,10 +37,33 @@ PreferredSizeWidget appbarWidget(PageController page) {
               return const Center(child: CircularProgressIndicator());
             }
             dynamic data = snapshot.data;
-            return CircleAvatar(
-              minRadius: 20,
-              maxRadius: 20,
-              backgroundImage: NetworkImage(data['profilePicture']),
+
+            List notifs = data['notif'];
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Badge(
+                  badgeContent: NormalText(
+                      label: notifs.length.toString(),
+                      fontSize: 12,
+                      color: Colors.white),
+                  child: IconButton(
+                    onPressed: (() {}),
+                    icon: Icon(
+                      Icons.notifications,
+                      color: primary,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                CircleAvatar(
+                  minRadius: 20,
+                  maxRadius: 20,
+                  backgroundImage: NetworkImage(data['profilePicture']),
+                ),
+              ],
             );
           }),
       const SizedBox(
