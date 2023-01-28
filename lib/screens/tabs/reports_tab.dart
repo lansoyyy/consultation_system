@@ -136,7 +136,7 @@ class _ReportTabState extends State<ReportTab> {
             .where('section', isEqualTo: listSections[i]);
 
         var querySnapshot1 = await collection1.get();
-        codeEnrolled.add(querySnapshot1.size);
+        enrolled.add(querySnapshot1.size);
       }
     } else {
       for (int i = 0; i < listSections.length; i++) {
@@ -226,7 +226,7 @@ class _ReportTabState extends State<ReportTab> {
 
         var querySnapshot = await collection.get();
 
-        codeNumber.add(1);
+        codeNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
             .collection('Concerns')
@@ -3291,7 +3291,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                       i] ==
                                                                   0
                                                               ? "0"
-                                                              : "${((codeNumber[i] / codeNumber[i]) * 100).toStringAsFixed(2)}%",
+                                                              : "${((codeNumber[i] / codeEnrolled[i]) * 100).toStringAsFixed(2)}%",
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
