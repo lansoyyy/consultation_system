@@ -90,6 +90,7 @@ class _ReportTabState extends State<ReportTab> {
 
   getSections() async {
     // Use provider
+
     if (course == 'All') {
       var collection = FirebaseFirestore.instance.collection('Section');
 
@@ -98,13 +99,14 @@ class _ReportTabState extends State<ReportTab> {
         setState(() {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
+
             listSections.add(data['section']);
           }
         });
       }
     } else {
       var collection = FirebaseFirestore.instance
-          .collection('Section')
+          .collection('Concerns')
           .where('course', isEqualTo: course);
 
       var querySnapshot = await collection.get();
@@ -112,6 +114,7 @@ class _ReportTabState extends State<ReportTab> {
         setState(() {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
+
             listSections.add(data['section']);
           }
         });
@@ -130,13 +133,12 @@ class _ReportTabState extends State<ReportTab> {
         sectionNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
             .where('course', isEqualTo: course)
             .where('section', isEqualTo: listSections[i]);
 
         var querySnapshot1 = await collection1.get();
-
-        enrolled.add(querySnapshot1.size);
+        codeEnrolled.add(querySnapshot1.size);
       }
     } else {
       for (int i = 0; i < listSections.length; i++) {
@@ -149,14 +151,16 @@ class _ReportTabState extends State<ReportTab> {
         sectionNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
             .where('section', isEqualTo: listSections[i]);
 
         var querySnapshot1 = await collection1.get();
-
         enrolled.add(querySnapshot1.size);
       }
     }
+    setState(() {
+      hasLoaded = true;
+    });
   }
 
   var classCodes = [];
@@ -175,13 +179,14 @@ class _ReportTabState extends State<ReportTab> {
         setState(() {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
+
             classCodes.add(data['classCode']);
           }
         });
       }
     } else {
       var collection = FirebaseFirestore.instance
-          .collection('Class Code')
+          .collection('Concerns')
           .where('course', isEqualTo: course);
 
       var querySnapshot = await collection.get();
@@ -208,7 +213,8 @@ class _ReportTabState extends State<ReportTab> {
         codeNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
+            .where('course', isEqualTo: course)
             .where('classCode', isEqualTo: classCodes[i]);
 
         var querySnapshot1 = await collection1.get();
@@ -225,7 +231,7 @@ class _ReportTabState extends State<ReportTab> {
         codeNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
             .where('classCode', isEqualTo: classCodes[i]);
 
         var querySnapshot1 = await collection1.get();
@@ -570,7 +576,7 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
-  int _dropdownValue = 0;
+  final int _dropdownValue = 0;
 
   late String year = 'All';
 
@@ -1495,7 +1501,7 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
-  int _dropdownValue2 = 0;
+  final int _dropdownValue2 = 0;
 
   void codeReport() async {
     /// for using an image from assets
@@ -2110,7 +2116,7 @@ class _ReportTabState extends State<ReportTab> {
                                     ),
                                   ];
                                 }))
-                            : SizedBox(),
+                            : const SizedBox(),
                         const SizedBox(
                           width: 50,
                         ),
@@ -2449,12 +2455,7 @@ class _ReportTabState extends State<ReportTab> {
                                                         // datatable widget
                                                         columns: [
                                                           // column to set the name
-                                                          DataColumn(
-                                                              label: BoldText(
-                                                                  label: 'ID',
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .white)),
+
                                                           DataColumn(
                                                               label: BoldText(
                                                                   label:
@@ -2508,7 +2509,7 @@ class _ReportTabState extends State<ReportTab> {
 
                                                         rows: [
                                                           // row to set the values
-                                                          for (int i = 1;
+                                                          for (int i = 0;
                                                               i <
                                                                   snapshot.data!
                                                                       .size;
@@ -2532,15 +2533,6 @@ class _ReportTabState extends State<ReportTab> {
                                                                   }
                                                                 }),
                                                                 cells: [
-                                                                  DataCell(
-                                                                    NormalText(
-                                                                        label: i
-                                                                            .toString(),
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Colors
-                                                                            .black),
-                                                                  ),
                                                                   DataCell(
                                                                     NormalText(
                                                                         label: data.docs[i]
