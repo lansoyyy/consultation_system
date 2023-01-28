@@ -59,8 +59,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year1 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -228,7 +226,7 @@ class _ReportTabState extends State<ReportTab> {
 
         var querySnapshot = await collection.get();
 
-        codeNumber.add(querySnapshot.size);
+        codeNumber.add(1);
 
         var collection1 = FirebaseFirestore.instance
             .collection('Concerns')
@@ -1728,7 +1726,7 @@ class _ReportTabState extends State<ReportTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(listSections);
+    print(classCodes.length);
     return hasLoaded
         ? Scaffold(
             appBar: appbarWidget(widget.page),
@@ -3089,7 +3087,7 @@ class _ReportTabState extends State<ReportTab> {
                                           ],
 
                                           rows: [
-                                            for (int i = 1;
+                                            for (int i = 0;
                                                 i < listSections.length;
                                                 i++)
                                               DataRow(
@@ -3128,7 +3126,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                       i] ==
                                                                   0
                                                               ? "0"
-                                                              : sectionNumber[i]
+                                                              : "${((sectionNumber[i] / enrolled[i]) * 100).toStringAsFixed(2)}%"
                                                                   .toString(),
                                                           fontSize: 12,
                                                           color: Colors.black),
@@ -3293,8 +3291,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                       i] ==
                                                                   0
                                                               ? "0"
-                                                              : codeEnrolled[i]
-                                                                  .toString(),
+                                                              : "${((codeNumber[i] / codeNumber[i]) * 100).toStringAsFixed(2)}%",
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
