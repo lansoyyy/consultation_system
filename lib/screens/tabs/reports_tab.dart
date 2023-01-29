@@ -87,73 +87,6 @@ class _ReportTabState extends State<ReportTab> {
   var hasLoaded = false;
 
   getSections() async {
-    if (course == 'All') {
-      var collection = FirebaseFirestore.instance.collection('Class Code');
-
-      var querySnapshot = await collection.get();
-      if (mounted) {
-        setState(() {
-          for (var queryDocumentSnapshot in querySnapshot.docs) {
-            Map<String, dynamic> data = queryDocumentSnapshot.data();
-
-            classCodes.add(data['classCode']);
-          }
-        });
-      }
-    } else {
-      var collection = FirebaseFirestore.instance
-          .collection('Concerns')
-          .where('course', isEqualTo: course);
-
-      var querySnapshot = await collection.get();
-      if (mounted) {
-        setState(() {
-          for (var queryDocumentSnapshot in querySnapshot.docs) {
-            Map<String, dynamic> data = queryDocumentSnapshot.data();
-
-            classCodes.add(data['classCode']);
-          }
-        });
-      }
-    }
-
-    if (course != 'All') {
-      for (int i = 0; i < classCodes.length; i++) {
-        var collection = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('course', isEqualTo: course)
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot = await collection.get();
-
-        codeNumber.add(querySnapshot.size);
-
-        var collection1 = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('course', isEqualTo: course)
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot1 = await collection1.get();
-        codeEnrolled.add(querySnapshot1.size);
-      }
-    } else {
-      for (int i = 0; i < classCodes.length; i++) {
-        var collection = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot = await collection.get();
-
-        codeNumber.add(querySnapshot.size);
-
-        var collection1 = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot1 = await collection1.get();
-        codeEnrolled.add(querySnapshot1.size);
-      }
-    }
     // Use provider
 
     if (course == 'All') {
@@ -236,6 +169,73 @@ class _ReportTabState extends State<ReportTab> {
   getCodes() async {
     // Use provider
 
+    if (course == 'All') {
+      var collection = FirebaseFirestore.instance.collection('Class Code');
+
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            classCodes.add(data['classCode']);
+          }
+        });
+      }
+    } else {
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('course', isEqualTo: course);
+
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            classCodes.add(data['classCode']);
+          }
+        });
+      }
+    }
+
+    if (course != 'All') {
+      for (int i = 0; i < classCodes.length; i++) {
+        var collection = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('course', isEqualTo: course)
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot = await collection.get();
+
+        codeNumber.add(querySnapshot.size);
+
+        var collection1 = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('course', isEqualTo: course)
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot1 = await collection1.get();
+        codeEnrolled.add(querySnapshot1.size);
+      }
+    } else {
+      for (int i = 0; i < classCodes.length; i++) {
+        var collection = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot = await collection.get();
+
+        codeNumber.add(querySnapshot.size);
+
+        var collection1 = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot1 = await collection1.get();
+        codeEnrolled.add(querySnapshot1.size);
+      }
+    }
     setState(() {
       hasLoaded = true;
     });
@@ -1866,167 +1866,32 @@ class _ReportTabState extends State<ReportTab> {
 
                                                 hasLoaded = false;
 
-                                                year1 = 0;
-                                                year2 = 0;
-                                                year3 = 0;
-                                                year4 = 0;
-                                                year5 = 0;
-                                                total1 = 0;
-                                                total2 = 0;
-                                                total3 = 0;
-                                                total4 = 0;
-                                                total5 = 0;
-                                              });
+                                      name.clear();
+                                      email.clear();
+                                      courseStud.clear();
+                                      yearLevel.clear();
+                                      concern.clear();
+                                      status.clear();
+                                      listSections.clear();
+                                      classCodes.clear();
 
-                                              name.clear();
-                                              email.clear();
-                                              courseStud.clear();
-                                              yearLevel.clear();
-                                              concern.clear();
-                                              status.clear();
-                                              listSections.clear();
-                                              classCodes.clear();
+                                      getData();
 
-                                              getData();
+                                      getData2();
+                                      getData3();
+                                      getData4();
+                                      getData5();
+                                      getTotal();
+                                      getTotal2();
+                                      getTotal3();
+                                      getTotal4();
+                                      getTotal5();
+                                      getSections();
 
-                                              getData2();
-                                              getData3();
-                                              getData4();
-                                              getData5();
-                                              getTotal();
-                                              getTotal2();
-                                              getTotal3();
-                                              getTotal4();
-                                              getTotal5();
-
-                                              getSections();
-                                            },
-                                          )
-                                        : DropdownButton(
-                                            underline: Container(
-                                                color: Colors.transparent),
-                                            iconEnabledColor: Colors.black,
-                                            isExpanded: true,
-                                            value: _dropdownValue1,
-                                            items: [
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  course = "Automotive";
-                                                },
-                                                value: 0,
-                                                child: Center(
-                                                    child: Row(children: const [
-                                                  Text("Automotive",
-                                                      style: TextStyle(
-                                                        fontFamily: 'QRegular',
-                                                        color: primary,
-                                                      ))
-                                                ])),
-                                              ),
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  course = "Food Technology";
-                                                },
-                                                value: 1,
-                                                child: Center(
-                                                    child: Row(children: const [
-                                                  Text("Food Technology",
-                                                      style: TextStyle(
-                                                        fontFamily: 'QRegular',
-                                                        color: primary,
-                                                      ))
-                                                ])),
-                                              ),
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  course =
-                                                      "Electronic Technology";
-                                                },
-                                                value: 2,
-                                                child: Center(
-                                                    child: Row(children: const [
-                                                  Text("Electronic Technology",
-                                                      style: TextStyle(
-                                                        fontFamily: 'QRegular',
-                                                        color: primary,
-                                                      ))
-                                                ])),
-                                              ),
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  course =
-                                                      "Entertainment and Multimedia Computing";
-                                                },
-                                                value: 3,
-                                                child: Center(
-                                                    child: Row(children: const [
-                                                  Text(
-                                                      "Entertainment and\nMultimedia Computing",
-                                                      style: TextStyle(
-                                                        fontFamily: 'QRegular',
-                                                        color: primary,
-                                                      ))
-                                                ])),
-                                              ),
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  course =
-                                                      "Information Technology";
-                                                },
-                                                value: 4,
-                                                child: Center(
-                                                    child: Row(children: const [
-                                                  Text("Information Technology",
-                                                      style: TextStyle(
-                                                        fontFamily: 'QRegular',
-                                                        color: primary,
-                                                      ))
-                                                ])),
-                                              ),
-                                            ],
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _dropdownValue1 =
-                                                    int.parse(value.toString());
-
-                                                hasLoaded = false;
-
-                                                year1 = 0;
-                                                year2 = 0;
-                                                year3 = 0;
-                                                year4 = 0;
-                                                year5 = 0;
-                                                total1 = 0;
-                                                total2 = 0;
-                                                total3 = 0;
-                                                total4 = 0;
-                                                total5 = 0;
-                                              });
-
-                                              name.clear();
-                                              email.clear();
-                                              courseStud.clear();
-                                              yearLevel.clear();
-                                              concern.clear();
-                                              status.clear();
-                                              listSections.clear();
-                                              classCodes.clear();
-
-                                              getData();
-
-                                              getData2();
-                                              getData3();
-                                              getData4();
-                                              getData5();
-                                              getTotal();
-                                              getTotal2();
-                                              getTotal3();
-                                              getTotal4();
-                                              getTotal5();
-
-                                              getSections();
-                                            },
-                                          )),
+                                      getCodes();
+                                    },
+                                  ),
+                                ),
                               ),
                               const SizedBox(
                                 height: 5,
@@ -2051,7 +1916,7 @@ class _ReportTabState extends State<ReportTab> {
                                         onTap: (() {
                                           setState(() {
                                             index = 0;
-
+                                            hasLoaded = false;
                                             year1 = 0;
                                             year2 = 0;
                                             year3 = 0;
@@ -2084,7 +1949,8 @@ class _ReportTabState extends State<ReportTab> {
                                           getTotal3();
                                           getTotal4();
                                           getTotal5();
-
+                                          getSections();
+                                          getCodes();
                                           Navigator.pop(context);
                                         }),
                                         title: NormalText(
@@ -2098,7 +1964,7 @@ class _ReportTabState extends State<ReportTab> {
                                         onTap: (() {
                                           setState(() {
                                             index = 1;
-
+                                            hasLoaded = false;
                                             year1 = 0;
                                             year2 = 0;
                                             year3 = 0;
@@ -2130,7 +1996,8 @@ class _ReportTabState extends State<ReportTab> {
                                           getTotal3();
                                           getTotal4();
                                           getTotal5();
-
+                                          getSections();
+                                          getCodes();
                                           Navigator.pop(context);
 
                                           // consultationReport();
@@ -2146,7 +2013,7 @@ class _ReportTabState extends State<ReportTab> {
                                         onTap: (() {
                                           setState(() {
                                             index = 2;
-
+                                            hasLoaded = false;
                                             year1 = 0;
                                             year2 = 0;
                                             year3 = 0;
@@ -2178,7 +2045,8 @@ class _ReportTabState extends State<ReportTab> {
                                           getTotal3();
                                           getTotal4();
                                           getTotal5();
-
+                                          getSections();
+                                          getCodes();
                                           Navigator.pop(context);
                                           // reportByYear();
                                         }),
@@ -2193,7 +2061,7 @@ class _ReportTabState extends State<ReportTab> {
                                         onTap: (() {
                                           setState(() {
                                             index = 3;
-
+                                            hasLoaded = false;
                                             year1 = 0;
                                             year2 = 0;
                                             year3 = 0;
@@ -2225,7 +2093,8 @@ class _ReportTabState extends State<ReportTab> {
                                           getTotal3();
                                           getTotal4();
                                           getTotal5();
-
+                                          getSections();
+                                          getCodes();
                                           Navigator.pop(context);
                                           // codeReport();
                                         }),

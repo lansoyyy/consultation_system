@@ -51,10 +51,8 @@ class _MessagesTabState extends State<MessagesTab> {
 
   final _messageController = TextEditingController();
 
-  late String id = '';
-
   data() {
-    if (id != '') {
+    if (box.read('userId') != '') {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
           .doc()
@@ -64,7 +62,7 @@ class _MessagesTabState extends State<MessagesTab> {
     } else {
       return FirebaseFirestore.instance
           .collection(FirebaseAuth.instance.currentUser!.uid)
-          .doc(id)
+          .doc(box.read('userId'))
           .collection('Messages')
           .orderBy('dateTime')
           .snapshots();
@@ -160,8 +158,8 @@ class _MessagesTabState extends State<MessagesTab> {
                     ),
                     Container(
                       width: 350,
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(5),
@@ -188,7 +186,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   concernFilter = '';
                                 });
                               }),
-                              icon: Icon(Icons.search),
+                              icon: const Icon(Icons.search),
                             ),
                             suffixIcon: IconButton(
                               onPressed: (() {
@@ -197,12 +195,12 @@ class _MessagesTabState extends State<MessagesTab> {
                                 });
                                 nameController.clear();
                               }),
-                              icon: Icon(Icons.close),
+                              icon: const Icon(Icons.close),
                             ),
                             hintText: 'Search Messages'),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -258,7 +256,7 @@ class _MessagesTabState extends State<MessagesTab> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         StreamBuilder<QuerySnapshot>(
@@ -354,7 +352,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                   return ListTile(
                                     onTap: (() {
                                       setState(() {
-                                        id = data.docs[index].id;
+                                        box.write(
+                                            'userId', data.docs[index].id);
                                         name = data.docs[index]['name'];
                                         concern = data.docs[index]['concern'];
                                         email = data.docs[index]['email'];
@@ -382,11 +381,11 @@ class _MessagesTabState extends State<MessagesTab> {
                                       child: CircleAvatar(
                                         minRadius: 40,
                                         maxRadius: 40,
+                                        backgroundColor: blueAccent,
                                         child: BoldText(
                                             label: data.docs[index]['name'][0],
                                             fontSize: 22,
                                             color: Colors.white),
-                                        backgroundColor: blueAccent,
                                       ),
                                     ),
                                     title: BoldText(
@@ -450,7 +449,7 @@ class _MessagesTabState extends State<MessagesTab> {
               ),
             ),
             const VerticalDivider(),
-            id != ''
+            box.read('userId') != ''
                 ? Expanded(
                     child: SizedBox(
                       child: Padding(
@@ -485,7 +484,7 @@ class _MessagesTabState extends State<MessagesTab> {
 
                                   print(email);
 
-                                  return Container(
+                                  return SizedBox(
                                       width: double.infinity,
                                       height: 50,
                                       child: Center(
@@ -493,11 +492,11 @@ class _MessagesTabState extends State<MessagesTab> {
                                           leading: CircleAvatar(
                                             minRadius: 50,
                                             maxRadius: 50,
+                                            backgroundColor: blueAccent,
                                             child: BoldText(
                                                 label: name[0],
                                                 fontSize: 22,
                                                 color: Colors.white),
-                                            backgroundColor: blueAccent,
                                           ),
                                           title: BoldText(
                                               label: name,
@@ -527,7 +526,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(child: SizedBox()),
+                                              const Expanded(child: SizedBox()),
                                               Row(
                                                 children: [
                                                   Container(
@@ -607,7 +606,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                         ),
                                       ));
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             const Divider(),
@@ -617,7 +616,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                   child: Column(
                                     children: [
                                       StreamBuilder<QuerySnapshot>(
-                                          stream: id == ''
+                                          stream: box.read('userId') == ''
                                               ? FirebaseFirestore.instance
                                                   .collection(FirebaseAuth
                                                       .instance
@@ -632,7 +631,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                                       .instance
                                                       .currentUser!
                                                       .uid)
-                                                  .doc(id)
+                                                  .doc(box.read('userId'))
                                                   .collection('Messages')
                                                   .orderBy('dateTime')
                                                   .snapshots(),
@@ -678,6 +677,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   CircleAvatar(
                                                                 minRadius: 30,
                                                                 maxRadius: 30,
+                                                                backgroundColor:
+                                                                    blueAccent,
                                                                 child: BoldText(
                                                                     label: data.docs[index]
                                                                             [
@@ -687,8 +688,6 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                         22,
                                                                     color: Colors
                                                                         .white),
-                                                                backgroundColor:
-                                                                    blueAccent,
                                                               ),
                                                             ),
                                                             title: Padding(
@@ -729,7 +728,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                               primary),
                                                                     ),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   NormalText(
@@ -754,6 +753,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   CircleAvatar(
                                                                 minRadius: 30,
                                                                 maxRadius: 30,
+                                                                backgroundColor:
+                                                                    blueAccent,
                                                                 child: BoldText(
                                                                     label: data.docs[index]
                                                                             [
@@ -763,8 +764,6 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                         22,
                                                                     color: Colors
                                                                         .white),
-                                                                backgroundColor:
-                                                                    blueAccent,
                                                               ),
                                                             ),
                                                             title: Padding(
@@ -805,7 +804,7 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                               primary),
                                                                     ),
                                                                   ),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   NormalText(
@@ -887,12 +886,34 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   .circular(5),
                                                         ),
                                                         color: Colors.blue[700],
-                                                        child: NormalText(
-                                                            label: 'SEND',
-                                                            fontSize: 14,
-                                                            color:
-                                                                Colors.white),
-                                                        onPressed: (() {
+                                                        onPressed: (() async {
+                                                          String tdata =
+                                                              DateFormat(
+                                                                      "hh:mm a")
+                                                                  .format(DateTime
+                                                                      .now());
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'Users')
+                                                              .doc(box.read(
+                                                                  'userId'))
+                                                              .update({
+                                                            'notif': FieldValue
+                                                                .arrayUnion([
+                                                              {
+                                                                'name': myName,
+                                                                'time': tdata,
+                                                                'message':
+                                                                    _messageController
+                                                                        .text,
+                                                                'id': FirebaseAuth
+                                                                    .instance
+                                                                    .currentUser!
+                                                                    .uid
+                                                              }
+                                                            ]),
+                                                          });
                                                           addMessage(
                                                               '',
                                                               data[
@@ -907,7 +928,8 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   .text,
                                                               name,
                                                               '',
-                                                              id,
+                                                              box.read(
+                                                                  'userId'),
                                                               concern,
                                                               data['to'],
                                                               data['from']);
@@ -925,11 +947,17 @@ class _MessagesTabState extends State<MessagesTab> {
                                                                   .text,
                                                               name,
                                                               '',
-                                                              id,
+                                                              box.read(
+                                                                  'userId'),
                                                               concern);
                                                           _messageController
                                                               .clear();
                                                         }),
+                                                        child: NormalText(
+                                                            label: 'SEND',
+                                                            fontSize: 14,
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                     )),
                                               ),
@@ -945,7 +973,7 @@ class _MessagesTabState extends State<MessagesTab> {
                       ),
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ],
         ),
       ),
