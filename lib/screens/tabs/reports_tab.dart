@@ -34,7 +34,6 @@ class _ReportTabState extends State<ReportTab> {
     getTotal4();
     getTotal5();
     getSections();
-    getCodes();
 
     super.initState();
   }
@@ -573,8 +572,6 @@ class _ReportTabState extends State<ReportTab> {
       }
     }
   }
-
-  final int _dropdownValue = 0;
 
   late String year = 'All';
 
@@ -1499,8 +1496,6 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
-  final int _dropdownValue2 = 0;
-
   void codeReport() async {
     /// for using an image from assets
     final image = await imageFromAssetBundle('assets/images/bsu.png');
@@ -1753,17 +1748,17 @@ class _ReportTabState extends State<ReportTab> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 240,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                                    child: index == 0
-                                        ? DropdownButton(
+                              index == 0
+                                  ? Container(
+                                      width: 240,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 2, 20, 2),
+                                          child: DropdownButton(
                                             underline: Container(
                                                 color: Colors.transparent),
                                             iconEnabledColor: Colors.black,
@@ -1901,8 +1896,18 @@ class _ReportTabState extends State<ReportTab> {
 
                                               getSections();
                                             },
-                                          )
-                                        : DropdownButton(
+                                          )),
+                                    )
+                                  : Container(
+                                      width: 240,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 2, 20, 2),
+                                          child: DropdownButton(
                                             underline: Container(
                                                 color: Colors.transparent),
                                             iconEnabledColor: Colors.black,
@@ -2027,7 +2032,7 @@ class _ReportTabState extends State<ReportTab> {
                                               getSections();
                                             },
                                           )),
-                              ),
+                                    ),
                               const SizedBox(
                                 height: 5,
                               ),
