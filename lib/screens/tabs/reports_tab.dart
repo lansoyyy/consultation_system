@@ -59,8 +59,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year1 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -75,8 +73,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year1 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -84,24 +80,110 @@ class _ReportTabState extends State<ReportTab> {
   }
 
   var listSections = [];
-  var sections = [];
+
   List<int> sectionNumber = [];
   List<int> enrolled = [];
 
   var hasLoaded = false;
 
   getSections() async {
-    // Use provider
-    var collection = FirebaseFirestore.instance.collection('Section');
+    if (course == 'All') {
+      var collection = FirebaseFirestore.instance.collection('Class Code');
 
-    var querySnapshot = await collection.get();
-    if (mounted) {
-      setState(() {
-        for (var queryDocumentSnapshot in querySnapshot.docs) {
-          Map<String, dynamic> data = queryDocumentSnapshot.data();
-          listSections.add(data['section']);
-        }
-      });
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            classCodes.add(data['classCode']);
+          }
+        });
+      }
+    } else {
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('course', isEqualTo: course);
+
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            classCodes.add(data['classCode']);
+          }
+        });
+      }
+    }
+
+    if (course != 'All') {
+      for (int i = 0; i < classCodes.length; i++) {
+        var collection = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('course', isEqualTo: course)
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot = await collection.get();
+
+        codeNumber.add(querySnapshot.size);
+
+        var collection1 = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('course', isEqualTo: course)
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot1 = await collection1.get();
+        codeEnrolled.add(querySnapshot1.size);
+      }
+    } else {
+      for (int i = 0; i < classCodes.length; i++) {
+        var collection = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot = await collection.get();
+
+        codeNumber.add(querySnapshot.size);
+
+        var collection1 = FirebaseFirestore.instance
+            .collection('Concerns')
+            .where('classCode', isEqualTo: classCodes[i]);
+
+        var querySnapshot1 = await collection1.get();
+        codeEnrolled.add(querySnapshot1.size);
+      }
+    }
+    // Use provider
+
+    if (course == 'All') {
+      var collection = FirebaseFirestore.instance.collection('Section');
+
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            listSections.add(data['section']);
+          }
+        });
+      }
+    } else {
+      var collection = FirebaseFirestore.instance
+          .collection('Concerns')
+          .where('course', isEqualTo: course);
+
+      var querySnapshot = await collection.get();
+      if (mounted) {
+        setState(() {
+          for (var queryDocumentSnapshot in querySnapshot.docs) {
+            Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+            listSections.add(data['section']);
+          }
+        });
+      }
     }
 
     if (course != 'All') {
@@ -116,12 +198,11 @@ class _ReportTabState extends State<ReportTab> {
         sectionNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
             .where('course', isEqualTo: course)
             .where('section', isEqualTo: listSections[i]);
 
         var querySnapshot1 = await collection1.get();
-
         enrolled.add(querySnapshot1.size);
       }
     } else {
@@ -135,14 +216,16 @@ class _ReportTabState extends State<ReportTab> {
         sectionNumber.add(querySnapshot.size);
 
         var collection1 = FirebaseFirestore.instance
-            .collection('Users')
+            .collection('Concerns')
             .where('section', isEqualTo: listSections[i]);
 
         var querySnapshot1 = await collection1.get();
-
         enrolled.add(querySnapshot1.size);
       }
     }
+    setState(() {
+      hasLoaded = true;
+    });
   }
 
   var classCodes = [];
@@ -152,54 +235,7 @@ class _ReportTabState extends State<ReportTab> {
 
   getCodes() async {
     // Use provider
-    var collection = FirebaseFirestore.instance.collection('Class Code');
 
-    var querySnapshot = await collection.get();
-    if (mounted) {
-      setState(() {
-        for (var queryDocumentSnapshot in querySnapshot.docs) {
-          Map<String, dynamic> data = queryDocumentSnapshot.data();
-          classCodes.add(data['classCode']);
-        }
-      });
-    }
-
-    if (course != 'All') {
-      for (int i = 0; i < classCodes.length; i++) {
-        var collection = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('course', isEqualTo: course)
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot = await collection.get();
-
-        codeNumber.add(querySnapshot.size);
-
-        var collection1 = FirebaseFirestore.instance
-            .collection('Users')
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot1 = await collection1.get();
-        codeEnrolled.add(querySnapshot1.size);
-      }
-    } else {
-      for (int i = 0; i < classCodes.length; i++) {
-        var collection = FirebaseFirestore.instance
-            .collection('Concerns')
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot = await collection.get();
-
-        codeNumber.add(querySnapshot.size);
-
-        var collection1 = FirebaseFirestore.instance
-            .collection('Users')
-            .where('classCode', isEqualTo: classCodes[i]);
-
-        var querySnapshot1 = await collection1.get();
-        codeEnrolled.add(querySnapshot1.size);
-      }
-    }
     setState(() {
       hasLoaded = true;
     });
@@ -294,6 +330,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -308,6 +346,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -474,6 +514,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -488,6 +530,8 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
+            concern1 = data['concern'];
+            type = data['type'];
           }
         });
       }
@@ -530,7 +574,7 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
-  int _dropdownValue = 0;
+  final int _dropdownValue = 0;
 
   late String year = 'All';
 
@@ -1400,58 +1444,39 @@ class _ReportTabState extends State<ReportTab> {
     // await file.writeAsBytes(await doc.save());
   }
 
-  String sort = 'name';
+  String sort = 'dateTime';
 
   getFilter() {
-    if (course == 'All' &&
-        year == 'All' &&
-        filterConcern == 'All' &&
-        filterType == 'All') {
+    if (course == 'All' && filterConcern == 'All' && filterType == 'All') {
       return FirebaseFirestore.instance.collection('Concerns').snapshots();
-    } else if (course == 'All' && year == 'All' && filterType == 'All') {
+    } else if (course == 'All' && filterType == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
           .where('concern', isEqualTo: filterConcern)
           .orderBy(sort)
           .snapshots();
-    } else if (course == 'All' && year == 'All' && filterConcern == 'All') {
+    } else if (course == 'All' && filterConcern == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
           .where('type', isEqualTo: filterType)
           .orderBy(sort)
           .snapshots();
-    } else if (course == 'All' && year == 'All' && filterType == 'All') {
-      return FirebaseFirestore.instance
-          .collection('Concerns')
-          .where('concern', isEqualTo: filterConcern)
-          .orderBy(sort)
-          .snapshots();
-    } else if (course == 'All' && year == 'All') {
-      return FirebaseFirestore.instance
-          .collection('Concerns')
-          .where('type', isEqualTo: filterType)
-          .where('concern', isEqualTo: filterConcern)
-          .orderBy(sort)
-          .snapshots();
-    } else if (filterType == 'All' && filterConcern == 'All') {
+    } else if (filterConcern == 'All' && filterType == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
           .where('course', isEqualTo: course)
-          .where('yearLevel', isEqualTo: year)
           .orderBy(sort)
           .snapshots();
     } else if (course == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
-          .where('yearLevel', isEqualTo: year)
-          .where('concern', isEqualTo: filterConcern)
           .where('type', isEqualTo: filterType)
+          .where('concern', isEqualTo: filterConcern)
           .orderBy(sort)
           .snapshots();
-    } else if (year == 'All') {
+    } else if (filterType == 'All') {
       return FirebaseFirestore.instance
           .collection('Concerns')
-          .where('type', isEqualTo: filterType)
           .where('course', isEqualTo: course)
           .where('concern', isEqualTo: filterConcern)
           .orderBy(sort)
@@ -1460,22 +1485,12 @@ class _ReportTabState extends State<ReportTab> {
       return FirebaseFirestore.instance
           .collection('Concerns')
           .where('course', isEqualTo: course)
-          .where('yearLevel', isEqualTo: year)
           .where('type', isEqualTo: filterType)
-          .orderBy(sort)
-          .snapshots();
-    } else if (filterType == 'All') {
-      return FirebaseFirestore.instance
-          .collection('Concerns')
-          .where('course', isEqualTo: course)
-          .where('yearLevel', isEqualTo: year)
-          .where('concern', isEqualTo: filterConcern)
           .orderBy(sort)
           .snapshots();
     } else {
       return FirebaseFirestore.instance
           .collection('Concerns')
-          .where('yearLevel', isEqualTo: year)
           .where('course', isEqualTo: course)
           .where('concern', isEqualTo: filterConcern)
           .where('type', isEqualTo: filterType)
@@ -1484,7 +1499,7 @@ class _ReportTabState extends State<ReportTab> {
     }
   }
 
-  int _dropdownValue2 = 0;
+  final int _dropdownValue2 = 0;
 
   void codeReport() async {
     /// for using an image from assets
@@ -1711,7 +1726,7 @@ class _ReportTabState extends State<ReportTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(filterConcern);
+    print(classCodes.length);
     return hasLoaded
         ? Scaffold(
             appBar: appbarWidget(widget.page),
@@ -1730,110 +1745,6 @@ class _ReportTabState extends State<ReportTab> {
                         const SizedBox(
                           width: 30,
                         ),
-                        index == 0
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 90,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            20, 2, 20, 2),
-                                        child: DropdownButton(
-                                          underline: Container(
-                                              color: Colors.transparent),
-                                          iconEnabledColor: Colors.black,
-                                          isExpanded: true,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                          value: _dropdownValue,
-                                          items: [
-                                            DropdownMenuItem(
-                                              onTap: () {
-                                                year = 'All';
-                                              },
-                                              value: 0,
-                                              child: DropDownItem(label: 'All'),
-                                            ),
-                                            DropdownMenuItem(
-                                              onTap: () {
-                                                year = 'First Year';
-                                              },
-                                              value: 1,
-                                              child: DropDownItem(
-                                                  label: '1st Year'),
-                                            ),
-                                            DropdownMenuItem(
-                                              onTap: () {
-                                                year = 'Second Year';
-                                              },
-                                              value: 2,
-                                              child: DropDownItem(
-                                                  label: '2nd Year'),
-                                            ),
-                                            DropdownMenuItem(
-                                              onTap: () {
-                                                year = 'Third Year';
-                                              },
-                                              value: 3,
-                                              child: DropDownItem(
-                                                  label: '3rd Year'),
-                                            ),
-                                            DropdownMenuItem(
-                                              onTap: () {
-                                                year = 'Fourth Year';
-                                              },
-                                              value: 4,
-                                              child: DropDownItem(
-                                                  label: '4th Year'),
-                                            ),
-                                          ],
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _dropdownValue =
-                                                  int.parse(value.toString());
-                                              hasLoaded = false;
-                                            });
-                                            name.clear();
-                                            email.clear();
-                                            courseStud.clear();
-                                            yearLevel.clear();
-                                            concern.clear();
-                                            status.clear();
-                                            getData();
-
-                                            getData2();
-                                            getData3();
-                                            getData4();
-                                            getData5();
-                                            getTotal();
-                                            getTotal2();
-                                            getTotal3();
-                                            getTotal4();
-                                            getTotal5();
-                                            getSections();
-                                            getCodes();
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    NormalText(
-                                        label: '  Filter by Year Level',
-                                        fontSize: 8,
-                                        color: Colors.grey),
-                                  ],
-                                ),
-                              )
-                            : const SizedBox(),
                         const SizedBox(
                           width: 30,
                         ),
@@ -1843,148 +1754,279 @@ class _ReportTabState extends State<ReportTab> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 210,
+                                width: 240,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 2, 20, 2),
-                                  child: DropdownButton(
-                                    underline:
-                                        Container(color: Colors.transparent),
-                                    iconEnabledColor: Colors.black,
-                                    isExpanded: true,
-                                    value: _dropdownValue1,
-                                    items: [
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course = "All";
-                                        },
-                                        value: 0,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text("All",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course = "Automotive";
-                                        },
-                                        value: 1,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text("Automotive",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course = "Food Technology";
-                                        },
-                                        value: 2,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text("Food Technology",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course = "Electronic Technology";
-                                        },
-                                        value: 3,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text("Electronic Technology",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course =
-                                              "Entertainment and Multimedia Computing";
-                                        },
-                                        value: 4,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text(
-                                              "Entertainment and\nMultimedia Computing",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                      DropdownMenuItem(
-                                        onTap: () {
-                                          course = "Information Technology";
-                                        },
-                                        value: 5,
-                                        child: Center(
-                                            child: Row(children: const [
-                                          Text("Information Technology",
-                                              style: TextStyle(
-                                                fontFamily: 'QRegular',
-                                                color: primary,
-                                              ))
-                                        ])),
-                                      ),
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _dropdownValue1 =
-                                            int.parse(value.toString());
-                                        hasLoaded = false;
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                                    child: index == 0
+                                        ? DropdownButton(
+                                            underline: Container(
+                                                color: Colors.transparent),
+                                            iconEnabledColor: Colors.black,
+                                            isExpanded: true,
+                                            value: _dropdownValue1,
+                                            items: [
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course = "All";
+                                                },
+                                                value: 0,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("All",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course = "Automotive";
+                                                },
+                                                value: 1,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Automotive",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course = "Food Technology";
+                                                },
+                                                value: 2,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Food Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Electronic Technology";
+                                                },
+                                                value: 3,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Electronic Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Entertainment and Multimedia Computing";
+                                                },
+                                                value: 4,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text(
+                                                      "Entertainment and\nMultimedia Computing",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Information Technology";
+                                                },
+                                                value: 5,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Information Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                            ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _dropdownValue1 =
+                                                    int.parse(value.toString());
 
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                                hasLoaded = false;
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      getData();
+                                                year1 = 0;
+                                                year2 = 0;
+                                                year3 = 0;
+                                                year4 = 0;
+                                                year5 = 0;
+                                                total1 = 0;
+                                                total2 = 0;
+                                                total3 = 0;
+                                                total4 = 0;
+                                                total5 = 0;
+                                              });
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                    },
-                                  ),
-                                ),
+                                              name.clear();
+                                              email.clear();
+                                              courseStud.clear();
+                                              yearLevel.clear();
+                                              concern.clear();
+                                              status.clear();
+                                              listSections.clear();
+                                              classCodes.clear();
+
+                                              getData();
+
+                                              getData2();
+                                              getData3();
+                                              getData4();
+                                              getData5();
+                                              getTotal();
+                                              getTotal2();
+                                              getTotal3();
+                                              getTotal4();
+                                              getTotal5();
+
+                                              getSections();
+                                            },
+                                          )
+                                        : DropdownButton(
+                                            underline: Container(
+                                                color: Colors.transparent),
+                                            iconEnabledColor: Colors.black,
+                                            isExpanded: true,
+                                            value: _dropdownValue1,
+                                            items: [
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course = "Automotive";
+                                                },
+                                                value: 0,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Automotive",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course = "Food Technology";
+                                                },
+                                                value: 1,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Food Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Electronic Technology";
+                                                },
+                                                value: 2,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Electronic Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Entertainment and Multimedia Computing";
+                                                },
+                                                value: 3,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text(
+                                                      "Entertainment and\nMultimedia Computing",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  course =
+                                                      "Information Technology";
+                                                },
+                                                value: 4,
+                                                child: Center(
+                                                    child: Row(children: const [
+                                                  Text("Information Technology",
+                                                      style: TextStyle(
+                                                        fontFamily: 'QRegular',
+                                                        color: primary,
+                                                      ))
+                                                ])),
+                                              ),
+                                            ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _dropdownValue1 =
+                                                    int.parse(value.toString());
+
+                                                hasLoaded = false;
+
+                                                year1 = 0;
+                                                year2 = 0;
+                                                year3 = 0;
+                                                year4 = 0;
+                                                year5 = 0;
+                                                total1 = 0;
+                                                total2 = 0;
+                                                total3 = 0;
+                                                total4 = 0;
+                                                total5 = 0;
+                                              });
+
+                                              name.clear();
+                                              email.clear();
+                                              courseStud.clear();
+                                              yearLevel.clear();
+                                              concern.clear();
+                                              status.clear();
+                                              listSections.clear();
+                                              classCodes.clear();
+
+                                              getData();
+
+                                              getData2();
+                                              getData3();
+                                              getData4();
+                                              getData5();
+                                              getTotal();
+                                              getTotal2();
+                                              getTotal3();
+                                              getTotal4();
+                                              getTotal5();
+
+                                              getSections();
+                                            },
+                                          )),
                               ),
                               const SizedBox(
                                 height: 5,
@@ -1997,284 +2039,205 @@ class _ReportTabState extends State<ReportTab> {
                           ),
                         ),
                         const SizedBox(
-                          width: 30,
-                        ),
-                        index == 0
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 0),
-                                child: Container(
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 20, 2),
-                                    child: DropdownButton(
-                                      underline:
-                                          Container(color: Colors.transparent),
-                                      iconEnabledColor: Colors.black,
-                                      isExpanded: true,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      value: _dropdownValue2,
-                                      items: [
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            setState(() {
-                                              sort = 'name';
-                                            });
-                                          },
-                                          value: 0,
-                                          child: DropDownItem(
-                                              label: 'Sort by: Names'),
-                                        ),
-                                        DropdownMenuItem(
-                                          onTap: () {
-                                            setState(() {
-                                              sort = 'dateTime';
-                                            });
-                                          },
-                                          value: 1,
-                                          child: DropDownItem(
-                                              label: 'Sort by: Date'),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _dropdownValue2 =
-                                              int.parse(value.toString());
-                                          hasLoaded = false;
-                                        });
-                                        name.clear();
-                                        email.clear();
-                                        courseStud.clear();
-                                        yearLevel.clear();
-                                        concern.clear();
-                                        status.clear();
-                                        getData();
-
-                                        getData2();
-                                        getData3();
-                                        getData4();
-                                        getData5();
-                                        getTotal();
-                                        getTotal2();
-                                        getTotal3();
-                                        getTotal4();
-                                        getTotal5();
-                                        getSections();
-                                        getCodes();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox(),
-                        const SizedBox(
                           width: 20,
                         ),
-                        PopupMenuButton(
-                            tooltip: 'Generate Reports',
-                            itemBuilder: ((context) {
-                              return [
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 0;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                        course != 'All'
+                            ? PopupMenuButton(
+                                tooltip: 'Generate Reports',
+                                itemBuilder: ((context) {
+                                  return [
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 0;
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      sections.clear();
-                                      classCodes.clear();
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      getData();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                    }),
-                                    title: NormalText(
-                                        label: 'Log Book',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 1;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                          getData();
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      sections.clear();
-                                      classCodes.clear();
-                                      getData();
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        }),
+                                        title: NormalText(
+                                            label: 'Log Book',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 1;
 
-                                      // consultationReport();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Consultation Report',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 2;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
 
-                                      sections.clear();
-                                      classCodes.clear();
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      getData();
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                      // reportByYear();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Report by Year Level',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    onTap: (() {
-                                      setState(() {
-                                        index = 3;
-                                        hasLoaded = false;
-                                        year1 = 0;
-                                        year2 = 0;
-                                        year3 = 0;
-                                        year4 = 0;
-                                        year5 = 0;
-                                        total1 = 0;
-                                        total2 = 0;
-                                        total3 = 0;
-                                        total4 = 0;
-                                        total5 = 0;
-                                      });
+                                          Navigator.pop(context);
 
-                                      name.clear();
-                                      email.clear();
-                                      courseStud.clear();
-                                      yearLevel.clear();
-                                      concern.clear();
-                                      status.clear();
-                                      sections.clear();
-                                      classCodes.clear();
-                                      getData();
+                                          // consultationReport();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Year Level',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 2;
 
-                                      getData2();
-                                      getData3();
-                                      getData4();
-                                      getData5();
-                                      getTotal();
-                                      getTotal2();
-                                      getTotal3();
-                                      getTotal4();
-                                      getTotal5();
-                                      getSections();
-                                      getCodes();
-                                      Navigator.pop(context);
-                                      // codeReport();
-                                    }),
-                                    title: NormalText(
-                                        label: 'Student Consultation Report',
-                                        fontSize: 12,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                              ];
-                            })),
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
+
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
+
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+
+                                          Navigator.pop(context);
+                                          // reportByYear();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Class Section',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: ListTile(
+                                        onTap: (() {
+                                          setState(() {
+                                            index = 3;
+
+                                            year1 = 0;
+                                            year2 = 0;
+                                            year3 = 0;
+                                            year4 = 0;
+                                            year5 = 0;
+                                            total1 = 0;
+                                            total2 = 0;
+                                            total3 = 0;
+                                            total4 = 0;
+                                            total5 = 0;
+                                          });
+
+                                          name.clear();
+                                          email.clear();
+                                          courseStud.clear();
+                                          yearLevel.clear();
+                                          concern.clear();
+                                          status.clear();
+                                          listSections.clear();
+                                          classCodes.clear();
+                                          getData();
+
+                                          getData2();
+                                          getData3();
+                                          getData4();
+                                          getData5();
+                                          getTotal();
+                                          getTotal2();
+                                          getTotal3();
+                                          getTotal4();
+                                          getTotal5();
+
+                                          Navigator.pop(context);
+                                          // codeReport();
+                                        }),
+                                        title: NormalText(
+                                            label: 'Report by Class Code',
+                                            fontSize: 12,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ];
+                                }))
+                            : const SizedBox(),
                         const SizedBox(
                           width: 50,
                         ),
@@ -2318,7 +2281,7 @@ class _ReportTabState extends State<ReportTab> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              width: 100,
+                                              width: 120,
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
@@ -2349,11 +2312,11 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DropdownMenuItem(
                                                       onTap: () {
-                                                        filterType = 'Unsvoled';
+                                                        filterType = 'Unsolved';
                                                       },
                                                       value: 1,
                                                       child: DropDownItem(
-                                                          label: 'Unsvoled'),
+                                                          label: 'Unsolved'),
                                                     ),
                                                     DropdownMenuItem(
                                                       onTap: () {
@@ -2368,7 +2331,6 @@ class _ReportTabState extends State<ReportTab> {
                                                     setState(() {
                                                       typeValue = int.parse(
                                                           value.toString());
-                                                      hasLoaded = false;
                                                     });
                                                     name.clear();
                                                     email.clear();
@@ -2376,6 +2338,8 @@ class _ReportTabState extends State<ReportTab> {
                                                     yearLevel.clear();
                                                     concern.clear();
                                                     status.clear();
+                                                    listSections.clear();
+                                                    classCodes.clear();
                                                     getData();
 
                                                     getData2();
@@ -2387,8 +2351,6 @@ class _ReportTabState extends State<ReportTab> {
                                                     getTotal3();
                                                     getTotal4();
                                                     getTotal5();
-                                                    getSections();
-                                                    getCodes();
                                                   },
                                                 ),
                                               ),
@@ -2485,7 +2447,6 @@ class _ReportTabState extends State<ReportTab> {
                                                     setState(() {
                                                       concernValue = int.parse(
                                                           value.toString());
-                                                      hasLoaded = false;
                                                     });
                                                     name.clear();
                                                     email.clear();
@@ -2493,6 +2454,8 @@ class _ReportTabState extends State<ReportTab> {
                                                     yearLevel.clear();
                                                     concern.clear();
                                                     status.clear();
+                                                    listSections.clear();
+                                                    classCodes.clear();
                                                     getData();
 
                                                     getData2();
@@ -2504,8 +2467,6 @@ class _ReportTabState extends State<ReportTab> {
                                                     getTotal3();
                                                     getTotal4();
                                                     getTotal5();
-                                                    getSections();
-                                                    getCodes();
                                                   },
                                                 ),
                                               ),
@@ -2556,8 +2517,8 @@ class _ReportTabState extends State<ReportTab> {
                                               itemBuilder: ((context, index) {
                                                 classCodes.add(data.docs[index]
                                                     ['classCode']);
-                                                sections.add(data.docs[index]
-                                                    ['section']);
+                                                listSections.add(data
+                                                    .docs[index]['section']);
                                                 name.add(
                                                     data.docs[index]['name']);
                                                 email.add(
@@ -2609,12 +2570,7 @@ class _ReportTabState extends State<ReportTab> {
                                                         // datatable widget
                                                         columns: [
                                                           // column to set the name
-                                                          DataColumn(
-                                                              label: BoldText(
-                                                                  label: 'ID',
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .white)),
+
                                                           DataColumn(
                                                               label: BoldText(
                                                                   label:
@@ -2668,7 +2624,7 @@ class _ReportTabState extends State<ReportTab> {
 
                                                         rows: [
                                                           // row to set the values
-                                                          for (int i = 1;
+                                                          for (int i = 0;
                                                               i <
                                                                   snapshot.data!
                                                                       .size;
@@ -2692,15 +2648,6 @@ class _ReportTabState extends State<ReportTab> {
                                                                   }
                                                                 }),
                                                                 cells: [
-                                                                  DataCell(
-                                                                    NormalText(
-                                                                        label: i
-                                                                            .toString(),
-                                                                        fontSize:
-                                                                            12,
-                                                                        color: Colors
-                                                                            .black),
-                                                                  ),
                                                                   DataCell(
                                                                     NormalText(
                                                                         label: data.docs[i]
@@ -2912,13 +2859,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year1 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year1 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -2967,13 +2918,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year2 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -3022,13 +2977,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year3 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -3077,13 +3036,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year4 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year4 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -3132,13 +3095,17 @@ class _ReportTabState extends State<ReportTab> {
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: concern1,
+                                                        label: year5 == 0
+                                                            ? "0"
+                                                            : concern1,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
                                                   DataCell(
                                                     NormalText(
-                                                        label: type,
+                                                        label: year5 == 0
+                                                            ? "0"
+                                                            : type,
                                                         fontSize: 12,
                                                         color: Colors.black),
                                                   ),
@@ -3276,7 +3243,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                       i] ==
                                                                   0
                                                               ? "0"
-                                                              : sectionNumber[i]
+                                                              : "${((sectionNumber[i] / enrolled[i]) * 100).toStringAsFixed(2)}%"
                                                                   .toString(),
                                                           fontSize: 12,
                                                           color: Colors.black),
@@ -3290,13 +3257,21 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: concern1,
+                                                          label: sectionNumber[
+                                                                      i] ==
+                                                                  0
+                                                              ? '0'
+                                                              : concern1,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: type,
+                                                          label: sectionNumber[
+                                                                      i] ==
+                                                                  0
+                                                              ? '0'
+                                                              : type,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
@@ -3433,8 +3408,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                       i] ==
                                                                   0
                                                               ? "0"
-                                                              : codeEnrolled[i]
-                                                                  .toString(),
+                                                              : "${((codeNumber[i] / codeEnrolled[i]) * 100).toStringAsFixed(2)}%",
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
@@ -3447,13 +3421,19 @@ class _ReportTabState extends State<ReportTab> {
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: concern1,
+                                                          label:
+                                                              codeNumber[i] == 0
+                                                                  ? "0"
+                                                                  : concern1,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
                                                     DataCell(
                                                       NormalText(
-                                                          label: type,
+                                                          label:
+                                                              codeNumber[i] == 0
+                                                                  ? "0"
+                                                                  : type,
                                                           fontSize: 12,
                                                           color: Colors.black),
                                                     ),
