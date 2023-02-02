@@ -38,11 +38,27 @@ class _ReportTabState extends State<ReportTab> {
     super.initState();
   }
 
-  late int year1 = 0;
-
   late String concern1 = '';
 
   late String type = '';
+
+  getConcern() async {
+    var collection = FirebaseFirestore.instance.collection('Concerns');
+
+    var querySnapshot = await collection.get();
+    if (mounted) {
+      setState(() {
+        for (var queryDocumentSnapshot in querySnapshot.docs) {
+          Map<String, dynamic> data = queryDocumentSnapshot.data();
+
+          concern1 = data['concern'];
+          type = data['type'];
+        }
+      });
+    }
+  }
+
+  late int year1 = 0;
 
   getData() async {
     // Use provider
@@ -244,8 +260,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -260,8 +274,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             year4 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -428,8 +440,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
@@ -444,8 +454,6 @@ class _ReportTabState extends State<ReportTab> {
           for (var queryDocumentSnapshot in querySnapshot.docs) {
             Map<String, dynamic> data = queryDocumentSnapshot.data();
             total4 = querySnapshot.size;
-            concern1 = data['concern'];
-            type = data['type'];
           }
         });
       }
