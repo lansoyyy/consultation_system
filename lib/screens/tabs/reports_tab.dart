@@ -34,15 +34,20 @@ class _ReportTabState extends State<ReportTab> {
     getTotal4();
     getTotal5();
     getAllData();
+    getMyData();
 
     super.initState();
   }
+
+  late int year1 = 0;
 
   late String concern1 = '';
 
   late String type = '';
 
-  getConcern() async {
+  getMyData() async {
+    // Use provider
+
     var collection = FirebaseFirestore.instance.collection('Concerns');
 
     var querySnapshot = await collection.get();
@@ -50,15 +55,13 @@ class _ReportTabState extends State<ReportTab> {
       setState(() {
         for (var queryDocumentSnapshot in querySnapshot.docs) {
           Map<String, dynamic> data = queryDocumentSnapshot.data();
-
+          total4 = querySnapshot.size;
           concern1 = data['concern'];
           type = data['type'];
         }
       });
     }
   }
-
-  late int year1 = 0;
 
   getData() async {
     // Use provider
@@ -148,10 +151,6 @@ class _ReportTabState extends State<ReportTab> {
         }
       });
     }
-    enrolled.add(0);
-    codeNumber.add(0);
-    sectionNumber.add(0);
-    codeEnrolled.add(0);
 
     setState(() {
       hasLoaded = true;
@@ -1645,8 +1644,8 @@ class _ReportTabState extends State<ReportTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(listSections);
-    print(classCodes);
+    print(name);
+
     return hasLoaded
         ? Scaffold(
             appBar: appbarWidget(widget.page),
@@ -2431,29 +2430,31 @@ class _ReportTabState extends State<ReportTab> {
                                       return Expanded(
                                         child: SizedBox(
                                           child: ListView.builder(
-                                              itemCount: data.size == 0 ? 0 : 1,
+                                              itemCount:
+                                                  data.docs.isEmpty ? 0 : 1,
                                               itemBuilder: ((context, index) {
-                                                name.add(
-                                                    data.docs[index]['name']);
-                                                email.add(
-                                                    data.docs[index]['email']);
-                                                courseStud.add(
-                                                    data.docs[index]['course']);
-                                                yearLevel.add(data.docs[index]
-                                                    ['yearLevel']);
-                                                concern.add(data.docs[index]
-                                                    ['concern']);
-                                                status.add(
-                                                    data.docs[index]['type']);
+                                                name.clear();
+                                                for (int i = 0;
+                                                    i < snapshot.data!.size;
+                                                    i++) {
+                                                  print('as');
+                                                  name.add(
+                                                      data.docs[i]['name']);
 
-                                                DateTime created = data
-                                                    .docs[index]['dateTime']
-                                                    .toDate();
+                                                  email.add(
+                                                      data.docs[i]['email']);
+                                                  courseStud.add(
+                                                      data.docs[i]['course']);
+                                                  yearLevel.add(data.docs[i]
+                                                      ['yearLevel']);
+                                                  concern.add(
+                                                      data.docs[i]['concern']);
+                                                  status.add(
+                                                      data.docs[i]['type']);
+                                                }
 
-                                                String formattedTime =
-                                                    DateFormat.yMMMd()
-                                                        .add_jm()
-                                                        .format(created);
+                                                print('$name names');
+
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -2584,8 +2585,10 @@ class _ReportTabState extends State<ReportTab> {
                                                                   ),
                                                                   DataCell(
                                                                     NormalText(
-                                                                        label: formattedTime
-                                                                            .toString(),
+                                                                        label: DateFormat.yMMMd()
+                                                                            .add_jm()
+                                                                            .format(data.docs[i]['dateTime']
+                                                                                .toDate()),
                                                                         fontSize:
                                                                             12,
                                                                         color: Colors
@@ -3118,7 +3121,7 @@ class _ReportTabState extends State<ReportTab> {
                                           ],
 
                                           rows: [
-                                            for (int i = 1;
+                                            for (int i = 0;
                                                 i < listSections.length;
                                                 i++)
                                               DataRow(
@@ -3180,6 +3183,9 @@ class _ReportTabState extends State<ReportTab> {
 
                                                             final data = snapshot
                                                                 .requireData;
+
+                                                            enrolled.add(data
+                                                                .docs.length);
                                                             return NormalText(
                                                                 label: data
                                                                     .docs.length
@@ -3233,6 +3239,9 @@ class _ReportTabState extends State<ReportTab> {
 
                                                             final data = snapshot
                                                                 .requireData;
+                                                            sectionNumber.add(
+                                                                data.docs
+                                                                    .length);
                                                             return NormalText(
                                                                 label: data
                                                                     .docs.length
@@ -3249,10 +3258,9 @@ class _ReportTabState extends State<ReportTab> {
                                                               .instance
                                                               .collection(
                                                                   'Concerns')
-                                                              .where(
-                                                                  'classCode',
+                                                              .where('section',
                                                                   isEqualTo:
-                                                                      classCodes[
+                                                                      listSections[
                                                                           i])
                                                               .snapshots(),
                                                           builder: (BuildContext
@@ -3295,9 +3303,9 @@ class _ReportTabState extends State<ReportTab> {
                                                                     .collection(
                                                                         'Users')
                                                                     .where(
-                                                                        'classCode',
+                                                                        'section',
                                                                         isEqualTo:
-                                                                            classCodes[
+                                                                            listSections[
                                                                                 i])
                                                                     .snapshots(),
                                                                 builder: (BuildContext
@@ -3360,10 +3368,9 @@ class _ReportTabState extends State<ReportTab> {
                                                               .instance
                                                               .collection(
                                                                   'Concerns')
-                                                              .where(
-                                                                  'classCode',
+                                                              .where('section',
                                                                   isEqualTo:
-                                                                      classCodes[
+                                                                      listSections[
                                                                           i])
                                                               .snapshots(),
                                                           builder: (BuildContext
@@ -3417,10 +3424,9 @@ class _ReportTabState extends State<ReportTab> {
                                                               .instance
                                                               .collection(
                                                                   'Concerns')
-                                                              .where(
-                                                                  'classCode',
+                                                              .where('section',
                                                                   isEqualTo:
-                                                                      classCodes[
+                                                                      listSections[
                                                                           i])
                                                               .snapshots(),
                                                           builder: (BuildContext
@@ -3626,6 +3632,10 @@ class _ReportTabState extends State<ReportTab> {
                                                             final data = snapshot
                                                                 .requireData;
 
+                                                            codeEnrolled.add(
+                                                                data.docs
+                                                                    .length);
+
                                                             return NormalText(
                                                                 label: data
                                                                     .docs.length
@@ -3680,6 +3690,9 @@ class _ReportTabState extends State<ReportTab> {
 
                                                             final data = snapshot
                                                                 .requireData;
+
+                                                            codeNumber.add(data
+                                                                .docs.length);
 
                                                             return NormalText(
                                                                 label: data
@@ -3785,7 +3798,7 @@ class _ReportTabState extends State<ReportTab> {
                                                                               .docs
                                                                               .isEmpty
                                                                           ? "0"
-                                                                          : "${((data.docs.length / data1.docs.length) * 100).toStringAsFixed(2)}%",
+                                                                          : "${((data1.docs.length / data.docs.length) * 100).toStringAsFixed(2)}%",
                                                                       fontSize:
                                                                           12,
                                                                       color: Colors
